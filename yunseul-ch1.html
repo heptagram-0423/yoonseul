@@ -1,0 +1,2182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>윤슬세탁소 1장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Nanum+Pen+Script&display=swap">
+<style>
+:root{
+  --ground:#E7ECEA; --surface:#FBFAF5; --surface-2:#F1F2EE; --ink:#1D2B2F; --muted:#5A6A6D; --line:#CBD3D1;
+  --accent:#C8436A; --accent-ink:#FFFFFF; --accent-soft:#F6DCE4;
+  --tag:#F0D57E; --tag-ink:#3A2F12; --tag-edge:#D8B955;
+  --ruled:#C9D6E2; --paper:#FFFEF8; --good:#2F7D5B; --box:rgba(251,250,245,.985);
+  --f-display:"Gowun Batang","Nanum Myeongjo",serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-hand:"Nanum Pen Script","Gowun Batang",cursive;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#11181A; --surface:#1A2326; --surface-2:#212C2F; --ink:#E6EDEB; --muted:#98A8AA; --line:#344447;
+    --accent:#EE7E9C; --accent-ink:#1A1014; --accent-soft:#3A2230;
+    --tag:#CDB05A; --tag-ink:#231C07; --tag-edge:#A88E3F;
+    --ruled:#34485A; --paper:#20292C; --good:#6CC49A; --box:rgba(26,35,38,.985);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#11181A; --surface:#1A2326; --surface-2:#212C2F; --ink:#E6EDEB; --muted:#98A8AA; --line:#344447;
+  --accent:#EE7E9C; --accent-ink:#1A1014; --accent-soft:#3A2230;
+  --tag:#CDB05A; --tag-ink:#231C07; --tag-edge:#A88E3F;
+  --ruled:#34485A; --paper:#20292C; --good:#6CC49A; --box:rgba(26,35,38,.985);
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;padding-inline:16px;overflow:hidden}
+.app{max-width:960px;margin:0 auto;height:100%;display:flex;flex-direction:column;padding-block:12px}
+header{display:flex;align-items:center;gap:10px;padding-block:0 10px;flex-wrap:wrap}
+.chap{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.chap-tag{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;background:var(--accent);color:var(--accent-ink);padding:3px 8px 3px 14px;border-radius:3px;position:relative;white-space:nowrap}
+.chap-tag::before{content:"";position:absolute;left:5px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:var(--ground)}
+.chap .t{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+.chap h1{font-family:var(--f-display);font-size:18px;font-weight:700;margin:0;white-space:nowrap}
+.chap .sc{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.head-actions{display:flex;gap:8px}
+.btn{font:inherit;font-size:14px;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:36px}
+.btn:hover{border-color:var(--muted)}
+.btn:focus-visible,.opt:focus-visible,.spot:focus-visible,.chip:focus-visible,.inv-item:focus-visible,.tabbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn[disabled]{opacity:.45;cursor:default}
+.count{font-family:var(--f-mono);font-size:12px;background:var(--tag);color:var(--tag-ink);border-radius:4px;padding:0 6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+
+/* scene */
+.scene{position:relative;flex:1;min-height:0;border-radius:14px;overflow:hidden;background:#2a3336;cursor:pointer;user-select:none}
+.bg{position:absolute;inset:0}
+.bg svg{width:100%;height:100%;display:block}
+.bg-fade{animation:bgin .5s ease-out}
+@keyframes bgin{from{opacity:.2}to{opacity:1}}
+.cast{position:absolute;inset:0;pointer-events:none;z-index:1}
+.box,.choices,.panel{z-index:3}
+.over{z-index:4}
+.scene-chip,.toast{z-index:5}
+.fig{position:absolute;bottom:0;transform:translateX(-50%);transition:filter .25s, transform .25s, left .35s}
+.fig svg{height:100%;width:auto;display:block}
+.fig.dim{filter:brightness(.62) saturate(.8)}
+.fig.talk{transform:translateX(-50%) translateY(-6px)}
+.fig.back{filter:brightness(.55) saturate(.6)}
+.fig.enter{animation:figin .35s ease-out}
+@keyframes figin{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1}}
+.scene-chip{position:absolute;left:14px;top:14px;background:rgba(20,26,28,.72);color:#F3EFE4;font-family:var(--f-display);font-size:14px;padding:5px 12px;border-radius:6px;opacity:0;transition:opacity .4s}
+.scene-chip.on{opacity:1}
+.toast{position:absolute;right:14px;top:14px;background:var(--tag);color:var(--tag-ink);border:1px solid var(--tag-edge);font-size:13px;padding:5px 10px;border-radius:6px;opacity:0;transform:translateY(-6px);transition:opacity .3s,transform .3s;pointer-events:none;max-width:70%}
+.toast.on{opacity:1;transform:none}
+
+.box{position:absolute;left:12px;right:12px;bottom:12px;max-width:820px;margin:0 auto;background:var(--box);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:22px 20px 16px;min-height:118px;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.box .name{position:absolute;top:-14px;left:16px;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:14px;padding:3px 12px 3px 20px;border-radius:3px 12px 12px 3px}
+.box .name::before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--box)}
+.box .name.mono{background:var(--ink);color:var(--surface)}
+.box .txt{font-size:17px;line-height:1.75;max-width:62ch}
+.box.narr .txt{font-family:var(--f-display);font-style:italic;color:var(--muted)}
+.box.mono .txt{color:var(--muted)}
+.box.sys .txt{font-family:var(--f-mono);font-size:13.5px;color:var(--muted)}
+.box .more{position:absolute;right:16px;bottom:10px;color:var(--accent);font-size:13px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.box .more,.fig.enter,.bg-fade{animation:none}}
+
+.choices{position:absolute;left:0;right:0;bottom:148px;display:flex;flex-direction:column;gap:8px;align-items:center;padding-inline:16px}
+.opt{font:inherit;font-size:15.5px;width:min(520px,100%);text-align:left;border:1px solid var(--accent);background:var(--box);color:var(--ink);border-radius:10px;padding:11px 16px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+.opt:hover{background:var(--accent-soft)}
+
+.panel{position:absolute;left:12px;right:12px;bottom:12px;max-width:820px;margin:0 auto;background:var(--box);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;cursor:default}
+.panel h2{margin:0;font-family:var(--f-display);font-size:17px}
+.hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.hub{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.spot{font:inherit;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;line-height:1.35}
+.spot:hover{border-color:var(--accent)}
+.spot .where{font-size:11.5px;color:var(--muted)}
+.spot .what{font-weight:600;font-size:14.5px}
+.spot .st{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.spot.done .st{color:var(--good)}
+.hub-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.hub-foot .note{font-size:13px;color:var(--muted)}
+
+/* overlays inside scene */
+.over{position:absolute;inset:0;background:rgba(12,17,19,.55);display:flex;align-items:center;justify-content:center;padding:14px;cursor:default}
+.over-in{background:var(--surface);color:var(--ink);border-radius:12px;width:100%;max-width:620px;max-height:100%;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.over-in .kicker{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;color:var(--muted)}
+.over-in .acts{display:flex;justify-content:flex-end;gap:8px}
+
+.tag{position:relative;background:var(--tag);color:var(--tag-ink);border:1px solid var(--tag-edge);border-radius:4px 12px 12px 4px;padding:10px 14px 10px 32px}
+.tag::before{content:"";position:absolute;left:11px;top:15px;width:9px;height:9px;border-radius:50%;background:var(--surface);border:1px solid var(--tag-edge)}
+.tag .no{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;opacity:.8}
+.tag .nm{font-weight:600;font-size:16px;line-height:1.4}
+.tag .ds{font-size:14px;line-height:1.55}
+.ledger{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:10px 16px;font-family:var(--f-hand);font-size:25px;line-height:36px;background-image:repeating-linear-gradient(to bottom,transparent 0 35px,var(--ruled) 35px 36px);background-position:0 9px;color:var(--ink)}
+.ledger .red{color:var(--accent)}
+.ledger .dim{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.letter{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:20px 20px 16px;font-family:var(--f-display);font-size:16px;line-height:1.9;display:flex;flex-direction:column;gap:10px}
+.letter p{margin:0}
+.letter .sign{align-self:flex-end;font-family:var(--f-hand);font-size:28px}
+.diary{font-family:var(--f-hand);font-size:24px;line-height:1.5;background:var(--paper);border-left:3px solid var(--tag-edge);padding:12px 16px;border-radius:0 4px 4px 0}
+.diary.locked{font-family:var(--f-body);font-size:14px;color:var(--muted);font-style:italic}
+.note-cap{font-size:13.5px;color:var(--muted)}
+.person{display:flex;gap:14px;align-items:center}
+.person .pf{width:84px;height:110px;flex:none;background:var(--surface-2);border-radius:10px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.person .pf svg{height:118%;width:auto;margin-bottom:-8%}
+.person h3{margin:0;font-family:var(--f-display);font-size:18px}
+.person p{margin:0;font-size:14.5px}
+
+/* notebook */
+.nb{display:flex;flex-direction:column;gap:14px}
+.nb-sentence{font-family:var(--f-display);font-size:18px;line-height:2.1;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px 16px}
+.slot{display:inline-block;border-bottom:2px solid var(--accent);padding:0 6px;min-width:4.5em;text-align:center;color:var(--accent);font-weight:700}
+.slot.ok{color:var(--good);border-color:var(--good)}
+.blank{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--surface-2)}
+.blank.ok{border-color:var(--good)}
+.blank h3{margin:0;font-size:14px;font-weight:600;display:flex;gap:8px;align-items:center}
+.blank h3 .n{font-family:var(--f-mono);font-size:12px;background:var(--ink);color:var(--surface);border-radius:4px;padding:0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.chip.card[aria-pressed="true"]{background:var(--tag);color:var(--tag-ink);border-color:var(--tag-edge)}
+.sub{font-size:12px;color:var(--muted)}
+.fb{font-size:14px;border-radius:8px;padding:8px 10px;background:var(--accent-soft)}
+.fb b{font-weight:600}
+.fb.ok{background:transparent;color:var(--good);padding:0}
+.acts-row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* sheets (inventory, backlog) */
+.sheet{position:fixed;inset:0;background:rgba(10,16,18,.5);display:flex;justify-content:center;align-items:center;z-index:10;padding:16px}
+.sheet-in{background:var(--surface);color:var(--ink);border-radius:14px;width:100%;max-width:640px;height:min(640px,100%);display:flex;flex-direction:column;overflow:hidden}
+.sheet-head{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.sheet-head h2{margin:0;font-family:var(--f-display);font-size:18px;flex:1}
+.tabs{display:flex;gap:4px;padding:10px 16px 0;flex-wrap:wrap}
+.tabbtn{font:inherit;font-size:14px;border:none;background:transparent;color:var(--muted);padding:6px 10px;border-radius:8px 8px 0 0;cursor:pointer;border-bottom:2px solid transparent}
+.tabbtn[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.sheet-body{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.inv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:460px){.inv-grid{grid-template-columns:1fr}}
+.inv-item{font:inherit;text-align:left;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;line-height:1.4}
+.inv-item:hover{border-color:var(--accent)}
+.inv-item .k{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+.inv-item .n{font-weight:600}
+.inv-item .d{font-size:13px;color:var(--muted)}
+.inv-item.locked{opacity:.55;cursor:default}
+.empty{color:var(--muted);font-size:14px}
+.back-row{font-size:14.5px;line-height:1.6;display:flex;gap:10px}
+.back-row .w{flex:none;width:5.5em;font-size:12.5px;font-weight:600;color:var(--accent);padding-top:2px}
+.back-row .w.m{color:var(--muted)}
+.back-row .x.narr{font-family:var(--f-display);font-style:italic;color:var(--muted)}
+.back-row .x.sys{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.back-row.pick .x{color:var(--accent)}
+
+.endcard{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.endcard .big{font-family:var(--f-display);font-size:26px;font-weight:700}
+.big-tag{font-family:var(--f-mono);font-size:30px;letter-spacing:.12em;background:var(--tag);color:var(--tag-ink);border:1px solid var(--tag-edge);border-radius:4px 14px 14px 4px;padding:6px 20px 6px 38px;position:relative}
+.big-tag::before{content:"";position:absolute;left:13px;top:50%;width:11px;height:11px;margin-top:-5.5px;border-radius:50%;background:var(--surface);border:1px solid var(--tag-edge)}
+.muted{color:var(--muted);font-size:14px}
+/* v9: illustrated things */
+.thing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.thing-tile{position:relative;aspect-ratio:1;max-width:100%;border:1px solid var(--line);border-radius:12px;cursor:pointer;padding:8px;background:radial-gradient(circle at 50% 45%,#FFFDF6 0,#EFE8D8 70%);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.thing-tile svg{width:100%;height:100%}
+.thing-tile:hover,.thing-tile:focus-visible{transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.14);outline:none;border-color:var(--accent)}
+.thing-cap{position:absolute;left:6px;right:6px;bottom:6px;font-size:12px;text-align:center;color:#3A3328;background:rgba(255,253,246,.92);border-radius:6px;padding:2px 4px;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
+.thing-tile:hover .thing-cap,.thing-tile:focus-visible .thing-cap{opacity:1;transform:none}
+.thing-view{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.thing-big{width:min(320px,100%);aspect-ratio:4/3;border-radius:14px;background:radial-gradient(circle at 50% 45%,#FFFDF6 0,#EFE8D8 72%);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;padding:10px}
+.thing-big svg{width:100%;height:100%}
+.thing-view h3{margin:6px 0 0;font-family:var(--f-display);font-size:20px}
+.thing-view p{margin:0;max-width:40ch;font-size:14.5px;color:var(--muted);line-height:1.6}
+/* v8: deduction notebook */
+.nb-btn{position:absolute;right:14px;bottom:14px;z-index:9;width:66px;height:76px;border:none;background:none;padding:0;cursor:pointer;transition:transform .16s ease-out,filter .16s ease-out;filter:drop-shadow(0 6px 10px rgba(0,0,0,.3))}
+.nb-btn svg{width:100%;height:100%;display:block}
+.nb-btn:hover,.nb-btn:focus-visible{transform:translateY(-3px) rotate(-3deg) scale(1.05);filter:drop-shadow(0 8px 14px rgba(0,0,0,.35)) brightness(1.08)}
+.nb-btn:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:8px}
+.nb-dot{position:absolute;right:4px;top:4px;width:14px;height:14px;border-radius:50%;background:#C8436A;border:2px solid #FBF7EC;animation:nbpulse 1.6s ease-in-out infinite}
+@keyframes nbpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.nbk{position:absolute;inset:0;z-index:6;background:rgba(14,19,20,.6);display:flex;align-items:center;justify-content:center;padding:14px;cursor:default;animation:dcin .25s ease-out}
+.nbk-book{--paper:#FBF7EC;--rule:#CFDCE8;--nink:#24365A;--pencil:#6B6A66;--red:#C23A55;
+  position:relative;width:min(940px,100%);max-height:100%;display:grid;grid-template-columns:1fr 22px 1fr;background:#7A5A3B;padding:12px;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 0 0 2px #5E4430;font-family:var(--f-hand);color:var(--nink)}
+.nbk-page{background-color:var(--paper);background-image:linear-gradient(90deg,transparent 46px,#E9A3B0 46px,#E9A3B0 48px,transparent 48px),repeating-linear-gradient(to bottom,transparent 0 33px,var(--rule) 33px 34px);background-position:0 20px;padding:22px 22px 26px 60px;overflow-y:auto;max-height:calc(100vh - 120px);font-size:23px;line-height:34px;position:relative}
+.nbk-page.left{border-radius:6px 2px 2px 6px;box-shadow:inset -14px 0 18px -14px rgba(0,0,0,.25)}
+.nbk-page.right{border-radius:2px 6px 6px 2px;box-shadow:inset 14px 0 18px -14px rgba(0,0,0,.25)}
+.nbk-spine{background-image:radial-gradient(circle at 50% 50%,#DCD6C6 0 4px,#9C9585 4px 5.5px,transparent 6px);background-size:22px 34px;background-position:center 20px;background-repeat:repeat-y;margin:0 -8px;position:relative;z-index:2}
+.nbk-close{position:absolute;right:84px;top:-6px;z-index:3;font-family:var(--f-hand);font-size:22px;color:#fff;background:var(--red);border:none;padding:6px 14px 16px;cursor:pointer;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)}
+.nbk-close:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+.nbk-date{color:var(--pencil);font-size:20px}
+.nbk-h{font-family:var(--f-hand);font-size:34px;line-height:34px;margin:0 0 6px;font-weight:400}
+.nbk-sentence{font-size:27px;line-height:34px;margin:0 0 12px;padding:6px 10px;display:inline-block}
+.nbk-sentence.solved{border:3px solid var(--red);border-radius:48% 52% 46% 54%/56% 44% 56% 44%;transform:rotate(-1.5deg)}
+.nbk-blank{display:inline-block;min-width:3.4em;text-align:center;border-bottom:2px solid var(--nink);color:var(--pencil)}
+.nbk-fill{color:var(--red);border-bottom:2px solid var(--red);padding:0 4px}
+.nbk-sub{font-family:var(--f-hand);font-weight:400;font-size:25px;margin:6px 0 0;text-decoration:underline wavy #E9A3B0 2px;text-underline-offset:6px}
+.nbk-cnt{font-size:19px;color:var(--pencil)}
+.nbk-clues{margin:0;padding-left:20px;font-size:21px}
+.nbk-clues b{font-weight:400;background:linear-gradient(transparent 55%,#F6E39A 55%)}
+.nbk-page .dim{color:var(--pencil)}
+.nbk-sticky{display:block;margin:16px 0 4px auto;max-width:250px;background:#FFE98A;border:none;box-shadow:0 4px 8px rgba(0,0,0,.18);transform:rotate(2.5deg);font-family:var(--f-hand);font-size:21px;line-height:1.3;color:#4A3A12;padding:12px 14px;text-align:left;cursor:pointer}
+.nbk-sticky .who{display:block;font-size:17px;color:#8A6A12}
+.nbk-sticky:focus-visible{outline:2px solid var(--red)}
+.nbk-q{padding:2px 0 12px;border-bottom:1px dashed #D9CFB8;margin-bottom:10px}
+.nbk-q.ok{color:var(--pencil)}
+.nbk-qh{font-size:25px}
+.nbk-num{color:var(--red);margin-right:6px}
+.nbk-tick{color:var(--red);display:block;padding-left:28px}
+.nbk-tick::before{content:"✓ "}
+.nbk-words{display:flex;flex-wrap:wrap;gap:2px 14px;padding-left:8px}
+.nbk-word{font-family:var(--f-hand);font-size:23px;color:var(--nink);background:none;border:none;padding:2px 8px;cursor:pointer;position:relative}
+.nbk-word[aria-pressed="true"]::after{content:"";position:absolute;inset:-2px -6px;border:2.5px solid var(--red);border-radius:50%;transform:rotate(-4deg)}
+.nbk-word:hover{text-decoration:underline}
+.nbk-why{font-size:19px;color:var(--pencil);padding-left:8px}
+.nbk-tags{display:flex;flex-wrap:wrap;gap:8px;padding-left:8px}
+.nbk-tag{font-family:var(--f-hand);font-size:19px;line-height:1.2;color:#3A2F12;background:#F4D98A;border:1px solid #D8B955;border-radius:3px 10px 10px 3px;padding:4px 10px 4px 20px;cursor:pointer;position:relative}
+.nbk-tag::before{content:"";position:absolute;left:6px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--paper);border:1px solid #D8B955}
+.nbk-tag[aria-pressed="true"]{transform:rotate(-3deg);box-shadow:0 0 0 2px var(--red)}
+.nbk-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-left:8px;margin-top:6px}
+.nbk-stamp{font-family:var(--f-hand);font-size:22px;color:var(--red);background:none;border:2.5px solid var(--red);border-radius:50%;width:62px;height:62px;cursor:pointer;transform:rotate(-8deg);flex:none}
+.nbk-stamp[disabled]{opacity:.35;cursor:default}
+.nbk-fb{flex:1;min-width:180px;font-size:20px;line-height:1.35;color:var(--pencil)}
+.nbk-fb b{font-weight:400;color:var(--nink)}
+.nbk-word:focus-visible,.nbk-tag:focus-visible,.nbk-stamp:focus-visible,.nbk-go:focus-visible{outline:2px dashed var(--red);outline-offset:3px}
+.nbk-done{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:300px;text-align:center;font-size:25px}
+.nbk-bigstamp{font-size:46px;color:var(--red);border:4px double var(--red);border-radius:50%;width:130px;height:130px;display:flex;align-items:center;justify-content:center;transform:rotate(-12deg)}
+.nbk-done p{margin:0;line-height:34px}
+.nbk-go{font-family:var(--f-hand);font-size:27px;color:var(--nink);background:none;border:none;border-bottom:2px solid var(--nink);cursor:pointer;padding:0 6px}
+.nbk-go:hover{color:var(--red);border-color:var(--red)}
+@media (max-width:720px){
+  .nbk-book{grid-template-columns:1fr;overflow-y:auto;padding:10px}
+  .nbk-spine{display:none}
+  .nbk-page{max-height:none;overflow:visible;border-radius:6px!important;padding-left:56px}
+  .nbk-page.left{margin-bottom:10px}
+}
+@media (prefers-reduced-motion: reduce){.nb-dot{animation:none}}
+/* v7: notes, reading lines, mini games */
+.notes{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:8;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;max-width:calc(100% - 140px)}
+.note{background:rgba(18,24,26,.8);color:#F3EFE4;font-size:13px;line-height:1.4;padding:5px 14px 5px 6px;border-radius:999px;display:flex;align-items:center;gap:8px;animation:notein .3s ease-out;transition:opacity .4s,transform .4s;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.note.out{opacity:0;transform:translateY(-6px)}
+@keyframes notein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.nt{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.04em;padding:1px 7px;border-radius:999px;flex:none}
+.nt-card{background:#F0D57E;color:#3A2F12}
+.nt-memo{background:#A9C4F0;color:#1B2E4F}
+.nt-thing{background:#A8D5B9;color:#18392A}
+.nt-diary{background:#F2B7C4;color:#4A1826}
+.nt-people{background:#D9D2C2;color:#2E2A22}
+.box.read .txt{white-space:pre-line}
+.box.read .name{background:#8C6A43}
+.box.read.ledger .txt{font-family:var(--f-hand);font-size:26px;line-height:1.3;color:var(--ink)}
+.box.read.letter .txt{font-family:var(--f-display);font-size:17.5px;line-height:1.85}
+.box.read.diary .txt{font-family:var(--f-hand);font-size:25px;line-height:1.35;color:var(--mono-ink)}
+.mini{position:absolute;inset:0;z-index:5}
+.mini.shutter{cursor:pointer;touch-action:manipulation}
+.mini.shutter svg{position:absolute;inset:0;width:100%;height:100%}
+.mini-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.mini.iron{background:rgba(14,19,20,.55);display:flex;align-items:center;justify-content:center;padding:12px}
+.iron-wrap{width:min(760px,100%);display:flex;flex-direction:column;gap:8px}
+.iron-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.temp{display:flex;gap:4px;background:var(--box);border-radius:999px;padding:4px}
+.temp button{font:inherit;font-size:13.5px;border:none;background:transparent;color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer}
+.temp button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.temp button:focus-visible{outline:2px solid var(--accent)}
+.iron-bar{flex:1;min-width:120px;height:8px;border-radius:999px;background:rgba(255,255,255,.25);overflow:hidden}
+.iron-bar i{display:block;height:100%;width:0;background:#8FCBB8;transition:width .15s}
+#iron-svg{width:100%;height:auto;border-radius:12px;cursor:none;touch-action:none;outline:none;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#iron-svg:focus-visible{box-shadow:0 0 0 3px var(--accent)}
+/* v6: burger menu, lift-on-approach, tints */
+.app{padding-block:12px}
+.menu-btn{position:absolute;right:12px;top:12px;z-index:9;width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--box);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.menu-btn span{display:block;width:20px;height:2.5px;border-radius:2px;background:var(--ink)}
+.menu-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.menu-dot{position:absolute;right:7px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.menu-panel{position:absolute;right:12px;top:64px;z-index:9;width:min(260px,calc(100% - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.28);padding:8px;display:flex;flex-direction:column;cursor:default}
+.mp-head{padding:6px 10px 8px;border-bottom:1px solid var(--line);margin-bottom:4px;display:flex;flex-direction:column;line-height:1.35}
+.mp-head b{font-family:var(--f-display);font-size:15px}
+.mp-head span{font-size:12px;color:var(--muted)}
+.mp-item{font:inherit;font-size:15px;text-align:left;border:none;background:transparent;color:var(--ink);padding:10px 10px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mp-item:hover,.mp-item:focus-visible{background:var(--surface-2);outline:none}
+.mp-item[disabled]{color:var(--muted);cursor:default}
+.mp-item[disabled]:hover{background:transparent}
+.mp-item .tag-n{font-family:var(--f-mono);font-size:12px;background:var(--tag);color:var(--tag-ink);border-radius:4px;padding:0 6px}
+.mp-item .pip{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.hot .lifted{pointer-events:none;transition:transform .16s ease-out,filter .16s ease-out;transform-box:view-box}
+.hot .lifted.on{transform:scale(1.035);filter:brightness(1.18) drop-shadow(0 0 7px rgba(255,238,196,.55))}
+@media (prefers-reduced-motion: reduce){.hot .lifted{transition:none}}
+.hot .spot{fill:transparent;cursor:pointer}
+.hot .spot:focus-visible{stroke:#FFE58A;stroke-width:4}
+.fx{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+.scene.t-night #bg,.scene.t-night #hot,.scene.t-night #cast{filter:brightness(.5) saturate(.7) hue-rotate(-10deg)}
+.scene.t-off #bg,.scene.t-off #hot{filter:brightness(.38) saturate(.55)}
+.scene.t-dusk #bg,.scene.t-dusk #hot,.scene.t-dusk #cast{filter:brightness(.86) sepia(.28) saturate(1.1)}
+.scene-chip{left:14px;top:14px}
+.toast{top:66px;right:66px}
+/* v5: lobby, day card, day-grouped inventory */
+.daycard{position:absolute;inset:0;z-index:8;background:#0E1314;color:#EFE8D6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;animation:dcin .8s ease-out}
+@keyframes dcin{from{opacity:0}to{opacity:1}}
+.dc-small{font-family:var(--f-mono);font-size:12px;letter-spacing:.2em;color:#8E9A98}
+.dc-big{font-family:var(--f-display);font-size:56px;font-weight:700;letter-spacing:.06em}
+.dc-sub{font-family:var(--f-display);font-size:18px;color:#C9C1AC}
+.dc-tap{margin-top:28px;font-size:12.5px;color:#6E7A78;animation:blink 1.4s steps(2) infinite}
+details.day{border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
+details.day summary{cursor:pointer;display:flex;justify-content:space-between;gap:10px;padding:10px 14px;font-family:var(--f-display);font-weight:700;font-size:15px;list-style:none}
+details.day summary::-webkit-details-marker{display:none}
+details.day summary::before{content:"▸";color:var(--accent);margin-right:6px;transition:transform .2s;display:inline-block}
+details.day[open] summary::before{transform:rotate(90deg)}
+details.day summary span:first-child{flex:1}
+.day-n{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:500}
+.day-body{padding:0 12px 12px;display:flex;flex-direction:column;gap:8px}
+.card-stack{display:flex;flex-direction:column;gap:8px}
+.lobby{position:fixed;inset:0;z-index:50;background:#141A1B;color:#E4DCC6;display:grid;grid-template-columns:minmax(280px,1fr) minmax(0,1.15fr);overflow:hidden;
+  background-image:radial-gradient(ellipse at 30% 40%,rgba(80,96,92,.35),transparent 60%),repeating-linear-gradient(97deg,rgba(255,255,255,.018) 0 2px,transparent 2px 7px)}
+.lb-left{display:flex;flex-direction:column;justify-content:center;gap:40px;padding:48px 24px 48px max(24px,6vw);position:relative;z-index:2}
+.lb-logo{position:relative;align-self:flex-start;display:flex;flex-direction:column;gap:2px;border:2px solid #E4DCC6;border-radius:6px 30px 30px 6px;padding:18px 34px 16px 56px;background:rgba(20,26,27,.6)}
+.lb-logo::before{content:"";position:absolute;left:20px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;border:2px solid #E4DCC6;background:#141A1B}
+.lb-logo::after{content:"";position:absolute;left:-46px;top:50%;width:50px;height:30px;margin-top:-30px;border:2px solid #B03A48;border-right:none;border-bottom:none;border-radius:40px 0 0 0}
+.lb-shop{font-family:var(--f-body);font-size:14px;letter-spacing:.5em;color:#A8B3AF}
+.lb-title{font-family:var(--f-display);font-size:clamp(42px,6vw,68px);font-weight:700;line-height:1.1;letter-spacing:.04em}
+.lb-no{font-family:var(--f-mono);font-size:12px;color:#D9657A;letter-spacing:.08em}
+.lb-menu{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.lb-item{font:inherit;font-family:var(--f-display);font-size:21px;color:#B9B19C;background:none;border:none;padding:6px 10px 6px 30px;cursor:pointer;position:relative;text-align:left;display:flex;flex-direction:column;line-height:1.3}
+.lb-item::before{content:"";position:absolute;left:4px;top:15px;width:16px;height:10px;border:1.5px solid #E4DCC6;border-radius:2px 6px 6px 2px;opacity:0;transition:opacity .15s}
+.lb-item:hover,.lb-item:focus-visible{color:#FFF8E6;outline:none}
+.lb-item:hover::before,.lb-item:focus-visible::before{opacity:1}
+.lb-item[disabled]{color:#5C6462;cursor:default}
+.lb-item[disabled]::before{display:none}
+.lb-sub{font-family:var(--f-mono);font-size:11.5px;color:#7F8B88}
+.lb-note{margin:0 0 6px 10px;font-size:14.5px;color:#C9C1AC;line-height:1.6}
+.lb-note.small{font-size:12.5px;color:#7F8B88;max-width:36ch}
+.lb-speed{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px 10px}
+.lb-chip{font:inherit;font-size:14px;border:1px solid #4A5553;background:transparent;color:#C9C1AC;border-radius:999px;padding:5px 14px;cursor:pointer}
+.lb-chip[aria-pressed="true"]{background:#E4DCC6;color:#141A1B;border-color:#E4DCC6}
+.lb-chip:focus-visible{outline:2px solid #D9657A;outline-offset:2px}
+.lb-art{position:relative;min-height:0}
+.lb-art svg{position:absolute;inset:0;width:100%;height:100%}
+.lb-ver,.lb-copy{position:absolute;bottom:calc(10px + env(safe-area-inset-bottom,0px));font-family:var(--f-mono);font-size:11px;color:#5F6A68;z-index:2}
+.lb-ver{left:16px}.lb-copy{right:16px}
+@media (max-width:720px){
+  .lobby{grid-template-columns:1fr}
+  .lb-art{position:absolute;inset:0;opacity:.35}
+  .lb-left{padding:40px 24px 56px 64px;gap:28px}
+  .lb-copy{display:none}
+}
+@media (prefers-reduced-motion: reduce){.daycard,.dc-tap{animation:none}}
+/* v4: exploration, menus, monologue */
+:root{--mono-ink:#2F5596}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--mono-ink:#A9C4F0}}
+:root[data-theme="dark"]{--mono-ink:#A9C4F0}
+.box.mono .txt{font-family:var(--f-hand);font-size:27px;line-height:1.35;color:var(--mono-ink);font-style:normal}
+.back-row .x.mono{font-family:var(--f-hand);font-size:21px;line-height:1.3;color:var(--mono-ink)}
+.cast{z-index:1}
+.hot{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+.hot .spot{fill:transparent;cursor:pointer;outline:none}
+.hot.l1 .spot:hover{fill:rgba(255,248,220,.16)}
+.hot .spot:focus-visible{stroke:#FFE58A;stroke-width:5}
+.spark{fill:#FFF3B8;stroke:#fff;stroke-width:2;pointer-events:none;animation:spark 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spark{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+.hintring{fill:none;stroke:#FFE58A;stroke-width:7;pointer-events:none;animation:ring 1.1s ease-out 3}
+@keyframes ring{0%{opacity:1}100%{opacity:.1}}
+.dark{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(circle var(--r,120px) at var(--lx,50%) var(--ly,45%),rgba(6,9,11,0) 0,rgba(6,9,11,0) 50%,rgba(6,9,11,var(--a,.95)) 100%)}
+.box,.choices{z-index:3}
+.hud{position:absolute;left:10px;right:10px;top:10px;z-index:4;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;background:var(--box);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:8px 10px 8px 14px;box-shadow:0 4px 16px rgba(0,0,0,.2);cursor:default}
+.hud-l{display:flex;flex-direction:column;line-height:1.35;min-width:0;flex:1 1 220px}
+.hud-l b{font-family:var(--f-display);font-size:16px}
+.hud-l span{font-size:12.5px;color:var(--muted)}
+.hud-r{display:flex;flex-wrap:wrap;gap:6px}
+.btn.sm{min-height:32px;padding:4px 10px;font-size:13px}
+.btn.nav.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.over{z-index:6}
+.scene-chip,.toast{z-index:7}
+.toast{top:70px}
+.choices{max-height:calc(100% - 170px);overflow-y:auto;justify-content:flex-end;padding-top:8px}
+.choices .opt{flex:none}
+.menu-title{font-family:var(--f-display);font-size:14px;color:#F3EFE4;background:rgba(20,26,28,.78);padding:3px 12px;border-radius:6px;flex:none}
+.opt.read{opacity:.72}
+.opt .chk{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);margin-left:8px}
+.opt.exit{border-style:dashed;border-color:var(--muted)}
+.obj{display:flex;justify-content:center;padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:6px}
+.sum{width:100%;border-collapse:collapse;font-size:14px}
+.sum th{text-align:left;font-weight:600;padding:8px 10px 8px 0;vertical-align:top;white-space:nowrap;color:var(--muted);font-size:13px}
+.sum td{padding:8px 0;border-top:1px solid var(--line)}
+.sum th{border-top:1px solid var(--line)}
+.sum .res{display:block;font-size:12.5px;color:var(--muted)}
+/* v10: full-bleed */
+html,body{margin:0;padding:0;height:100%;height:100dvh}
+body{padding-inline:0}
+.app,.app{max-width:none;width:100%;height:100%;padding:0;margin:0}
+.scene{border-radius:0}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <span id="ch-tag" hidden>CH.01</span><span id="ch-title" hidden>사라진 단추</span><span id="scene-name" hidden></span><span id="card-count" hidden></span><span id="inv-dot" hidden></span>
+  <main class="scene" id="scene" aria-live="polite">
+    <div class="bg" id="bg"></div>
+    <div class="cast" id="cast"></div>
+    <div class="scene-chip" id="chip"></div>
+    <div class="toast" id="toast"></div>
+    <svg class="hot" id="hot" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" hidden></svg>
+    <div class="dark" id="dark" hidden></div>
+    <svg class="fx" id="fx" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+    <div class="box" id="box"><span class="name" id="name" hidden></span><div class="txt" id="txt"></div><span class="more" id="more" hidden>▼</span></div>
+    <div class="choices" id="choices" hidden></div>
+    <div class="hud" id="hud" hidden></div>
+    <button class="nb-btn" id="btn-nb" type="button" aria-label="추리 수첩 펼치기" hidden><svg viewBox="0 0 72 84" aria-hidden="true"><rect x="11" y="13" width="56" height="70" rx="5" fill="#3A2A1C" opacity=".35"/><rect x="8" y="10" width="56" height="70" rx="5" fill="#8C6A43"/><rect x="8" y="10" width="10" height="70" rx="3" fill="#6E5034"/><rect x="24" y="26" width="34" height="22" rx="2" fill="#F6F0DF"/><text x="41" y="42" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="17" fill="#2B3A55">수첩</text><g fill="none" stroke="#C9C3B4" stroke-width="2.4"><path d="M13 16 q-6 0 -6 -5 q0 -5 6 -5"/><path d="M13 30 q-6 0 -6 -5 q0 -5 6 -5"/><path d="M13 44 q-6 0 -6 -5 q0 -5 6 -5"/><path d="M13 58 q-6 0 -6 -5 q0 -5 6 -5"/><path d="M13 72 q-6 0 -6 -5 q0 -5 6 -5"/></g><g transform="rotate(28 54 70)"><rect x="50" y="52" width="8" height="30" rx="2" fill="#E8B04A"/><path d="M50 82 L54 90 L58 82Z" fill="#E9D7B4"/><path d="M53 87.5 L54 90 L55 87.5Z" fill="#2B2B2B"/></g></svg><i class="nb-dot" id="nb-dot" hidden></i></button>
+    <div class="nbk" id="nbk" hidden></div>
+    <button class="menu-btn" id="btn-menu" type="button" aria-label="메뉴" aria-expanded="false"><span></span><span></span><span></span><i class="menu-dot" id="menu-dot" hidden></i></button>
+    <div class="menu-panel" id="menu-panel" hidden></div>
+    <div class="mini" id="mini" hidden></div>
+    <div class="notes" id="notes" aria-live="polite"></div>
+    <div class="daycard" id="daycard" hidden></div>
+    <div class="over" id="over" hidden><div class="over-in" id="over-in"></div></div>
+  </main>
+</div>
+
+<div class="lobby" id="lobby" hidden>
+  <div class="lb-left">
+    <div class="lb-logo" aria-label="윤슬세탁소 사건 수첩">
+      <span class="lb-shop">윤슬세탁소</span>
+      <span class="lb-title">사건 수첩</span>
+      <span class="lb-no">No. 0417 · 찾아가지 않음</span>
+    </div>
+    <nav class="lb-menu" id="lb-menu"></nav>
+  </div>
+  <div class="lb-art" aria-hidden="true" id="lb-art"></div>
+  <span class="lb-ver">ver 0.9 · 1장 체험판</span>
+  <span class="lb-copy">윤슬세탁소 사건 수첩 · 프로토타입</span>
+</div>
+
+<div class="sheet" id="sheet-inv" hidden>
+  <div class="sheet-in" role="dialog" aria-modal="true" aria-labelledby="inv-h">
+    <div class="sheet-head"><h2 id="inv-h">소지품</h2><button class="btn" id="inv-close" type="button">닫기</button></div>
+    <div class="tabs" role="tablist" id="inv-tabs"></div>
+    <div class="sheet-body" id="inv-body"></div>
+  </div>
+</div>
+<div class="sheet" id="sheet-log" hidden>
+  <div class="sheet-in" role="dialog" aria-modal="true" aria-labelledby="log-h">
+    <div class="sheet-head"><h2 id="log-h">대화 기록</h2><button class="btn" id="log-close" type="button">닫기</button></div>
+    <div class="sheet-body" id="log-body"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+/* =========================================================
+   ART: backgrounds (1200x800) and characters (300x460)
+   ========================================================= */
+function tagsOnBoard(){
+  let s="",cols=["#F4D98A","#F2C7CF","#F7F3E8","#CFE3D6","#F4D98A"];
+  for(let r=0;r<5;r++)for(let c=0;c<8;c++){
+    const i=(r*8+c)%5, x=140+c*40+(r%2)*8, y=170+r*48, rot=((r*7+c*3)%9)-4;
+    s+=`<rect x="${x}" y="${y}" width="26" height="36" rx="3" fill="${cols[i]}" transform="rotate(${rot} ${x+13} ${y+18})" stroke="#8C6A43" stroke-width="1"/><circle cx="${x+13}" cy="${y+6}" r="2.2" fill="#7B5B38"/>`;
+  }
+  return s;
+}
+function garments(){
+  const cols=["#D9E4EA","#EAD9D0","#E5E1CF","#D8D2E6","#DDE6D5","#EBDDE2","#D4DEE4"];
+  let s='<line x1="540" y1="130" x2="990" y2="130" stroke="#6E6A62" stroke-width="6" stroke-linecap="round"/>';
+  cols.forEach((c,i)=>{const x=565+i*62;s+=`<path d="M${x} 130 q0 -14 10 -14" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M${x-26} 160 L${x-18} 142 L${x+18} 142 L${x+26} 160 L${x+30} ${400+(i%3)*28} L${x-30} ${400+(i%3)*28} Z" fill="${c}" stroke="#B9B4A8" stroke-width="2" opacity=".95"/><path d="M${x-20} 180 L${x+20} 180" stroke="#fff" stroke-opacity=".5" stroke-width="3"/>`;});
+  return s;
+}
+const BG={
+front:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCD4DC"/><stop offset="1" stop-color="#EDE6D8"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#skyA)"/>
+<rect x="0" y="110" width="340" height="540" fill="#C9BFAF"/>
+<rect x="40" y="170" width="120" height="90" fill="#9FB1B4"/><rect x="190" y="170" width="120" height="90" fill="#9FB1B4"/>
+<g>${[0,1,2,3,4,5,6].map(i=>`<polygon points="${10+i*46},330 ${56+i*46},330 ${60+i*46},385 ${6+i*46},385" fill="${i%2?"#F3EEE2":"#4E8A6C"}"/>`).join("")}</g>
+<rect x="30" y="400" width="280" height="200" fill="#4C5A58"/><rect x="50" y="420" width="240" height="120" fill="#7D9491"/>
+<text x="170" y="316" text-anchor="middle" font-family="Gowun Batang,serif" font-size="30" fill="#3D4A45">봉순반찬</text>
+<rect x="340" y="80" width="540" height="570" fill="#DDD8CB"/>
+<rect x="380" y="140" width="460" height="100" rx="6" fill="#2F4A52"/>
+<text x="610" y="206" text-anchor="middle" font-family="Gowun Batang,serif" font-size="58" font-weight="700" fill="#F3EBD8">윤슬세탁소</text>
+<text x="610" y="230" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" letter-spacing="6" fill="#B9CFD3">DRY CLEANING · SINCE 1996</text>
+<rect x="410" y="270" width="400" height="380" fill="#3B474A"/>
+${(typeof S!=="undefined"&&S&&(S.shutterUp||S.peek))?`<rect x="420" y="290" width="380" height="360" fill="#EEEADF"/><rect x="420" y="520" width="380" height="130" fill="#B79F82"/><rect x="420" y="508" width="380" height="14" fill="#8C7159"/>
+<g>${[0,1,2,3,4].map(i=>`<path d="M${470+i*66} 320 L${452+i*66} 350 L${448+i*66} 500 L${500+i*66} 500 L${496+i*66} 350 Z" fill="${["#E9D8CF","#D6E2E7","#E6E1CB","#DAD4E6","#DDE7D6"][i]}" opacity=".9"/>`).join("")}</g>
+<rect x="420" y="290" width="380" height="360" fill="none" stroke="#2F4A52" stroke-width="10"/><line x1="610" y1="290" x2="610" y2="650" stroke="#2F4A52" stroke-width="6"/>
+<rect x="578" y="440" width="10" height="46" rx="4" fill="#C9B26A"/><rect x="632" y="440" width="10" height="46" rx="4" fill="#C9B26A"/>
+<rect x="656" y="330" width="96" height="34" rx="4" fill="${S&&S.signOpen?"#C8436A":"#5E6A6E"}"/><text x="704" y="353" text-anchor="middle" font-family="Gowun Batang,serif" font-size="18" fill="#fff">${S&&S.signOpen?"영업중":"준비중"}</text>
+<rect x="410" y="262" width="400" height="30" rx="4" fill="#7E8686"/><rect x="410" y="286" width="400" height="6" fill="#5E6666"/>`:`<g>${Array.from({length:27},(_,i)=>`<rect x="410" y="${270+i*14}" width="400" height="12" fill="${i%2?"#A3ABAA":"#B0B8B7"}"/>`).join("")}</g><rect x="580" y="628" width="60" height="12" rx="5" fill="#4E5656"/><circle cx="780" cy="560" r="7" fill="#6E7676"/>`}
+<g transform="rotate(3 846 330)"><rect x="822" y="296" width="48" height="68" fill="#F6F2E6"/><rect x="822" y="296" width="48" height="12" fill="#2F4A52"/><rect x="828" y="316" width="36" height="3" fill="#9AA3A2"/><rect x="828" y="324" width="30" height="3" fill="#9AA3A2"/><rect x="828" y="332" width="34" height="3" fill="#9AA3A2"/><rect x="828" y="340" width="22" height="3" fill="#9AA3A2"/><circle cx="858" cy="352" r="5" fill="none" stroke="#C23A55" stroke-width="1.5"/><rect x="840" y="291" width="12" height="9" fill="#E4D9B8" opacity=".9"/></g>
+<rect x="316" y="150" width="34" height="500" fill="#2A3033"/><rect x="316" y="150" width="34" height="500" fill="#000" opacity=".25"/><g transform="translate(333 330)"><rect x="-24" y="-14" width="48" height="28" rx="3" fill="#2F4A52"/><text y="7" text-anchor="middle" font-family="Gowun Batang,serif" font-size="15" fill="#F3EBD8">골목</text></g>
+<rect x="880" y="130" width="320" height="520" fill="#CEC6B6"/>
+<rect x="910" y="250" width="260" height="240" fill="#7E958F"/>
+<g>${[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>`<circle cx="${935+(i%6)*42}" cy="${440-Math.floor(i/6)*40}" r="16" fill="${["#E68AA0","#F5F0E4","#F2C94C","#E26D7F","#F8E7EE","#E9B44C"][i%6]}"/>`).join("")}</g>
+<rect x="920" y="455" width="240" height="40" fill="#6A5A48"/>
+<text x="1040" y="220" text-anchor="middle" font-family="Gowun Batang,serif" font-size="34" fill="#4A4038">여름꽃집</text>
+<rect x="0" y="650" width="1200" height="150" fill="#B8B1A5"/>
+<g stroke="#A39C90" stroke-width="2">${[0,1,2,3,4,5,6,7,8].map(i=>`<line x1="${i*150}" y1="650" x2="${i*150-60}" y2="800"/>`).join("")}<line x1="0" y1="720" x2="1200" y2="720"/></g>
+<rect x="0" y="642" width="1200" height="10" fill="#8F897E"/>
+</svg>`,
+counter:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="cWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6E1D3"/><stop offset="1" stop-color="#D2CAB7"/></linearGradient>
+<linearGradient id="cWain" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FA39A"/><stop offset="1" stop-color="#6F837A"/></linearGradient>
+<linearGradient id="cTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B48B63"/><stop offset="1" stop-color="#8C6746"/></linearGradient>
+<linearGradient id="cFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6E5340"/><stop offset="1" stop-color="#4A382A"/></linearGradient>
+<linearGradient id="cWin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4D9"/><stop offset="1" stop-color="#E9D8B4"/></linearGradient>
+<linearGradient id="cBeam" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF3CF" stop-opacity=".55"/><stop offset="1" stop-color="#FFF3CF" stop-opacity="0"/></linearGradient>
+<linearGradient id="cPoly" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".05"/><stop offset=".35" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity=".1"/><stop offset="1" stop-color="#fff" stop-opacity=".25"/></linearGradient>
+<radialGradient id="cVig" cx="600" cy="380" r="780" gradientUnits="userSpaceOnUse"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1B1410" stop-opacity=".45"/></radialGradient>
+<pattern id="cork" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#B8895A"/><circle cx="3" cy="4" r="1.3" fill="#9C7046"/><circle cx="10" cy="9" r="1.1" fill="#CFA476"/><circle cx="7" cy="12" r=".9" fill="#8E6440"/></pattern>
+<filter id="cBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+<filter id="cSoft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<rect width="1200" height="800" fill="url(#cWall)"/>
+<rect width="1200" height="58" fill="#BFB8A6"/>
+<rect x="260" y="20" width="300" height="14" rx="7" fill="#FFFDF4"/><rect x="660" y="20" width="300" height="14" rx="7" fill="#FFFDF4"/>
+<rect x="240" y="10" width="340" height="40" rx="20" fill="#FFFBEA" opacity=".35" filter="url(#cBlur)"/><rect x="640" y="10" width="340" height="40" rx="20" fill="#FFFBEA" opacity=".35" filter="url(#cBlur)"/>
+<rect x="20" y="110" width="170" height="340" fill="#6E5B48"/>
+<rect x="30" y="120" width="150" height="320" fill="url(#cWin)"/>
+<rect x="30" y="330" width="150" height="110" fill="#C9B894" opacity=".6"/>
+<circle cx="80" cy="370" r="26" fill="#9FB08F" opacity=".7" filter="url(#cSoft)"/><circle cx="140" cy="360" r="20" fill="#E4A9A2" opacity=".6" filter="url(#cSoft)"/>
+<rect x="102" y="120" width="6" height="320" fill="#6E5B48"/><rect x="30" y="270" width="150" height="6" fill="#6E5B48"/>
+<polygon points="180,130 180,440 620,800 330,800" fill="url(#cBeam)"/>
+<rect x="0" y="470" width="1200" height="80" fill="url(#cWain)"/>
+<g stroke="#5E7068" stroke-width="2" opacity=".6">${Array.from({length:24},(_,i)=>`<line x1="${i*52}" y1="472" x2="${i*52}" y2="548"/>`).join("")}</g>
+<rect x="0" y="466" width="1200" height="8" fill="#6A7D74"/>
+<rect x="222" y="150" width="300" height="236" rx="4" fill="#6A4C30"/>
+<rect x="232" y="160" width="280" height="216" fill="url(#cork)"/>
+<rect x="232" y="160" width="280" height="10" fill="#000" opacity=".12"/>
+${(()=>{let s="";const cols=["#F4D98A","#F2C7CF","#FBF7EC","#CFE3D6","#F4D98A","#F7D2B8"];for(let r=0;r<4;r++)for(let c=0;c<7;c++){const x=246+c*37+(r%2)*6,y=176+r*48,rot=((r*7+c*5)%11)-5,col=cols[(r*7+c)%6];s+=`<g transform="rotate(${rot} ${x+13} ${y+18})"><rect x="${x+2}" y="${y+3}" width="26" height="36" rx="3" fill="#000" opacity=".15"/><rect x="${x}" y="${y}" width="26" height="36" rx="3" fill="${col}"/><rect x="${x+4}" y="${y+14}" width="18" height="2" fill="#8A7A62" opacity=".5"/><rect x="${x+4}" y="${y+20}" width="12" height="2" fill="#8A7A62" opacity=".5"/><text x="${x+13}" y="${y+31}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="#6B5A40">${String(1000+((r*7+c)*137)%8999).padStart(4,"0")}</text><circle cx="${x+13}" cy="${y+6}" r="3" fill="${["#C8436A","#3E6E8C","#2F7D5B"][(r+c)%3]}"/></g>`;}return s;})()}
+<g transform="translate(560 170)"><rect width="84" height="104" fill="#FBF8EF"/><rect width="84" height="22" fill="#C8436A"/><text x="42" y="16" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#fff">11</text><g fill="#B7AE9C">${Array.from({length:20},(_,i)=>`<rect x="${6+(i%5)*15}" y="${30+Math.floor(i/5)*17}" width="10" height="10"/>`).join("")}</g><rect x="36" y="47" width="10" height="10" fill="#C8436A"/></g>
+<g transform="translate(700 150)"><rect x="-6" y="-8" width="220" height="12" rx="6" fill="#8E8A80"/><rect x="-4" y="-40" width="8" height="36" fill="#8E8A80"/><rect x="202" y="-40" width="8" height="36" fill="#8E8A80"/>
+${[0,1,2].map(i=>{const x=30+i*72,h=250+(i%3)*30,c=["#D5E1E8","#EBD7CD","#E5E1CB","#D7D0E6","#D9E7D2","#EEDAE1"][i];return `<path d="M${x} 4 q0 -16 12 -16" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="${c}"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="url(#cPoly)"/><path d="M${x-36} ${h} L${x+36} ${h}" stroke="#B8B2A5" stroke-width="3"/><rect x="${x-10}" y="${h-40}" width="20" height="26" rx="2" fill="#F4D98A"/><circle cx="${x}" cy="${h-34}" r="2.5" fill="#fff"/>`;}).join("")}</g>
+<rect x="916" y="150" width="104" height="318" fill="#3A332C"/><rect x="916" y="150" width="104" height="318" fill="none" stroke="#6D6558" stroke-width="8"/>
+<path d="M920 156 L966 156 L966 318 Q943 330 920 318Z" fill="#35566B"/><path d="M970 156 L1016 156 L1016 318 Q993 330 970 318Z" fill="#35566B"/><path d="M920 156 L1016 156" stroke="#29485A" stroke-width="6"/>
+<text x="943" y="236" text-anchor="middle" font-family="Gowun Batang,serif" font-size="22" fill="#E8E2D2">작</text><text x="993" y="236" text-anchor="middle" font-family="Gowun Batang,serif" font-size="22" fill="#E8E2D2">업</text>
+<rect x="196" y="296" width="20" height="32" rx="3" fill="#EFEADF" stroke="#9A907E" stroke-width="1.5"/><rect x="202" y="303" width="8" height="14" rx="2" fill="#B8AE9A"/>
+<rect x="160" y="270" width="9" height="46" rx="3" fill="#C9B26A"/>
+<rect x="1026" y="120" width="164" height="352" fill="#3F3A33" opacity=".25" filter="url(#cSoft)"/>
+<rect x="1030" y="118" width="150" height="350" fill="#8A7F6D"/><rect x="1030" y="118" width="150" height="350" fill="none" stroke="#5D5446" stroke-width="10"/>
+<rect x="1046" y="140" width="118" height="140" fill="#958A77"/><rect x="1046" y="300" width="118" height="150" fill="#958A77"/>
+<circle cx="1052" cy="300" r="8" fill="#E1D5BD"/><circle cx="1052" cy="300" r="3" fill="#8C7F68"/>
+<g transform="rotate(-4 1105 210)"><rect x="1062" y="176" width="90" height="66" fill="#000" opacity=".15" transform="translate(3 4)"/><rect x="1062" y="176" width="90" height="66" fill="#FBF6E8"/><rect x="1098" y="170" width="18" height="10" fill="#E4D9B8" opacity=".9"/><text x="1107" y="208" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="24" fill="#B03A48">손대지</text><text x="1107" y="232" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="24" fill="#B03A48">말 것</text></g>
+<g transform="translate(1105 80)"><circle r="26" fill="#F6F2E6" stroke="#5D5446" stroke-width="5"/><line x1="0" y1="0" x2="0" y2="-16" stroke="#2B2B2B" stroke-width="3"/><line x1="0" y1="0" x2="12" y2="4" stroke="#2B2B2B" stroke-width="3"/></g>
+<rect x="0" y="548" width="1200" height="26" fill="url(#cTop)"/><rect x="0" y="548" width="1200" height="3" fill="#D6B08A"/>
+<rect x="0" y="574" width="1200" height="226" fill="url(#cFront)"/>
+<g stroke="#3C2D21" stroke-width="3" opacity=".7">${[1,2,3,4,5].map(i=>`<line x1="${i*200}" y1="574" x2="${i*200}" y2="800"/>`).join("")}</g>
+<g stroke="#8A6A50" stroke-width="2" opacity=".35">${[0,1,2,3,4,5].map(i=>`<rect x="${i*200+20}" y="600" width="160" height="170" fill="none"/>`).join("")}</g>
+<rect x="0" y="574" width="1200" height="14" fill="#000" opacity=".2"/>
+<g transform="translate(150 470)"><rect x="4" y="8" width="130" height="80" rx="8" fill="#000" opacity=".2"/><rect width="130" height="78" rx="8" fill="#43585C"/><rect x="12" y="10" width="64" height="24" rx="3" fill="#A9D1BE"/><text x="44" y="28" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="14" fill="#2F4A3E">${S&&S.signOpen?(S.day===1?"36,000":"12,000"):"0"}</text>${[0,1,2,3,4,5].map(i=>`<rect x="${88+(i%2)*18}" y="${10+Math.floor(i/2)*18}" width="14" height="14" rx="2" fill="#DCD3C0"/>`).join("")}<rect x="12" y="44" width="64" height="24" rx="3" fill="#2F3E41"/></g>
+<g transform="translate(330 510)"><rect width="110" height="36" rx="2" fill="#F5EFE0" transform="rotate(-6)"/><rect x="4" y="6" width="70" height="3" fill="#B7AE9C" transform="rotate(-6)"/><rect x="4" y="14" width="90" height="3" fill="#B7AE9C" transform="rotate(-6)"/><rect x="92" y="-22" width="6" height="44" rx="3" fill="#C8436A" transform="rotate(30)"/></g>
+<g transform="translate(880 520)"><ellipse cx="0" cy="26" rx="26" ry="6" fill="#000" opacity=".2"/><path d="M-22 24 Q-22 -4 0 -6 Q22 -4 22 24Z" fill="#D2B064"/><path d="M-12 8 Q-6 -2 4 -2" stroke="#fff" stroke-opacity=".6" stroke-width="4" fill="none"/><rect x="-4" y="-16" width="8" height="10" fill="#9C7F3B"/></g>
+<g transform="translate(980 470)"><rect x="-22" y="40" width="44" height="40" rx="6" fill="#A4674A"/><path d="M0 40 C-40 10 -30 -30 -6 -40 M0 40 C30 0 40 -24 20 -44 M0 40 C0 0 -10 -30 4 -60" stroke="#4F7A4A" stroke-width="9" fill="none" stroke-linecap="round"/></g>
+<g opacity=".45" filter="url(#cSoft)"><path d="M1000 440 q18 -30 0 -60 q-18 -30 0 -60" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round"/></g>
+<rect width="1200" height="800" fill="url(#cVig)"/>
+</svg>`,
+workshop:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="800" fill="#CFD9D8"/>
+<g stroke="#BCC8C7" stroke-width="2">${Array.from({length:14},(_,i)=>`<line x1="${i*90}" y1="0" x2="${i*90}" y2="620"/>`).join("")}${Array.from({length:8},(_,i)=>`<line x1="0" y1="${i*80}" x2="1200" y2="${i*80}"/>`).join("")}</g>
+<rect x="100" y="120" width="560" height="22" fill="#9A8C78"/>
+${[0,1,2,3,4,5].map(i=>`<rect x="${130+i*85}" y="${70-(i%2)*14}" width="44" height="${50+(i%2)*14}" rx="8" fill="${["#6FA3B8","#E7B84E","#D98AA0","#8CBF9E","#F2EFE6","#7FA0C8"][i]}"/>`).join("")}
+<rect x="0" y="620" width="1200" height="180" fill="#98A3A0"/>
+<rect x="0" y="236" width="108" height="390" fill="#3A332C"/><rect x="0" y="236" width="108" height="390" fill="none" stroke="#6D6558" stroke-width="8"/><path d="M4 242 L52 242 L52 420 Q28 432 4 420Z" fill="#35566B"/><path d="M56 242 L104 242 L104 420 Q80 432 56 420Z" fill="#35566B"/><text x="28" y="320" text-anchor="middle" font-family="Gowun Batang,serif" font-size="20" fill="#E8E2D2">가</text><text x="80" y="320" text-anchor="middle" font-family="Gowun Batang,serif" font-size="20" fill="#E8E2D2">게</text>
+${[0,1].map(i=>{const x=130+i*330;return `<rect x="${x}" y="300" width="290" height="330" rx="16" fill="#EEF0EC" stroke="#A9B2B0" stroke-width="4"/><rect x="${x+20}" y="318" width="250" height="40" rx="8" fill="#D9DEDB"/><circle cx="${x+230}" cy="338" r="10" fill="#6E878D"/><circle cx="${x+145}" cy="480" r="92" fill="#9FB3B8" stroke="#7C9197" stroke-width="10"/><circle cx="${x+145}" cy="480" r="62" fill="#5D7479"/><path d="M${x+110} 450 q35 -24 70 0" stroke="#fff" stroke-opacity=".4" stroke-width="8" fill="none"/>`}).join("")}
+<rect x="235" y="600" width="60" height="16" rx="4" fill="#7C9197"/>
+<path d="M820 430 Q840 400 1000 400 L1150 410 Q1160 430 1150 450 L1000 460 Q840 460 820 430Z" fill="#E7E1D3" stroke="#B7AE9C" stroke-width="4"/>
+<line x1="930" y1="460" x2="880" y2="660" stroke="#6A6F70" stroke-width="8"/><line x1="1040" y1="460" x2="1100" y2="660" stroke="#6A6F70" stroke-width="8"/>
+<path d="M990 395 L1080 395 Q1100 360 1060 355 L1000 355 Z" fill="#8B98A0"/><rect x="1015" y="335" width="44" height="14" rx="6" fill="#4E5A60"/>
+</svg>`,
+alley:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="skyB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C7DCE2"/><stop offset="1" stop-color="#EFE9DD"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#skyB)"/>
+<polygon points="0,0 470,120 470,560 0,800" fill="#BDB2A1"/>
+<polygon points="1200,0 740,120 740,560 1200,800" fill="#AFA493"/>
+<rect x="470" y="120" width="270" height="440" fill="#CFC6B5"/>
+<rect x="560" y="360" width="90" height="200" fill="#7C6A58"/>
+<polygon points="470,560 740,560 1200,800 0,800" fill="#908A7F"/>
+<g stroke="#3F4648" stroke-width="3" fill="none"><path d="M0 110 Q600 260 1200 90"/><path d="M0 150 Q600 300 1200 140"/></g>
+<rect x="1010" y="40" width="18" height="620" fill="#6F6A62"/>
+${[0,1,2,3].map(i=>`<rect x="${40+i*30}" y="${620+i*44}" width="${420-i*30}" height="44" fill="${i%2?"#A69E91":"#B7AFA2"}"/>`).join("")}
+${[0,1,2].map(i=>`<rect x="${800+i*90}" y="${590+i*30}" width="60" height="50" rx="6" fill="#A4674A"/><circle cx="${830+i*90}" cy="${575+i*30}" r="${34-i*4}" fill="#5E8C5A"/><circle cx="${814+i*90}" cy="${565+i*30}" r="${20-i*2}" fill="#77A36E"/>`).join("")}
+<rect x="120" y="260" width="140" height="120" fill="#8FA5A8"/><rect x="120" y="260" width="140" height="120" fill="none" stroke="#7C7264" stroke-width="8"/>
+<g transform="translate(1110 470)"><rect x="-5" y="0" width="10" height="220" fill="#6F6A62"/><path d="M-80 12 L44 12 L68 36 L44 60 L-80 60Z" fill="#2F4A52"/><text x="-14" y="43" text-anchor="middle" font-family="Gowun Batang,serif" font-size="20" fill="#F3EBD8">가게 앞</text></g>
+</svg>`,
+home:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="hWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E3850"/><stop offset="1" stop-color="#20273A"/></linearGradient>
+<linearGradient id="hSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101B33"/><stop offset="1" stop-color="#263A5C"/></linearGradient>
+<radialGradient id="hLamp" cx="1030" cy="470" r="420" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFD98A" stop-opacity=".55"/><stop offset=".45" stop-color="#F2B85E" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<linearGradient id="hBeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFF4C8" stop-opacity=".5"/><stop offset="1" stop-color="#FFF4C8" stop-opacity="0"/></linearGradient>
+<radialGradient id="hVig" cx="600" cy="400" r="760" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#05070B" stop-opacity=".55"/></radialGradient>
+</defs>
+<rect width="1200" height="800" fill="url(#hWall)"/>
+<rect x="740" y="130" width="360" height="330" fill="#171D2B"/>
+<rect x="756" y="146" width="328" height="298" fill="url(#hSky)"/>
+${Array.from({length:18},(_,i)=>`<circle cx="${770+((i*97)%310)}" cy="${160+((i*53)%150)}" r="${i%4?1.2:2}" fill="#E8EEF8" opacity=".7"/>`).join("")}
+<circle cx="1010" cy="200" r="26" fill="#F3EED8"/><circle cx="1020" cy="192" r="24" fill="#1A2744"/>
+<path d="M756 400 L830 382 L900 392 L980 372 L1084 388 L1084 444 L756 444Z" fill="#101725"/>
+<rect x="872" y="332" width="14" height="52" fill="#D8D2C2"/><rect x="868" y="326" width="22" height="10" fill="#B03A48"/><circle cx="879" cy="322" r="5" fill="#FFF3C0"/>
+<polygon points="884,322 1084,262 1084,300" fill="url(#hBeam)"/>
+${Array.from({length:10},(_,i)=>`<rect x="${770+i*30}" y="${410+(i%3)*8}" width="4" height="4" fill="#F6C66A" opacity=".8"/>`).join("")}
+<rect x="916" y="146" width="8" height="298" fill="#171D2B"/><rect x="756" y="290" width="328" height="8" fill="#171D2B"/>
+<path d="M720 120 Q750 300 720 480 L700 480 L700 120Z" fill="#5A4A6A"/><path d="M1120 120 Q1090 300 1120 480 L1140 480 L1140 120Z" fill="#5A4A6A"/>
+<rect x="690" y="112" width="460" height="10" rx="5" fill="#8C7B64"/>
+<rect x="0" y="690" width="1200" height="110" fill="#171B25"/>
+<rect x="40" y="540" width="600" height="150" rx="12" fill="#4B3A2E"/>
+<rect x="56" y="500" width="568" height="80" rx="18" fill="#7E8FB2"/>
+<path d="M56 540 Q300 500 624 548 L624 600 L56 600Z" fill="#6A7CA2"/>
+<rect x="70" y="470" width="150" height="56" rx="24" fill="#E9E4D6"/>
+<rect x="40" y="400" width="24" height="290" rx="6" fill="#4B3A2E"/>
+<rect x="680" y="560" width="480" height="20" fill="#6B5846"/><rect x="700" y="580" width="16" height="140" fill="#56473A"/><rect x="1124" y="580" width="16" height="140" fill="#56473A"/>
+<rect width="1200" height="800" fill="url(#hLamp)"/>
+<path d="M1000 470 L1060 470 L1072 506 L988 506Z" fill="#E9C57E"/><rect x="1026" y="506" width="8" height="46" fill="#3A332A"/><ellipse cx="1030" cy="556" rx="30" ry="6" fill="#3A332A"/>
+<g transform="rotate(-6 800 548)"><rect x="760" y="530" width="96" height="30" fill="#F4EEDF"/><path d="M760 530 L808 552 L856 530" fill="none" stroke="#C9BFA8" stroke-width="2"/></g>
+<rect x="880" y="526" width="84" height="32" rx="2" fill="#6B4A3A"/><path d="M880 542 L964 542" stroke="#C8436A" stroke-width="3"/>
+<g transform="translate(975 548) rotate(-12)"><circle r="7" fill="none" stroke="#C9A24A" stroke-width="3"/><rect x="6" y="-2" width="26" height="4" fill="#C9A24A"/></g>
+<rect width="1200" height="800" fill="url(#hVig)"/>
+</svg>`,
+storage:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="bulb" cx="600" cy="110" r="620" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F3DFA6" stop-opacity=".55"/><stop offset=".5" stop-color="#E8C77A" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<rect width="1200" height="800" fill="#1F282B"/>
+<polygon points="0,96 30,104 30,800 0,800" fill="#E8C57E" opacity=".75"/><polygon points="30,104 130,190 260,800 30,800" fill="#E8C57E" opacity=".12"/>
+${[0,1,2].map(s=>{const x=[40,420,820][s];let g=`<rect x="${x}" y="80" width="12" height="600" fill="#3D4A4E"/><rect x="${x+328}" y="80" width="12" height="600" fill="#3D4A4E"/>`;for(let r=0;r<4;r++){const y=180+r*140;g+=`<rect x="${x}" y="${y}" width="340" height="10" fill="#4A585C"/>`;for(let b=0;b<5;b++){if(s===2&&r===1&&b===3){g+=`<rect x="${x+18+b*62}" y="${y-4}" width="52" height="4" fill="#6A7A7E"/>`;continue;}g+=`<rect x="${x+18+b*62}" y="${y-92+((b+r+s)%3)*8}" width="52" height="${92-((b+r+s)%3)*8}" rx="8" fill="${["#5B6E75","#6D6272","#5F7263","#74695A","#56666F"][(b+r+s)%5]}"/><rect x="${x+34+b*62}" y="${y-30}" width="18" height="24" fill="#C9B26A" opacity=".75"/>`;}}return g;}).join("")}
+<rect width="1200" height="800" fill="url(#bulb)"/>
+<line x1="600" y1="0" x2="600" y2="92" stroke="#222" stroke-width="3"/><circle cx="600" cy="110" r="18" fill="#FBE9B7"/>
+<line x1="600" y1="128" x2="600" y2="188" stroke="#9A8F7A" stroke-width="2"/><circle cx="600" cy="192" r="5" fill="#C9B26A"/>
+<rect x="380" y="640" width="440" height="30" fill="#6B5846"/><rect x="400" y="670" width="20" height="130" fill="#56473A"/><rect x="780" y="670" width="20" height="130" fill="#56473A"/>
+<rect x="530" y="672" width="140" height="40" rx="3" fill="#5E4C3C" stroke="#3E3126" stroke-width="3"/><rect x="584" y="686" width="32" height="8" rx="4" fill="#C9B26A"/><circle cx="600" cy="702" r="3" fill="#2A211A"/>
+${[0,1,2,3,4,5,6].map(i=>`<rect x="${420+i*42}" y="${560+(i%2)*6}" width="34" height="${80-(i%2)*6}" fill="${["#7A3B3B","#3E5A6B","#6B5A3B","#2F4A3E","#5A3B5A","#7A5A3B","#3B3E6B"][i]}"/><text x="${437+i*42}" y="615" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#E9DFC8" transform="rotate(-90 ${437+i*42} 605)">${2003+i}</text>`).join("")}
+</svg>`
+};
+
+const LOBBY_ART=`<svg viewBox="0 0 700 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="lbGlow" cx="350" cy="120" r="520" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F6D48C" stop-opacity=".5"/><stop offset=".45" stop-color="#C99B55" stop-opacity=".14"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<linearGradient id="lbCoat" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E3CFA6"/><stop offset="1" stop-color="#A88D62"/></linearGradient>
+<linearGradient id="lbVinyl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9FB3B8" stop-opacity=".18"/><stop offset=".4" stop-color="#E6EEF0" stop-opacity=".32"/><stop offset=".55" stop-color="#9FB3B8" stop-opacity=".12"/><stop offset="1" stop-color="#9FB3B8" stop-opacity=".2"/></linearGradient>
+<radialGradient id="lbVig" cx="350" cy="380" r="520" gradientUnits="userSpaceOnUse"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#0B0F10" stop-opacity=".85"/></radialGradient>
+<pattern id="lbHatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><line x1="0" y1="0" x2="0" y2="9" stroke="#fff" stroke-opacity=".035" stroke-width="2"/></pattern>
+</defs>
+<rect width="700" height="800" fill="#1C2425"/>
+<rect width="700" height="800" fill="url(#lbHatch)"/>
+<rect x="36" y="40" width="628" height="720" fill="none" stroke="#3B4644" stroke-width="3"/>
+<path d="M36 40 l18 4 M664 758 l-22 -3 M40 400 l-6 30" stroke="#566260" stroke-width="2"/>
+<rect width="700" height="800" fill="url(#lbGlow)"/>
+<line x1="350" y1="0" x2="350" y2="96" stroke="#0E1212" stroke-width="3"/>
+<path d="M334 96 L366 96 L360 110 L340 110Z" fill="#2B2B28"/><circle cx="350" cy="124" r="15" fill="#FBE8B4"/>
+<rect x="70" y="236" width="560" height="8" rx="4" fill="#6E6A62"/><rect x="74" y="236" width="6" height="520" fill="#4B4944"/><rect x="620" y="236" width="6" height="520" fill="#4B4944"/>
+${[140,245,455,560].map((x,i)=>`<path d="M${x} 244 q0 -18 12 -18" fill="none" stroke="#8C877C" stroke-width="3"/><path d="M${x-44} 282 Q${x} 256 ${x+44} 282 L${x+48} ${560+(i%2)*60} L${x-48} ${560+(i%2)*60}Z" fill="${["#384B52","#4A3F4E","#3E4B3E","#4B4438"][i]}"/><path d="M${x-50} 272 Q${x} 246 ${x+50} 272 L${x+54} ${574+(i%2)*60} L${x-54} ${574+(i%2)*60}Z" fill="url(#lbVinyl)" stroke="#8FA3A8" stroke-opacity=".35"/><rect x="${x-9}" y="${520+(i%2)*60}" width="18" height="24" rx="2" fill="#B8A55E" opacity=".55"/>`).join("")}
+<path d="M350 244 q0 -18 12 -18" fill="none" stroke="#B9B2A2" stroke-width="3"/>
+<path d="M300 290 Q350 250 400 290 L418 330 L424 660 L276 660 L282 330Z" fill="url(#lbCoat)"/>
+<path d="M318 282 Q350 236 382 282 Q372 310 350 314 Q328 310 318 282Z" fill="#C4AC80"/>
+<path d="M350 312 L350 660" stroke="#8C734C" stroke-width="3"/>
+${[380,440,500].map(y=>`<rect x="336" y="${y}" width="28" height="7" rx="3.5" fill="#6B4E2E"/><path d="M350 ${y+3} l-16 0" stroke="#3E2D1A" stroke-width="2"/>`).join("")}
+<path d="M282 330 L250 540 L276 548 L292 380Z" fill="#B99D6E"/><path d="M418 330 L452 540 L426 548 L408 380Z" fill="#B99D6E"/>
+<path d="M300 560 L336 560 M364 560 L400 560" stroke="#8C734C" stroke-width="3"/>
+<path d="M452 540 L470 590" stroke="#C8B99A" stroke-width="2"/>
+<g transform="translate(470 590) rotate(8)"><rect x="-4" y="0" width="52" height="68" rx="3" fill="#F0D57E"/><circle cx="22" cy="10" r="4" fill="#1C2425"/><text x="22" y="38" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="600" fill="#3A2F12">0417</text><path d="M22 46 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1Z" fill="#C8436A"/></g>
+<rect x="36" y="720" width="628" height="40" fill="#141A1B"/>
+${[[160,736,-14,"#D9C98E"],[520,742,22,"#E6B8C0"],[600,730,-6,"#DCE6DC"]].map(([x,y,r,c])=>`<rect x="${x}" y="${y}" width="18" height="24" rx="2" fill="${c}" opacity=".55" transform="rotate(${r} ${x+9} ${y+12})"/>`).join("")}
+<ellipse cx="350" cy="722" rx="120" ry="10" fill="#000" opacity=".4"/>
+<rect width="700" height="800" fill="url(#lbVig)"/>
+</svg>`;
+const CHARS={
+  "봉순":{skin:"#EFC9A8",shade:"#D9AE8C",hair:"#CFCBC3",style:"bun",top:"#5F7F6E",outfit:"apron",apron:"#EFE7D3",wr:true,scale:.8},
+  "도윤":{skin:"#F5D3B3",shade:"#E2B997",hair:"#2E2723",style:"kid",top:"#F2C14E",outfit:"tee",scale:.6,blush:true},
+  "박상철":{skin:"#E8C3A0",shade:"#CFA582",hair:"#9A9792",style:"slick",top:"#5D6468",outfit:"coat",glasses:true,scale:.9},
+  "여름":{skin:"#F2D2B6",shade:"#DBB396",hair:"#2B2224",style:"bangs",hairBack:true,top:"#EDE6D6",outfit:"apron",apron:"#6E8F6A",scale:.84},
+  "남궁철":{skin:"#D9B596",shade:"#BF9A7B",hair:"#1C1C1E",style:"crop",top:"#23272A",outfit:"suit",scale:.86,back:true}
+};
+const HAIR={
+  bun:'<path d="M76 214 C70 140 112 116 150 116 C188 116 230 140 224 214 C214 176 190 160 150 158 C110 160 86 176 76 214Z" fill="H"/><circle cx="150" cy="104" r="30" fill="H"/><path d="M128 104 q22 -14 44 0" stroke="#fff" stroke-opacity=".35" stroke-width="4" fill="none"/>',
+  bangs:'<path d="M76 208 C72 136 112 108 150 108 C190 108 230 136 224 208 C216 180 204 168 190 170 L180 146 L164 172 L148 144 L134 172 L120 148 L110 176 C96 176 84 188 76 208Z" fill="H"/>',
+  kid:'<path d="M72 224 C62 140 108 112 150 112 C196 112 240 140 228 224 C222 186 208 170 188 174 C172 158 134 166 116 178 C98 174 82 192 72 224Z" fill="H"/>',
+  slick:'<path d="M76 212 C72 140 112 116 152 116 C192 116 230 142 224 212 C218 168 196 150 170 150 L140 146 C112 150 86 170 76 212Z" fill="H"/><path d="M140 122 L132 158" stroke="#6F6C68" stroke-width="3"/>',
+  crop:'<path d="M78 202 C76 146 114 122 150 122 C186 122 224 146 222 202 C212 168 186 154 150 154 C114 154 88 168 78 202Z" fill="H"/>'
+};
+const MOUTH={
+  smile:'<path d="M132 262 Q150 278 168 262" stroke="#6B3A33" stroke-width="4" fill="none" stroke-linecap="round"/>',
+  flat:'<path d="M136 266 L164 266" stroke="#6B3A33" stroke-width="4" stroke-linecap="round"/>',
+  angry:'<path d="M134 272 Q150 260 166 272" stroke="#6B3A33" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="150" cy="270" rx="9" ry="5" fill="#7A3A36"/>',
+  sad:'<path d="M136 272 Q150 264 164 272" stroke="#6B3A33" stroke-width="4" fill="none" stroke-linecap="round"/>',
+  o:'<ellipse cx="150" cy="268" rx="7" ry="9" fill="#7A3A36"/>'
+};
+const BROW={
+  smile:'<path d="M110 190 Q123 184 138 190 M162 190 Q177 184 190 190"/>',
+  flat:'<path d="M110 190 L138 190 M162 190 L190 190"/>',
+  angry:'<path d="M108 184 L138 196 M162 196 L192 184"/>',
+  sad:'<path d="M110 196 L138 186 M162 186 L190 196"/>',
+  o:'<path d="M110 184 Q123 178 138 184 M162 184 Q177 178 190 184"/>'
+};
+/* ---- detailed illustration set (sample): 봉순, 도윤 ---- */
+function vnEye(cx,cy,s,iris,mode,side,lidFill){
+  // side: +1 when the nose side is +x
+  if(mode==="closed") return `<path d="M${cx-15*s} ${cy+3*s} Q${cx} ${cy-11*s} ${cx+15*s} ${cy+3*s}" stroke="#2B1E1A" stroke-width="${4.6*s}" fill="none" stroke-linecap="round"/><path d="M${cx-side*17*s} ${cy+2*s} l${-side*5*s} ${-3*s}" stroke="#2B1E1A" stroke-width="${2.4*s}" stroke-linecap="round"/>`;
+  const w=15*s, h=(mode==="wide"?15:12.5)*s;
+  let e=`<ellipse cx="${cx}" cy="${cy}" rx="${w}" ry="${h}" fill="#FFFDF9"/>`
+   +`<ellipse cx="${cx+side*1.5*s}" cy="${cy+1.5*s}" rx="${9.5*s}" ry="${h*.95}" fill="${iris}"/>`
+   +`<ellipse cx="${cx+side*1.5*s}" cy="${cy+4*s}" rx="${8*s}" ry="${h*.55}" fill="#fff" opacity=".18"/>`
+   +`<ellipse cx="${cx+side*1.5*s}" cy="${cy+1.5*s}" rx="${4.4*s}" ry="${6*s}" fill="#1A1210"/>`
+   +`<circle cx="${cx+side*1.5*s+3.6*s}" cy="${cy-3.8*s}" r="${3.3*s}" fill="#fff"/><circle cx="${cx+side*1.5*s-3.2*s}" cy="${cy+5*s}" r="${1.5*s}" fill="#fff" opacity=".85"/>`;
+  const o=cx-side*(w+3*s), n=cx+side*(w+3*s), top=cy-h-8*s;
+  if(mode==="angry"||mode==="sad"){
+    const yo=mode==="angry"?cy-h*.55:cy-h*.05, yn=mode==="angry"?cy-h*.02:cy-h*.62;
+    e+=`<polygon points="${o},${top} ${n},${top} ${n},${yn} ${o},${yo}" fill="${lidFill}"/><path d="M${o} ${yo} L${n} ${yn}" stroke="#2B1E1A" stroke-width="${4.4*s}" stroke-linecap="round"/>`;
+  } else {
+    e+=`<path d="M${o} ${cy-1*s} Q${cx} ${cy-h-7*s} ${n} ${cy-3*s}" stroke="#2B1E1A" stroke-width="${4.6*s}" fill="none" stroke-linecap="round"/><path d="M${o} ${cy-1*s} l${-side*5*s} ${-4*s}" stroke="#2B1E1A" stroke-width="${2.6*s}" stroke-linecap="round"/>`;
+  }
+  e+=`<path d="M${cx-w*.7} ${cy+h+1.5*s} Q${cx} ${cy+h+4*s} ${cx+w*.7} ${cy+h+1.5*s}" stroke="#7A5446" stroke-width="${1.6*s}" fill="none" opacity=".6"/>`;
+  return e;
+}
+function permHair(base,hi,sh){
+  let back="",front="",hl="";
+  const put=(x,y,r,i)=>{back+=`<circle cx="${x+3}" cy="${y+4}" r="${r}" fill="${sh}"/>`;front+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${base}"/>`;hl+=`<path d="M${x-r*.55} ${y-r*.1} a${r*.6} ${r*.6} 0 0 1 ${r*.7} ${-r*.5}" stroke="${hi}" stroke-width="3" fill="none" stroke-linecap="round"/>`;};
+  let i=0;
+  for(let a=172;a<=368;a+=11){const t=a*Math.PI/180;put(150+84*Math.cos(t),196+90*Math.sin(t),17+(i%3)*2,i++);}
+  for(let a=205;a<=335;a+=14){const t=a*Math.PI/180;put(150+58*Math.cos(t),182+66*Math.sin(t),16+(i%2)*3,i++);}
+  for(let a=240;a<=300;a+=20){const t=a*Math.PI/180;put(150+30*Math.cos(t),170+40*Math.sin(t),15,i++);}
+  return {cap:`<path d="M70 222 C62 132 108 100 150 100 C192 100 238 132 230 222 C216 176 190 158 150 158 C110 158 84 176 70 222Z" fill="${sh}"/>`,back,front,hl};
+}
+const DRAW={
+  "봉순":(emo)=>{
+    emo=emo||"smile";
+    const eyeMode={smile:"closed",angry:"angry",o:"wide",flat:"open",sad:"sad"}[emo];
+    const P=permHair("#D3CEC5","#F3F0EA","#9E988E");
+    const mouth={
+      smile:'<path d="M130 276 Q150 296 170 276 Q150 286 130 276Z" fill="#9C4A45"/><path d="M130 276 Q150 286 170 276" stroke="#7A3531" stroke-width="3" fill="none" stroke-linecap="round"/>',
+      angry:'<path d="M132 270 Q150 262 168 270 Q164 298 150 300 Q136 298 132 270Z" fill="#6E2A2A"/><path d="M136 272 Q150 267 164 272 L162 278 Q150 274 138 278Z" fill="#F3EEE6"/><path d="M142 292 Q150 288 158 292" stroke="#C0616A" stroke-width="5" stroke-linecap="round"/>',
+      o:'<ellipse cx="150" cy="282" rx="8" ry="10" fill="#6E2A2A"/>',
+      flat:'<path d="M136 280 Q150 283 164 280" stroke="#8A4540" stroke-width="3.5" fill="none" stroke-linecap="round"/>',
+      sad:'<path d="M136 284 Q150 274 164 284" stroke="#8A4540" stroke-width="3.5" fill="none" stroke-linecap="round"/>'
+    }[emo];
+    const brow={smile:"M106 196 Q122 188 138 194 M162 194 Q178 188 194 196",angry:"M104 188 L138 202 M162 202 L196 188",o:"M106 188 Q122 180 138 186 M162 186 Q178 180 194 188",flat:"M106 196 L138 194 M162 194 L194 196",sad:"M106 202 L138 190 M162 190 L194 202"}[emo];
+    return `<svg viewBox="0 0 300 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+<linearGradient id="bsSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5D6BA"/><stop offset="1" stop-color="#E6B893"/></linearGradient>
+<linearGradient id="bsCardi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A4868"/><stop offset="1" stop-color="#5E2C47"/></linearGradient>
+<linearGradient id="bsApron" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4EDDF"/><stop offset="1" stop-color="#DCD0B8"/></linearGradient>
+<pattern id="bsFlower" width="18" height="18" patternUnits="userSpaceOnUse"><rect width="18" height="18" fill="#FBF3EA"/><circle cx="5" cy="5" r="2.4" fill="#E68AA0"/><circle cx="13" cy="13" r="2" fill="#8CB38A"/></pattern>
+</defs>
+${P.cap}${P.back}
+<path d="M22 460 C26 370 82 330 150 326 C218 330 274 370 278 460Z" fill="url(#bsCardi)"/>
+<path d="M116 330 L150 408 L184 330Z" fill="url(#bsFlower)"/>
+<path d="M114 330 L134 360 L150 336 L166 360 L186 330" fill="#FFF9F1" stroke="#D9CBB8" stroke-width="2"/>
+<path d="M116 332 L102 460 M184 332 L198 460" stroke="#4A2338" stroke-width="5"/>
+<circle cx="192" cy="386" r="6" fill="#E9D6A2"/><circle cx="195" cy="424" r="6" fill="#E9D6A2"/>
+<path d="M56 402 Q76 428 70 460 M244 402 Q224 428 230 460" stroke="#4A2338" stroke-width="3" fill="none" opacity=".55"/>
+<path d="M92 460 L98 394 Q150 382 202 394 L208 460Z" fill="url(#bsApron)"/>
+<path d="M98 394 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 8 -4" fill="none" stroke="#CFC2A6" stroke-width="3"/>
+<path d="M104 394 L112 334 M196 394 L188 334" stroke="#E9E0CC" stroke-width="10" stroke-linecap="round"/>
+<rect x="126" y="416" width="48" height="30" rx="5" fill="none" stroke="#C9BA9A" stroke-width="3"/>
+<path d="M130 268 L130 330 Q150 344 170 330 L170 268Z" fill="#DDAA86"/>
+<ellipse cx="150" cy="300" rx="30" ry="10" fill="#B9825F" opacity=".35"/>
+<ellipse cx="84" cy="228" rx="11" ry="17" fill="#E9BD99"/><ellipse cx="216" cy="228" rx="11" ry="17" fill="#E0B08B"/>
+<circle cx="84" cy="246" r="4" fill="#E6C66B"/><circle cx="216" cy="246" r="4" fill="#E6C66B"/>
+<path d="M84 204 C84 142 112 118 150 118 C188 118 216 142 216 204 C216 256 194 298 150 306 C106 298 84 256 84 204Z" fill="url(#bsSkin)"/>
+<path d="M192 154 C216 186 218 242 198 276 C186 294 170 302 150 306 C178 284 198 240 192 154Z" fill="#C98E6C" opacity=".22"/>
+<path d="M90 184 Q150 158 210 184 Q150 172 90 196Z" fill="#B98A6E" opacity=".28"/>
+<ellipse cx="112" cy="258" rx="15" ry="8" fill="#EE9C8C" opacity=".35"/><ellipse cx="188" cy="258" rx="15" ry="8" fill="#EE9C8C" opacity=".35"/>
+<g stroke="#C08A6B" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".75"><path d="M126 176 Q150 170 174 176"/><path d="M130 184 Q150 179 170 184"/><path d="M127 262 Q120 276 127 290"/><path d="M173 262 Q180 276 173 290"/><path d="M112 240 Q122 244 132 240"/><path d="M168 240 Q178 244 188 240"/></g>
+<path d="M150 230 Q147 252 140 260 Q150 266 160 260" stroke="#BF8666" stroke-width="3" fill="none" stroke-linecap="round"/>
+${vnEye(122,224,.9,"#5A3A2A",eyeMode,1,"#F0CBAA")}${vnEye(178,224,.9,"#5A3A2A",eyeMode,-1,"#EBC2A0")}
+<path d="${brow}" stroke="#9D978D" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+${mouth}
+${P.front}${P.hl}
+</svg>`;
+  },
+  "도윤":(emo)=>{
+    emo=emo||"smile";
+    const eyeMode={smile:"open",o:"wide",flat:"open",sad:"sad",angry:"angry"}[emo];
+    const mouth={
+      smile:'<path d="M130 266 Q150 290 170 266Z" fill="#8E3B3B"/><path d="M134 267 L166 267 L164 272 L136 272Z" fill="#fff"/><path d="M142 280 Q150 286 158 280" stroke="#D86B73" stroke-width="5" stroke-linecap="round"/>',
+      o:'<ellipse cx="150" cy="274" rx="7" ry="8" fill="#8E3B3B"/>',
+      flat:'<path d="M140 272 Q150 274 160 272" stroke="#8E3B3B" stroke-width="3.5" fill="none" stroke-linecap="round"/>',
+      sad:'<path d="M138 278 Q150 268 162 278" stroke="#8E3B3B" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M144 280 Q150 284 156 280" stroke="#8E3B3B" stroke-width="2" fill="none"/>',
+      angry:'<path d="M138 276 Q150 268 162 276" stroke="#8E3B3B" stroke-width="3.5" fill="none" stroke-linecap="round"/>'
+    }[emo];
+    const brow={smile:"M104 184 Q120 176 136 182 M164 182 Q180 176 196 184",o:"M104 176 Q120 168 136 174 M164 174 Q180 168 196 176",flat:"M104 184 L136 182 M164 182 L196 184",sad:"M104 190 L136 176 M164 176 L196 190",angry:"M104 176 L136 188 M164 188 L196 176"}[emo];
+    const tear=emo==="sad"?'<path d="M206 240 q5 10 0 14 q-5 -4 0 -14Z" fill="#9CD2EE" opacity=".9"/>':"";
+    return `<svg viewBox="0 0 300 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+<linearGradient id="dySkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FADCC0"/><stop offset="1" stop-color="#EDC29E"/></linearGradient>
+<linearGradient id="dyHood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7CD55"/><stop offset="1" stop-color="#DDA22A"/></linearGradient>
+<linearGradient id="dyHair" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C2A33"/><stop offset="1" stop-color="#1A1719"/></linearGradient>
+</defs>
+<path d="M24 460 C28 376 82 332 150 330 C218 332 272 376 276 460Z" fill="url(#dyHood)"/>
+<path d="M82 336 Q150 300 218 336 Q206 368 150 370 Q94 368 82 336Z" fill="#C98E22"/>
+<path d="M96 340 Q150 318 204 340 Q194 360 150 362 Q106 360 96 340Z" fill="#E9B43E"/>
+<path d="M132 360 L126 420 M168 360 L174 420" stroke="#F8F1E0" stroke-width="4" stroke-linecap="round"/>
+<rect x="121" y="418" width="10" height="16" rx="3" fill="#8A8F96"/><rect x="169" y="418" width="10" height="16" rx="3" fill="#8A8F96"/>
+<path d="M86 432 Q150 446 214 432" stroke="#C98E22" stroke-width="4" fill="none"/>
+<g transform="translate(206 390)"><circle r="15" fill="#3E6E8C"/><circle r="15" fill="none" stroke="#F8F1E0" stroke-width="3"/><circle cx="-4" cy="-4" r="4" fill="#fff" opacity=".7"/></g>
+<path d="M60 400 Q78 424 72 460 M240 400 Q222 424 228 460" stroke="#B8801C" stroke-width="3" fill="none" opacity=".6"/>
+<path d="M134 276 L134 336 Q150 346 166 336 L166 276Z" fill="#E6B48E"/>
+<ellipse cx="80" cy="214" rx="12" ry="17" fill="#F0C6A2"/><ellipse cx="220" cy="214" rx="12" ry="17" fill="#E8BB96"/>
+<path d="M76 196 C76 134 110 108 150 108 C190 108 224 134 224 196 C224 250 192 290 150 294 C108 290 76 250 76 196Z" fill="url(#dySkin)"/>
+<path d="M200 150 C222 180 224 234 204 264 C192 280 172 292 150 294 C180 272 204 232 200 150Z" fill="#D39A74" opacity=".2"/>
+<ellipse cx="108" cy="246" rx="16" ry="9" fill="#F4968F" opacity=".42"/><ellipse cx="192" cy="246" rx="16" ry="9" fill="#F4968F" opacity=".42"/>
+<g transform="rotate(-18 188 250)"><rect x="170" y="243" width="36" height="14" rx="6" fill="#F3D2B0" stroke="#D9B08A" stroke-width="1.5"/><rect x="182" y="243" width="12" height="14" fill="#E9C59F"/><circle cx="185" cy="248" r="1" fill="#C99C75"/><circle cx="191" cy="252" r="1" fill="#C99C75"/></g>
+<path d="M150 236 Q148 246 144 250" stroke="#D09474" stroke-width="3" fill="none" stroke-linecap="round"/>
+${vnEye(118,214,1.1,"#3B2A22",eyeMode,1,"#F5D1B2")}${vnEye(182,214,1.1,"#3B2A22",eyeMode,-1,"#EFC6A4")}
+${tear}
+<path d="${brow}" stroke="#2A2328" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+${mouth}
+<path d="M70 206 C60 128 104 96 150 96 C198 96 244 128 230 206 C226 178 216 162 204 158 L210 180 L190 150 L186 172 L168 144 L160 170 L140 142 L134 168 L116 146 L112 172 L96 156 L94 184 C84 178 76 190 70 206Z" fill="url(#dyHair)"/>
+<path d="M150 94 L140 70 L162 88 L172 66 L176 96Z" fill="#221F26"/>
+<path d="M104 124 Q150 100 196 124" stroke="#56627A" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
+<path d="M120 114 Q140 106 160 108" stroke="#8A97B0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+</svg>`;
+  }
+};
+function figSVG(key,emo){
+  if(DRAW[key])return DRAW[key](emo);
+  const c=CHARS[key]; emo=emo||(c.back?"flat":"smile");
+  let body=`<path d="M28 460 C32 366 86 324 150 324 C214 324 268 366 272 460Z" fill="${c.top}"/>`;
+  if(c.outfit==="apron")body+=`<path d="M96 460 L102 356 Q150 344 198 356 L204 460Z" fill="${c.apron}"/><path d="M104 356 L92 330 M196 356 L208 330" stroke="${c.apron}" stroke-width="10"/><rect x="128" y="392" width="44" height="30" rx="4" fill="none" stroke="#CFC4A8" stroke-width="3"/>`;
+  if(c.outfit==="tee")body+=`<path d="M120 330 Q150 354 180 330" stroke="#C9972F" stroke-width="7" fill="none"/><path d="M110 404 L190 404" stroke="#fff" stroke-opacity=".45" stroke-width="10"/>`;
+  if(c.outfit==="coat"||c.outfit==="suit"){
+    body+=`<path d="M128 328 L150 392 L172 328Z" fill="#F4F1EA"/><path d="M145 342 L155 342 L159 404 L150 416 L141 404Z" fill="${c.outfit==="coat"?"#7A2E3B":"#2B2F33"}"/><path d="M150 330 L114 460 M150 330 L186 460" stroke="rgba(0,0,0,.28)" stroke-width="5"/>`;
+    if(c.outfit==="coat")body+=`<rect x="192" y="386" width="40" height="15" rx="2" fill="#F4F1EA"/><rect x="196" y="391" width="30" height="4" fill="#8F9396"/>`;
+  }
+  const neck=`<rect x="128" y="270" width="44" height="66" rx="14" fill="${c.shade}"/>`;
+  const ears=`<circle cx="80" cy="220" r="13" fill="${c.shade}"/><circle cx="220" cy="220" r="13" fill="${c.shade}"/>`;
+  const head=`<ellipse cx="150" cy="214" rx="72" ry="84" fill="${c.skin}"/>`;
+  let face=`<ellipse cx="124" cy="220" rx="6" ry="${emo==="o"?9:8}" fill="#2A2422"/><ellipse cx="176" cy="220" rx="6" ry="${emo==="o"?9:8}" fill="#2A2422"/>`;
+  face+=`<g stroke="${c.style==="bun"?"#9B968E":"#3A302B"}" stroke-width="5" stroke-linecap="round" fill="none">${BROW[emo]}</g>`;
+  face+=MOUTH[emo];
+  if(c.blush)face+=`<ellipse cx="108" cy="248" rx="13" ry="7" fill="#F2A09A" opacity=".55"/><ellipse cx="192" cy="248" rx="13" ry="7" fill="#F2A09A" opacity=".55"/>`;
+  if(c.wr)face+=`<path d="M100 214 l-10 -3 M100 224 l-10 3 M200 214 l10 -3 M200 224 l10 3 M128 290 q22 8 44 0" stroke="#C9A083" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  const hair=HAIR[c.style].replace(/fill="H"/g,`fill="${c.hair}"`);
+  const gl=c.glasses?`<g fill="none" stroke="#3A3A3A" stroke-width="4"><rect x="102" y="202" width="42" height="32" rx="11"/><rect x="156" y="202" width="42" height="32" rx="11"/><path d="M144 214 L156 214"/></g>`:"";
+  return `<svg viewBox="0 0 300 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${body}${c.hairBack?`<path d="M62 214 C56 126 106 96 150 96 C194 96 244 126 238 214 L246 376 Q226 392 206 378 L200 300 L100 300 L94 378 Q74 392 54 376 Z" fill="${c.hair}"/>`:""}${neck}${ears}${head}${face}${hair}${gl}</svg>`;
+}
+
+/* =========================================================
+   ITEMS
+   ========================================================= */
+let S;
+const CARDS={
+  thread:{no:"No. 0101",nm:"자른 실밥",ds:"단추 자리의 실 끝이 가위로 자른 듯 반듯하다. 떨어진 게 아니라 누군가 잘라 냈다."},
+  ledger:{no:"No. 0102",nm:"접수 장부 메모",ds:"맡길 때 이미 자개단추는 5개였다. 저고리를 맡기러 온 사람은 도윤이."},
+  filter:{no:"No. 0103",nm:"빈 필터",ds:"세탁기 필터에 자개단추가 없다. 세탁 중에 떨어진 게 아니다."},
+  marble:{no:"No. 0104",nm:"도윤이의 왕구슬",ds:"도윤이 주머니 속 유리구슬 사이에 자개단추가 있다."},
+  glass:{no:"No. 0105",nm:"카운터 밑 유리구슬",ds:"카운터 밑 바닥 틈에 굴러 들어간 유리구슬. 도윤이가 구슬치기할 때 쓰는 것과 같다. (숨은 단서)"}
+};
+const CORE=["thread","ledger","filter","marble"];
+function cardOf(k){
+  if(k==="marble"&&S.marbleRoute==="hurt")return {...CARDS.marble,ds:"도망치던 도윤이 주머니에서 구슬이 쏟아졌고, 그 사이로 자개단추가 굴러떨어졌다."};
+  return CARDS[k];
+}
+const tagHTML=c=>`<div class="tag"><span class="no">${c.no}</span><div class="nm">${c.nm}</div><div class="ds">${c.ds}</div></div>`;
+const LETTER=["서하야.","이걸 읽는다면 결국 창고 문을 열었구나. '손대지 말 것'은 너 보라고 붙인 게 아니다. 다른 사람들 보라고 붙인 거지.","세탁소 일은 별거 없다. 옷을 맡는 게 아니라, 맡긴 사람 마음을 맡는 거야. 그러니 단추 하나도 허투루 보지 마라.","부탁이 하나 있다. 0417번을 꼭 주인에게 돌려줘. 스무 해 가까이 주인을 기다린 옷이다. 주인은 네가 찾을 수 있을 거다.","봉투 안의 열쇠는 이 창고 어딘가에 맞는다. 급할 것 없다.","이 부탁은 누구에게도 말하지 마라. 서두르지도 말고. 필요한 때가 되면, 필요한 것들이 열릴 거다."];
+const KEY_ART=`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="kBrass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9C878"/><stop offset=".5" stop-color="#C79A3E"/><stop offset="1" stop-color="#9A7128"/></linearGradient></defs>
+<g transform="rotate(-24 100 80)"><ellipse cx="104" cy="96" rx="78" ry="9" fill="#000" opacity=".16"/>
+<circle cx="52" cy="74" r="25" fill="url(#kBrass)" stroke="#8A6322" stroke-width="2.5"/><circle cx="52" cy="74" r="11" fill="#F4EEDF" stroke="#8A6322" stroke-width="2.5"/>
+<path d="M36 62 a20 20 0 0 1 22 -8" stroke="#FFF4CF" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+<rect x="74" y="68" width="98" height="12" rx="3" fill="url(#kBrass)" stroke="#8A6322" stroke-width="2.2"/>
+<path d="M144 80 L144 98 L152 98 L152 90 L158 90 L158 98 L166 98 L166 80 Z" fill="url(#kBrass)" stroke="#8A6322" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M80 72 L168 72" stroke="#FFF4CF" stroke-width="2" opacity=".7"/>
+<path d="M40 52 C34 40 50 34 56 46 C60 54 48 58 44 50" fill="none" stroke="#C23A55" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M44 52 C30 58 24 72 20 84 M46 52 C38 66 36 80 38 94" fill="none" stroke="#C23A55" stroke-width="3" stroke-linecap="round"/></g></svg>`;
+const BIZCARD_ART=`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="rotate(-7 100 75)">
+<rect x="28" y="36" width="150" height="88" rx="4" fill="#000" opacity=".16" transform="translate(4 5)"/>
+<rect x="28" y="36" width="150" height="88" rx="4" fill="#FBFAF5" stroke="#CBD3D1" stroke-width="1.5"/>
+<circle cx="50" cy="58" r="10" fill="#2F4A52"/><path d="M42 60 q4 -4 8 0 t8 0" stroke="#9FC6D2" stroke-width="2.2" fill="none"/>
+<text x="66" y="62" font-family="IBM Plex Sans KR,sans-serif" font-size="9" fill="#5A6A6D">윤슬시청</text>
+<text x="44" y="92" font-family="Gowun Batang,serif" font-size="17" font-weight="700" fill="#1D2B2F">시장 박상철</text>
+<rect x="44" y="104" width="78" height="3" fill="#B9C2C0"/><rect x="44" y="111" width="56" height="3" fill="#B9C2C0"/>
+<rect x="150" y="98" width="18" height="18" fill="none" stroke="#C23A55" stroke-width="1.6" opacity=".8"/><text x="159" y="111" text-anchor="middle" font-family="Gowun Batang,serif" font-size="9" fill="#C23A55" opacity=".8">印</text></g></svg>`;
+const KEY_SVG=`<svg viewBox="0 0 160 60" width="180" aria-hidden="true"><circle cx="34" cy="30" r="20" fill="none" stroke="#B58B3A" stroke-width="9"/><rect x="52" y="25" width="92" height="10" rx="3" fill="#B58B3A"/><rect x="120" y="35" width="8" height="14" fill="#B58B3A"/><rect x="134" y="35" width="8" height="10" fill="#B58B3A"/><path d="M20 12 q10 -8 22 -2" stroke="#C8436A" stroke-width="4" fill="none"/></svg>`;
+function person(face,title,desc){return `<div class="person"><div class="pf">${figSVG(face,"smile")}</div><div><h3>${title}</h3><p>${desc}</p></div></div>`;}
+const ITEMS={
+  memo_1104:{cat:"memo",k:"메모",n:"접수 장부 · 11월 9일",d:"내 글씨로 적은 저고리 접수 기록",read:[["접수 장부","11/9(월)  옥색 한복 저고리 1\n자개단추 5  (6개 아닌가? 확인!)\n맡긴 사람: 도윤 (할머니 심부름)","ledger"]],
+    html:()=>`<div class="ledger">11/9(월) &nbsp;옥색 한복 저고리 1<br>자개단추 5 <span class="red">(6개 아닌가? 확인!)</span><br>맡긴 사람: 도윤 (할머니 심부름)</div><p class="note-cap">내가 직접 적은 접수 기록. 확인한다고 적어 놓고 잊어버렸다.</p>`},
+  memo_board:{cat:"memo",k:"메모",n:"코르크 보드의 반쪽 번호표",d:"번호는 번지고 날짜만 남았다",read:[["반쪽 번호표","No. (물에 번져 읽을 수 없음)\n접수일: 06.12.24","ledger"]],
+    html:()=>`<div class="ledger">No. <span class="dim">(물에 번져 읽을 수 없음)</span><br>접수일: 06.12.24</div><p class="note-cap">보드 구석, 다른 태그 밑에 깔려 있던 반쪽짜리 번호표. 다른 태그보다 훨씬 오래됐다.</p>`},
+  say_bongsun:{cat:"memo",k:"들은 말",n:"봉순 할머니의 말",d:"도윤이는 요즘 구슬치기에 빠져 있다",
+    html:()=>`<div class="letter"><p>"요즘 구슬치기에 빠져서 밥도 안 먹고 골목에 붙어 있다. 반에서 왕구슬 가진 애가 대장이라나."</p><span class="sign">봉순 할머니</span></div>`},
+  say_yeoreum:{cat:"memo",k:"들은 말",n:"꽃집 사장의 말",d:"도윤이가 골목 계단에 혼자 앉아 있었다",
+    html:()=>`<div class="letter"><p>"아까 도윤이가 골목 계단에 혼자 앉아 있던데요. 주머니만 계속 만지작거리면서."</p><span class="sign">한여름</span></div>`},
+  memo_0417:{cat:"memo",k:"메모",n:"2006년 장부 · 0417",d:"20년 가까이 찾아가지 않은 코트",read:[["2006년 접수 장부","12/24(일) 22:00  ·  0417\n여자 더플코트(베이지) 1\n이름: 해주   \"내일 찾으러 올게요\"\n찾아가지 않음. ★","ledger"]],
+    html:()=>`<div class="ledger">12/24(일) 22:00 &nbsp;<span class="dim">0417</span><br>여자 더플코트(베이지) 1<br>이름: 해주 &nbsp;"내일 찾으러 올게요"<br><span class="red">찾아가지 않음. ★</span></div><p class="note-cap">이름 칸만 맡긴 사람이 직접 썼다. 'ㅎ'의 꼭지가 옆으로 누운 특이한 필체. 다른 줄은 전부 '폐기' 도장인데 이 줄만 별표다.</p>`},
+  letter:{cat:"memo",k:"편지",n:"이모의 편지",d:"2006년 장부 뒤표지에 끼워져 있던 봉투",verb:"챙겼다",label:"편지",read:()=>LETTER.map(p=>["이모의 편지",p,"letter"]),
+    html:()=>`<div class="letter">${LETTER.map(p=>`<p>${p}</p>`).join("")}<span class="sign">이모가</span></div>`},
+  memo_notice:{cat:"memo",k:"메모",n:"시청 안내문",d:"셔터 옆 벽에 붙어 있던 안내문",read:[["윤슬시청 안내문","2차 재개발 예정 구역 상가 여러분께.\n오래된 집기와 창고 물품을 무상으로 수거해 드립니다.\n신청: 윤슬시청 도시재생과 (방문·전화)\n※ 접수 순서대로 차량이 배정됩니다.","letter"]],
+    html:()=>`<div class="letter"><p><b>윤슬시청 안내문</b></p><p>2차 재개발 예정 구역 상가 여러분께. 오래된 집기와 창고 물품을 무상으로 수거해 드립니다.</p><p>신청: 윤슬시청 도시재생과 (방문·전화)<br>※ 접수 순서대로 차량이 배정됩니다.</p></div><p class="note-cap">셔터 옆 벽에 붙어 있었다. 테이프 자국이 새것이었다.</p>`},
+  memo_dust:{cat:"memo",k:"메모",n:"먼지 없는 빈 칸",d:"창고 오른쪽 선반, 둘째 칸",
+    html:()=>`<div class="ledger">오른쪽 선반 · 둘째 칸 · 네 번째 자리<br><span class="red">번호표 없음. 먼지 없음.</span></div><p class="note-cap">다른 칸은 전부 먼지투성이인데 이 자리만 깨끗하다. 최근에 누군가 여기서 무언가를 꺼냈다.</p>`},
+  key:{cat:"thing",k:"물건",n:"작은 열쇠",d:"편지 봉투에 들어 있던 열쇠",art:()=>KEY_ART,
+    note:()=>"손잡이에 빨간 실이 감긴 작은 열쇠. 이모의 편지 봉투에 들어 있었다. "+(S.diary?"창고 책상 서랍에 맞았다.":"창고 어딘가에 맞는다고 했다."),
+    html:()=>`<div class="obj">${KEY_ART}</div>`},
+  bizcard:{cat:"thing",k:"물건",n:"시장님 명함",d:"카운터에 두고 간 명함",art:()=>BIZCARD_ART,
+    note:()=>"윤슬시청 시장 박상철. \"이 동네 일이면 뭐든.\" 카운터에 놓고 간 명함이다.",
+    html:()=>`<div class="obj">${BIZCARD_ART}</div>`},
+  diary1:{cat:"diary",k:"수첩",n:"2006년 12월 25일",d:"이모의 수첩 첫 장",noteName:"이모의 수첩",verb:"손에 넣었다",label:"수첩",read:[["이모의 수첩","2006년 12월 25일. 밤새 사이렌이 울렸다. 등대빌딩이 탔다.\n어젯밤 코트를 맡긴 아이가 오지 않았다. 내일 온다고 했는데.\n그 아이, 코트를 건넬 때 손이 떨리고 있었다.","diary"]],
+    html:()=>`<div class="diary">2006년 12월 25일. 밤새 사이렌이 울렸다. 등대빌딩이 탔다.<br>어젯밤 코트를 맡긴 아이가 오지 않았다. 내일 온다고 했는데.<br>그 아이, 코트를 건넬 때 손이 떨리고 있었다.</div>`},
+  p_bongsun:{cat:"people",k:"인물",n:"오봉순",d:"옆집 반찬가게 할머니",html:()=>person("봉순","오봉순 · 78","옆집 반찬가게 할머니. 동네 소식통이라 무슨 얘기든 금방 퍼진다. 이모와 30년 이웃.")},
+  p_doyun:{cat:"people",k:"인물",n:"민도윤",d:"봉순 할머니의 손주",html:()=>person("도윤","민도윤 · 10","봉순 할머니의 손주. 구슬치기 대장이 되고 싶다. 세탁소에 자주 놀러 온다.")},
+  p_yeoreum:{cat:"people",k:"인물",n:"한여름",d:"옆집 여름꽃집 사장",html:()=>person("여름","한여름 · 꽃집 사장","3년 전 이사 온 꽃집 사장. 조용하고 친절하다. 한여름에도 긴 소매가 편하다고 한다.")},
+  p_mayor:{cat:"people",k:"인물",n:"박상철",d:"윤슬시장",html:()=>person("박상철","박상철 · 윤슬시장","친절한 시장님. 이 골목 출신. "+(S.mayor==="keep"?"창고를 그대로 두겠다고 하자 웃음이 반 박자 늦었다.":"창고를 정리할 때 폐기물 차량을 보내 주겠다고 했다."))}
+};
+
+/* =========================================================
+   SCRIPT HELPERS
+   ========================================================= */
+const N=x=>({t:"narr",x}), M=x=>({t:"mono",x}), Y=(who,x,e)=>({t:"say",who,x,e}), SYS=x=>({t:"sys",x});
+const SC=(title,bg,cast)=>({t:"scene",title,bg,cast:cast||[]});
+const CAST=(...c)=>({t:"cast",cast:c});
+const EMO=(who,e)=>({t:"emo",who,e});
+const DO=fn=>({t:"do",fn});
+const ITEM=(id,quiet)=>({t:"item",id,quiet});
+const DOC=id=>({t:"doc",id});
+const CARD=id=>({t:"card",id});
+const MENU=id=>({t:"menu",id});
+const CHOICE=opts=>({t:"choice",opts});
+const GO=loc=>({t:"explore",loc});
+const SKIP=(big,small)=>({t:"daycard",small:small||"",big,sub:""});
+const resolve=x=>(typeof x==="function"?x():(x||[])).filter(Boolean).slice();
+const DATES={1:"11월 9일 (월)",2:"11월 10일 (화)",3:"11월 11일 (수)"};
+const isClose=()=>S.phase==="d1_close"||S.phase==="d2_close";
+const isMorning=()=>/_street$/.test(S.phase);
+
+/* =========================================================
+   DAY 1 · OPENING
+   ========================================================= */
+function openingSteps(){
+  return [
+    {t:"chapter",tag:"CH.01",title:"사라진 단추"},
+    SC("1일째 · "+DATES[1],"front"),
+    N("아침 여덟 시. 윤슬세탁소 앞. 셔터가 내려져 있다."),
+    M("이모가 떠난 지 석 달. 문 닫혀 있던 가게를 다시 여는 첫날."),
+    M("오늘부터 진짜 혼자다. 셔터부터 올리자. 옆 가게에 인사도 드리고."),
+    GO("street")
+  ];
+}
+function dropoffSteps(){
+  return [
+    DO(()=>{S.phase="d1_wash";}),
+    M("자, 이제 손님만 오면……"),
+    N("팻말을 돌린 지 오 분도 안 돼서, 딸랑. 보자기를 끌어안은 도윤이가 들어온다."),
+    CAST("도윤"),ITEM("p_doyun",true),
+    Y("도윤","누나! 이거 할머니가 세탁 맡기래.","smile"),
+    N("보자기 안에는 옥색 한복 저고리. 앞섶에 자개단추가 나란히 달려 있다."),
+    Y("도윤","할아버지 제사 때 입는 거래. 조심해서 해 달래.","flat"),
+    M("접수 장부에 적어야지. 단추가…… 하나, 둘, 셋, 넷, 다섯."),
+    M("한복 단추가 원래 몇 개더라. 여섯 개였던 것 같기도 하고."),
+    CHOICE([
+      {label:"\"도윤아, 이거 단추 원래 몇 개야?\"",set:()=>{S.askedCount=true;},then:[
+        EMO("도윤","o"),
+        Y("도윤","모, 몰라! 할머니가 그냥 갖다주래!","angry"),
+        N("도윤이가 주머니에 손을 푹 찔러 넣는다."),
+        M("왜 저렇게 당황하지? 아무튼 일단 적어 두자.")]},
+      {label:"(일단 장부에 적어 둔다)",then:[M("바쁘니까 나중에 확인하자. 물음표 하나 붙여 두고.")]}
+    ]),
+    DOC("memo_1104"),
+    Y("도윤","누나, 언제 찾으러 와?","flat"),
+    CHOICE([
+      {label:"\"내일 아침에 와.\"",then:[Y("도윤","알았어! 내일 올게.","smile")]},
+      {label:"\"한복이라 이틀은 걸려.\"",then:[Y("도윤","할머니가 내일까지 해 달랬는데……","sad"),M("……그럼 오늘 안에 끝내자. 첫 손님인데."),Y("도윤","진짜? 그럼 내일 올게!","smile")]}
+    ]),
+    N("도윤이가 문을 박차고 뛰어나간다."),
+    CAST(),
+    M("좋아. 첫 빨래다. 저고리를 작업장으로 가져가서 빨아야지.")
+  ];
+}
+
+/* =========================================================
+   DAY 2 · PICKUP, COMPLAINT
+   ========================================================= */
+function morningSteps(day){
+  if(day===2) return [
+    {t:"chapter",tag:"CH.01",title:"사라진 단추"},
+    SC("2일째 · "+DATES[2],"front"),
+    N("아침. 셔터 앞."),
+    S.ironOffPrev?null:M("잠깐, 어제 다리미 코드 뽑았나? ……불 켜면 제일 먼저 확인하자."),
+    S.cashPrev?null:M("어제 정산도 안 하고 갔지. 오늘은 잊지 말자."),
+    GO("street")
+  ];
+  return day3Steps();
+}
+function pickupSteps(){
+  return [
+    DO(()=>{S.phase="d2_pickup";}),
+    N("팻말을 돌리자마자 딸랑, 도윤이가 뛰어 들어온다."),
+    CAST("도윤"),
+    Y("도윤","누나! 저고리 찾으러 왔어!","smile"),
+    M("행거에 걸어 둔 저고리를 건네주자."),
+    CAST()
+  ];
+}
+function handoverSteps(){
+  return [
+    CAST("도윤"),
+    N("비닐 씌운 저고리를 보자기에 곱게 싸서 건넨다."),
+    Y("도윤","고마워, 누나! 할머니한테 갖다줄게.","smile"),
+    CHOICE([
+      {label:"\"뛰지 말고 조심히 가.\"",then:[Y("도윤","응! ……아니, 뛸 거야!","smile")]},
+      {label:"\"할머니께 안부 전해 드려.\"",set:()=>{S.trust++;},then:[Y("도윤","알았어! 누나가 인사했다고 할게.","smile")]}
+    ]),
+    N("도윤이가 보자기를 끌어안고 뛰어나간다."),
+    CAST(),
+    DO(()=>{S.gave=true;}),
+    SKIP("삼십 분 뒤"),
+    ...complaintSteps()
+  ];
+}
+function complaintSteps(){
+  return [
+    N("딸랑, 문종이 거칠게 울린다. 봉순 할머니가 보자기를 들고 성큼 들어온다. 뒤로 도윤이가 쭈뼛쭈뼛 따라온다."),
+    CAST("봉순","도윤"),ITEM("p_bongsun",true),
+    Y("봉순","서하야! 이거 좀 봐라, 이거!","angry"),
+    N("보자기가 풀리고, 옥색 저고리가 카운터에 펼쳐진다. 앞섶의 자개단추 자리 하나가 비어 있다."),
+    Y("봉순","우리 영감이 장가올 때 해 준 자개단추다. 여섯 개가 한 벌인데, 찾아오자마자 풀어 보니 다섯 개야!","angry"),
+    ()=>S.washBad?Y("봉순","게다가 천은 왜 이렇게 뻣뻣해? 한복을 뜨거운 물에 빨았냐?","angry"):null,
+    ()=>S.ironBad?Y("봉순","동정 끝도 누렇게 눌었잖아!","angry"):null,
+    ()=>(S.washBad||S.ironBad)?DO(()=>{S.trust--;}):null,
+    Y("서하","네? 제가 받을 때는……"),
+    Y("봉순","정숙이는 30년 동안 단추 하나 안 잃어버렸어. 30년!","angry"),
+    N("도윤이가 할머니 치마 뒤에서 주머니에 손을 넣었다 뺐다 한다."),
+    Y("도윤","할머니, 그냥 가자…… 단추 하나 없어도 예쁜데.","sad"),
+    Y("봉순","넌 조용히 있어!","angry"),
+    CHOICE([
+      {label:"\"죄송해요. 제가 찾아볼게요.\"",set:()=>{S.trust++;},then:[
+        Y("봉순","그래, 찾아봐. 정숙이 조카면 뭔가 달라야지.","flat"),
+        M("일단 사과부터. 할머니 표정이 조금 풀렸다.")]},
+      {label:"\"저희 쪽 실수가 아닐 수도 있어요.\"",set:()=>{S.trust--;},then:[
+        Y("봉순","뭐? 그럼 내가 잃어버렸다는 거냐?","angry"),
+        N("할머니의 목소리가 한 톤 올라간다. 도윤이가 움찔한다."),
+        M("말이 너무 셌나. 할머니가 팔짱을 끼셨다.")]},
+      {label:"\"도윤아, 너는 뭐 아는 거 없어?\"",set:()=>{S.trust--;S.wary=true;},then:[
+        EMO("도윤","o"),
+        Y("도윤","……몰라!","sad"),
+        Y("봉순","애한테 왜 그래! 애가 뭘 안다고.","angry"),
+        M("도윤이가 주머니를 꽉 움켜쥐었다. 괜히 겁만 줬나.")]}
+    ]),
+    MENU("bongsun"),
+    N("봉순 할머니는 찾으면 부르라며 반찬가게로 돌아가고, 도윤이는 골목 쪽으로 사라진다."),
+    CAST(),
+    M("받을 때 단추가 몇 개였더라. 분명 내가 장부에 적었는데."),
+    ()=>S.askedCount?M("그러고 보니 그때 도윤이, 단추 얘기에 유난히 당황했지."):null,
+    DO(()=>{S.phase="d2_invest";S.coatBack=true;})
+  ];
+}
+
+/* =========================================================
+   MENUS (revisitable)
+   ========================================================= */
+const MENUS={
+  bong1:{title:"봉순 할머니와 이야기하기",exit:"이만 가 볼게요.",opts:[
+    {id:"hi",label:"\"안녕하세요! 앞으로 잘 부탁드려요.\"",set:()=>{S.trust++;},then:[Y("봉순","부탁은 무슨. 정숙이 없으니 골목이 다 조용하다. 네가 불 좀 켜 줘라.","smile")]},
+    {id:"aunt",label:"\"이모랑 오래 아셨죠?\"",then:[Y("봉순","30년이지. 이 골목에서 둘이 제일 오래 버텼어.","flat"),Y("봉순","정숙이는 뭐든 버리질 못했어. 그 창고 봐라. 20년 된 옷도 있을걸.","smile"),M("창고…… 아직 못 열어 봤는데.")]},
+    {id:"today",label:"\"오늘 맡기실 거 있으세요?\"",then:[Y("봉순","이따 도윤이 보낼게. 영감 한복 저고리다. 제사 때 입을 거니까 곱게 해 줘.","flat")]}
+  ]},
+  flower1:{title:"꽃집 사장과 이야기하기",exit:"그럼 또 올게요.",opts:[
+    {id:"since",label:"\"꽃집은 언제부터 하셨어요?\"",then:[Y("여름","3년쯤 됐어요. 이 동네가…… 좋아서요.","flat")]},
+    {id:"aunt",label:"\"이모를 아세요?\"",then:[Y("여름","……네. 가끔 꽃을 사 가셨어요. 좋은 분이셨죠.","sad"),M("잠깐 표정이 흔들린 것 같았는데.")]},
+    {id:"sleeve",label:"\"소매가 다 젖겠어요.\"",then:[Y("여름","괜찮아요. 한여름에도 긴 소매가 편해서요.","smile")]}
+  ]},
+  bongsun:{title:"봉순 할머니에게 물어보기",exit:"옷부터 살펴볼게요.",opts:[
+    {id:"when",label:"\"도윤이한테 심부름 시키신 거죠?\"",then:()=>S.trust>=0?[
+      Y("봉순","그래, 허리가 아파서 어제 도윤이 시켰지. 오늘 찾아온 것도 도윤이고.","flat"),
+      M("맡긴 것도, 찾아간 것도 도윤이.")]:[
+      Y("봉순","그래! 그게 뭐 어쨌다고!","angry"),
+      M("지금은 물어볼수록 역효과다.")]},
+    {id:"six",label:"\"단추가 여섯 개였던 거 확실해요?\"",then:[
+      Y("봉순","영감이 해 준 걸 내가 모를까 봐? 여섯 개야. 맡길 때도 여섯 개…… 였겠지.","flat"),
+      M("마지막 말끝이 흐려졌다.")]},
+    {id:"doyun",label:"\"도윤이는 요즘 어떻게 지내요?\"",then:()=>S.trust>=0?[
+      Y("봉순","요즘 구슬치기에 빠져서 밥도 안 먹고 골목에 붙어 있다. 반에서 왕구슬 가진 애가 대장이라나.","smile"),
+      DO(()=>{S.heard=true;}),ITEM("say_bongsun")]:[
+      Y("봉순","남의 집 애 걱정 말고 단추나 찾아!","angry"),
+      M("지금은 무슨 말을 해도 안 들어 주실 것 같다.")]}
+  ]},
+  doyun:{title:"도윤이와 이야기하기",exit:"이따 또 올게.",opts:[
+    {id:"marbles",label:"\"요즘 구슬치기 잘 돼?\"",then:[
+      Y("도윤","……응. 우리 반에서 왕구슬 있는 애가 대장이야. 반짝반짝한 거.","flat"),
+      Y("서하","반짝반짝한 거?"),
+      Y("도윤","준호는 유리 왕구슬 있어. 나는…… 나도 있어! 진짜 예쁜 거.","o"),
+      DO(()=>{S.askedMarbles=true;}),
+      M("주머니 쪽으로 손이 가네.")]},
+    {id:"brought",label:"\"할머니 저고리, 네가 가져다줬지?\"",show:()=>S.got.has("ledger"),then:[
+      Y("도윤","……응. 할머니 허리 아파서 내가 갖다줬어.","flat"),
+      Y("도윤","나 착한 일 한 거야.","smile"),
+      M("착한 일 맞지. 그런데 왜 눈을 피할까.")]},
+    {id:"grandma",label:"\"할머니가 너 걱정하시더라.\"",show:()=>S.heard,then:[
+      Y("도윤","……할머니가 뭐라고 했는데?","o"),
+      Y("서하","밥도 안 먹고 구슬치기만 한다고."),
+      Y("도윤","밥은 먹어……","sad")]},
+    {id:"pocket",label:"\"주머니에 뭐 들었어?\"",ret:false,then:[
+      Y("도윤","……구슬.","flat"),
+      CHOICE([
+        {label:"\"누나한테 한번 보여 줄래?\"",then:()=>(S.wary&&!S.askedMarbles)?[
+          Y("도윤","싫어! 누나도 할머니처럼 혼낼 거잖아.","angry"),
+          M("아까 괜히 몰아붙였나 봐. 다른 얘기부터 해 보자."),
+          MENU("doyun")]:[
+          N("도윤이 망설이다 주머니를 연다. 유리구슬 사이에서 무지갯빛 조각 하나가 반짝인다."),
+          M("자개단추다. 구슬 사이에서도 제일 반짝이네."),
+          DO(()=>{S.marbleRoute="gentle";}),CARD("marble"),
+          Y("서하","이거 할머니한테 같이 말씀드리자. 누나가 옆에 있을게."),
+          Y("도윤","……혼나?","sad"),
+          M("혼나겠지. 그래도 혼자 혼나게 두진 말자.")]},
+        {label:"\"할머니 단추, 네가 가져갔지?\"",set:()=>{S.hurt=true;S.trust--;},then:[
+          Y("도윤","아, 아니야!","angry"),
+          N("도윤이가 벌떡 일어나 뛰어간다. 주머니에서 구슬이 쏟아지고, 그 사이로 무지갯빛 조각 하나가 굴러떨어진다."),
+          DO(()=>{S.marbleRoute="hurt";S.doyunGone=true;}),CARD("marble"),CAST(),
+          M("자개단추. 확인은 했는데, 이런 식으로 하고 싶지는 않았어.")]},
+        {label:"\"아니야, 다음에 보자.\"",then:[Y("도윤","……응.","flat"),MENU("doyun")]}
+      ])]}
+  ]},
+  ledgers:{title:"몇 년도 장부를 꺼낼까?",exit:"장부를 내려놓는다.",opts:[
+    {id:"y2003",label:"2003년",then:[M("2003년. 가게를 연 지 7년째. 이모 글씨가 지금보다 동글동글하다.")]},
+    {id:"y2004",label:"2004년",then:[M("2004년. '폐기' 도장만 가득하다. 이모는 뭐 하나 쉽게 버리지 않았는데.")]},
+    {id:"y2005",label:"2005년",then:[M("2005년. 여름 페이지마다 '장마, 건조 오래 걸림' 메모.")]},
+    {id:"y2006",label:()=>S.took2006?"2006년 (다시 읽기)":"2006년",ret:()=>S.took2006,then:()=>S.took2006?[DOC("memo_0417")]:[
+      DO(()=>{S.took2006=true;}),
+      N("2006년 장부. 연말 페이지로 갈수록 이모의 글씨가 빽빽해진다. 12월 24일에서 손이 멈춘다."),
+      DOC("memo_0417"),
+      M("2006년 크리스마스이브. 20년 가까이 안 찾아간 코트라고?"),
+      S.sawDate?M("보드에 있던 반쪽 번호표랑 날짜가 같아. 그것도 이 코트 거였구나."):null,
+      M("다른 건 전부 '폐기' 도장이 찍혀 있는데, 이것만 별표야."),
+      N("장부 뒤표지 안쪽 비닐 주머니에 봉투 하나가 끼워져 있다. 겉봉에 '서하에게'."),
+      DOC("letter"),
+      N("봉투를 기울이자 작은 열쇠 하나가 손바닥에 떨어진다."),
+      DO(()=>{S.key=true;}),ITEM("key"),
+      M("이 창고 어딘가에 맞는다고? 자물쇠 달린 게 있었나.")]},
+    {id:"y2007",label:"2007년",then:[M("2007년 1월 첫 장에 이모 글씨로 '등대빌딩 합동 분향소' 한 줄. 그 뒤로 몇 주 동안 접수가 거의 없다.")]},
+    {id:"y2008",label:"2008년",then:[M("2008년. 페이지가 반쯤 비어 있다. 손님이 많이 줄었던 해.")]},
+    {id:"y2009",label:"2009년",then:[M("2009년. 사이에 '윤슬항 재개발 설명회' 전단지가 끼워져 있다. 누렇게 바랬다.")]}
+  ]},
+  night:{title:"잠들기 전에",exit:"불을 끄고 잔다.",opts:[
+    {id:"letter",label:"이모의 편지를 다시 읽는다",show:()=>S.inv.includes("letter"),then:[DOC("letter"),M("'필요한 때가 되면, 필요한 것들이 열릴 거다.' 이모다운 말이다.")]},
+    {id:"diary",label:"수첩 첫 장을 다시 본다",show:()=>S.inv.includes("diary1"),then:[DOC("diary1"),M("끈으로 묶인 나머지 페이지. 억지로 풀면 안 될 것 같다.")]},
+    {id:"key",label:"열쇠를 만지작거린다",show:()=>S.key,then:[M("빨간 실이 감긴 작은 열쇠. 이모는 이걸 몇 년이나 봉투에 넣어 뒀을까.")]},
+    {id:"card",label:"시장님 명함을 본다",show:()=>S.inv.includes("bizcard"),then:[M("'이 동네 일이면 뭐든.' 좋은 분 같은데, 창고 얘기만 두 번 하셨다.")]}
+  ]}
+};
+
+/* =========================================================
+   PROPS
+   ========================================================= */
+const JEOGORI=`<g transform="translate(470 500)"><ellipse cx="90" cy="57" rx="94" ry="7" fill="#000" opacity=".22"/><path d="M6 54 L14 14 Q20 4 34 4 L146 4 Q160 4 166 14 L174 54 Z" fill="#8FCBB8"/><path d="M6 54 L14 14 Q20 4 34 4 L62 4 L98 54 Z" fill="#79B7A2"/><path d="M40 4 L92 48 L142 4" fill="none" stroke="#F8F4EA" stroke-width="7"/><path d="M92 44 q-26 8 -44 2 M92 44 q20 14 30 12" stroke="#C8436A" stroke-width="6" fill="none" stroke-linecap="round"/>${[0,1,2,3,4].map(i=>`<circle cx="${152+(i%2)}" cy="${12+i*7}" r="3.6" fill="#F4F1FA" stroke="#A9A2C9" stroke-width="1.2"/>`).join("")}<path d="M150 47 l6 2 M150 50 l6 -1" stroke="#3A5048" stroke-width="1.4"/></g>`;
+const GLASS=`<g transform="translate(611 741)"><circle r="11" fill="#6FB2D8" opacity=".9"/><path d="M-6 3 q6 -8 12 0" stroke="#fff" stroke-opacity=".6" stroke-width="2" fill="none"/><circle cx="-3.5" cy="-4" r="3" fill="#fff" opacity=".9"/></g>`;
+const HANG_COAT=`<g transform="translate(846 150)"><path d="M0 4 q0 -16 12 -16" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M-34 34 Q0 14 34 34 L40 250 L-40 250 Z" fill="#8FCBB8"/><path d="M-34 34 Q0 14 34 34 L40 250 L-40 250 Z" fill="url(#cPoly)"/><path d="M-20 40 L0 90 L20 40" fill="none" stroke="#F8F4EA" stroke-width="5"/><rect x="-10" y="206" width="20" height="26" rx="2" fill="#F4D98A"/></g>`;
+const coatOnCounter=()=>(S.phase==="d1_wash"&&!S.carry&&!S.washed)||S.phase==="d2_invest"||(S.phase==="d2_close"&&S.coatBack);
+const coatOnHanger=()=>S.hung&&!S.gave;
+
+/* =========================================================
+   LOCATIONS
+   ========================================================= */
+const LOCS={
+  street:{title:"가게 앞",bg:"front",spots:[
+    {id:"bong",x:0,y:180,w:310,h:470,label:"봉순반찬",run:()=>bongStreet()},
+    {id:"flower",x:890,y:130,w:310,h:520,label:"여름꽃집",run:()=>flowerStreet()},
+    {id:"alleyIn",x:310,y:170,w:54,h:480,label:"골목 입구",go:"alley"},
+    {id:"notice",x:814,y:288,w:64,h:88,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
+      N("셔터 옆 벽에 시청 안내문이 붙어 있다. 테이프 자국이 새것이다."),
+      DO(()=>{S.readNotice=true;}),DOC("memo_notice"),
+      M("창고…… 이모 물건들, 언젠간 정리해야겠지."),
+      M("근데 이건 언제 붙였지? 어제까진 없었는데.")]},
+    {id:"shop",x:410,y:262,w:400,h:388,label:"세탁소",run:()=>shopFront()}
+  ]},
+  counter:{title:"카운터",bg:"counter",spots:[
+    {id:"hanger",x:660,y:120,w:240,h:340,label:"세탁물 행거",art:()=>coatOnHanger()?HANG_COAT:"",run:()=>hangerRun()},
+    {id:"board",x:222,y:150,w:300,h:236,label:"코르크 보드",run:()=>S.phase!=="d2_invest"?[M("찾아가지 않은 세탁물 태그가 빽빽하다. 이모는 뭐 하나 버리질 못했다.")]:S.sawDate?[M("06.12.24. 저 번호표만 유난히 오래됐다.")]:[
+      M("찾아가지 않은 세탁물 태그가 이렇게 많다니."),
+      N("보드 구석, 다른 태그 밑에 반쪽짜리 번호표가 깔려 있다. 누렇게 바래고 물에 번졌다."),
+      DO(()=>{S.sawDate=true;}),DOC("memo_board"),
+      M("번호는 번져서 안 보이고 날짜만 남았네. 06.12.24. 20년 가까이 된 거야.")]},
+    {id:"cal",x:556,y:166,w:92,h:112,label:"달력",run:()=>[M("이모 달력은 8월에서 멈춰 있었다. 11월로 넘긴 건 나다."),M("빨간 네모는 내가 쳐 놓은 거다. 첫 월세 내는 날.")]},
+    {id:"reg",x:146,y:466,w:140,h:86,label:"금전등록기",run:()=>isClose()?(S.cash?[M("정산은 끝났다.")]:[
+      N("금전등록기를 연다. 오늘 매출을 장부에 옮겨 적는다."),
+      M(S.day===1?"오늘 매출 36,000원. 첫날치고 나쁘지 않다. 첫 영수증은 액자에 걸어 둘까.":"오늘은 손님이 좀 많았네. 봉순 할머니 저고리는 서비스고."),
+      DO(()=>{S.cash=true;})]):[M(S.phase==="d2_invest"?"12,000원. 한복 저고리 세탁비. 환불해 드려야 하나……":"아직 손님이 없다. 텅 빈 금전등록기.")]},
+    {id:"switch",x:186,y:284,w:40,h:56,label:"전등 스위치",run:()=>switchRun()},
+    {id:"entrance",x:20,y:110,w:162,h:340,label:"출입문",run:()=>entranceRun()},
+    {id:"work",x:912,y:146,w:112,h:326,label:"작업장",go:"workshop"},
+    {id:"door",x:1030,y:118,w:150,h:350,label:"창고 문",run:()=>storageDoorRun()},
+    {id:"book",x:316,y:484,w:140,h:70,label:"접수 장부",run:()=>bookRun()},
+    {id:"coat",x:466,y:496,w:190,h:64,label:"옥색 저고리",show:coatOnCounter,art:()=>JEOGORI,run:()=>coatRun()},
+    {id:"glass",x:590,y:720,w:42,h:42,label:"바닥 틈",show:()=>S.phase==="d2_invest"&&!S.glass,art:()=>GLASS,run:()=>[
+      N("카운터 아래, 바닥 틈에서 무언가 반짝인다. 푸른 유리구슬 하나."),
+      M("구슬치기용 구슬이네. 이게 왜 카운터 밑에 있지?"),
+      CARD("glass")]}
+  ]},
+  workshop:{title:"작업장",bg:"workshop",spots:[
+    {id:"back",x:0,y:232,w:112,h:398,label:"가게로",go:"counter"},
+    {id:"shelf",x:100,y:48,w:560,h:98,label:"세제 선반",run:()=>[M("세제 병마다 이모 손글씨 라벨. '한복·실크는 섬세 코스, 찬물로', '자개단추는 알코올 금지'."),S.washBad?M("……찬물이었구나. 이미 늦었다."):null]},
+    {id:"iron",x:816,y:330,w:350,h:140,label:"다리미대",run:()=>ironRun()},
+    {id:"m1",x:130,y:300,w:290,h:285,label:"왼쪽 세탁기",run:()=>washerRun()},
+    {id:"m2",x:460,y:300,w:290,h:330,label:"오른쪽 세탁기",run:()=>[M("이쪽은 고장 나서 '사용 금지' 스티커가 붙어 있다. 이모 글씨다.")]},
+    {id:"filter",x:214,y:588,w:102,h:40,label:"세탁기 필터",run:()=>filterRun()}
+  ]},
+  alley:{title:"골목",bg:"alley",spots:[
+    {id:"out",x:1026,y:470,w:170,h:230,label:"가게 앞으로",go:"street"},
+    {id:"pole",x:996,y:40,w:46,h:420,label:"전봇대",run:()=>[N("전봇대에 전단지가 덕지덕지 붙어 있다. 그중 한 장만 새것이다."),N("'윤슬 2차 재개발 주민설명회 · 12월 20일 · 윤슬시청 대강당'"),M("재개발…… 이 골목도 들어가나?")]},
+    {id:"window",x:116,y:256,w:148,h:128,label:"창문",run:()=>[M(isClose()?"봉순반찬 뒷창. 불이 꺼져 있다.":"봉순반찬 뒷창. 된장 끓는 냄새가 새어 나온다.")]},
+    {id:"backdoor",x:556,y:356,w:98,h:206,label:"골목 끝 문",run:()=>[M("골목 끝 창고 문. 녹슨 자물쇠가 걸려 있다.")]},
+    {id:"pots",x:776,y:526,w:250,h:190,label:"화분",run:()=>[M("봉순 할머니네 고추 모종. 흙이 아직 촉촉하다.")]},
+    {id:"stairs",x:40,y:620,w:420,h:176,label:"계단",show:()=>!(S.phase==="d2_invest"&&!S.doyunGone),run:()=>[M(S.doyunGone?"도윤이가 앉아 있던 계단. 구슬 하나가 굴러다닌다.":"오래된 돌계단. 도윤이가 자주 앉아 논다고 했다.")]},
+    {id:"doyun",x:150,y:350,w:290,h:445,label:"도윤이",show:()=>S.phase==="d2_invest"&&!S.doyunGone,art:()=>figSVG("도윤",S.got.has("marble")?"smile":"flat").replace("<svg ",'<svg x="150" y="350" width="290" height="445" '),cast:["도윤"],run:()=>S.got.has("marble")?[
+      Y("도윤","누나, 할머니한테 진짜 말할 거야?","sad"),Y("서하","같이 말하자. 누나가 옆에 있을게."),Y("도윤","……응.","flat")]:[
+      S.seenDoyun?null:N("계단에 쪼그려 앉은 도윤이. 주머니에서 구슬 부딪히는 소리가 난다."),
+      DO(()=>{S.seenDoyun=true;}),
+      MENU("doyun")]}
+  ]},
+  storage:{title:"창고",bg:"storage",spots:[
+    {id:"shelfL",x:40,y:80,w:340,h:520,label:"왼쪽 선반",run:()=>[M("비닐에 싸인 옷 상자들. 태그는 전부 몇 년씩 된 것들이고, 전부 '폐기' 도장이 찍혀 있다.")]},
+    {id:"shelfM",x:420,y:80,w:340,h:460,label:"가운데 선반",run:()=>[M("상자마다 번호가 적혀 있는데, 세탁물 태그 번호랑 맞지 않는다. 이모만 아는 방식이 있었나 봐.")]},
+    {id:"shelfR",x:820,y:80,w:340,h:520,label:"오른쪽 선반",run:()=>[M("이쪽도 오래된 옷 상자들. 위 칸일수록 더 오래된 것 같다.")]},
+    {id:"exit",x:0,y:96,w:72,h:704,label:"창고 문",go:"counter"},
+    {id:"dust",x:1016,y:220,w:68,h:106,label:"선반의 빈 칸",run:()=>S.dust?[M("먼지 없는 빈 칸. 뭐가 있었던 걸까.")]:[
+      N("선반 한 칸이 통째로 비어 있다. 번호표도 없다."),
+      M("……이상하다. 다른 칸은 전부 먼지투성인데, 여기만 깨끗해."),
+      M("누가 최근에 여기서 뭘 꺼내 간 거지?"),
+      DO(()=>{S.dust=true;}),ITEM("memo_dust")]},
+    {id:"ledgers",x:414,y:552,w:306,h:92,label:"연도별 장부",run:()=>[
+      (S.sawDate&&!S.took2006)?M("보드에서 본 반쪽 번호표. 날짜가 06.12.24였지."):null,
+      MENU("ledgers")]},
+    {id:"cord",x:570,y:120,w:60,h:92,label:"전구 줄",run:()=>S.light?[M("전구가 지지직거린다. 오래는 못 버티겠다.")]:[
+      DO(()=>{S.light=true;updateDark();}),
+      N("줄을 당기자 딸깍, 백열전구가 켜진다. 창고 안이 누렇게 밝아진다."),
+      M("진작 켤걸.")]},
+    {id:"drawer",x:526,y:668,w:148,h:48,label:"책상 서랍",run:()=>S.diary?[M("서랍은 이제 비어 있다.")]:S.key?[
+      N("열쇠가 딸깍 돌아간다. 서랍 안에는 낡은 수첩 한 권."),
+      N("첫 장만 열리고, 나머지는 끈으로 단단히 묶여 있다."),
+      DO(()=>{S.diary=true;}),DOC("diary1"),
+      M("그 아이…… 0417번의 주인이야.")]:[
+      M("잠겨 있다. 작은 열쇠 구멍이 하나."),
+      M("이모 물건이니까, 열쇠도 이모가 어딘가 뒀겠지.")]}
+  ]}
+};
+
+/* ---------- spot logic ---------- */
+function bongStreet(){
+  if(isClose()) return [N("봉순반찬은 벌써 셔터가 내려가 있다. 셔터에 '내일 뵙겠습니다' 쪽지.")];
+  if(S.phase==="d2_invest"||S.phase==="d2_pickup"){
+    return [CAST("봉순"),S.trust>=0?Y("봉순","찾았냐? ……찾으면 부르라니까.","flat"):N("할머니는 등을 돌린 채 반찬만 담는다. 말을 걸 분위기가 아니다."),CAST()];
+  }
+  if(S.day===2) return [CAST("봉순"),Y("봉순","오늘 도윤이가 저고리 찾으러 간다더라. 영감 제사가 모레야.","smile"),CAST()];
+  const first=!S.metBong;
+  return [CAST("봉순"),
+    first?N("반찬가게 앞, 봉순 할머니가 반찬통을 내놓고 있다."):null,
+    first?ITEM("p_bongsun",true):null,
+    first?Y("봉순","아이고, 정숙이 조카! 벌써 나왔네.","smile"):Y("봉순","또 왔냐? 가게는 안 보고.","smile"),
+    DO(()=>{S.metBong=true;}),
+    MENU("bong1"),CAST()];
+}
+function flowerStreet(){
+  if(isClose()) return [N("꽃집 불이 꺼져 있다. 유리문에 '내일 뵐게요' 쪽지. 흰 국화 몇 송이만 창가에 남아 있다.")];
+  if(S.phase==="d2_invest") return [CAST("여름"),
+    Y("여름","무슨 일 있어요? 할머니 목소리가 여기까지 들리던데요.","flat"),
+    Y("여름","아까 도윤이가 골목 계단에 혼자 앉아 있던데요. 주머니만 계속 만지작거리면서.","flat"),
+    ITEM("say_yeoreum"),CAST()];
+  if(S.day===2) return [CAST("여름"),Y("여름","좋은 아침이에요. 어제 첫 손님 받으셨죠? 도윤이가 자랑하고 다니던데요.","smile"),CAST()];
+  const first=!S.metFlower;
+  return [CAST("여름"),
+    first?N("꽃집 앞, 긴 소매 차림의 여자가 물통을 옮기고 있다."):null,
+    first?ITEM("p_yeoreum",true):null,
+    first?Y("여름","아, 세탁소 새 사장님이시죠? 옆집 꽃집이에요. 한여름이라고 해요.","smile"):Y("여름","또 오셨네요. 꽃 구경하실래요?","smile"),
+    DO(()=>{S.metFlower=true;}),
+    MENU("flower1"),CAST()];
+}
+function shopFront(){
+  if(isClose()){
+    return [CHOICE([
+      {label:"셔터를 내린다 (오늘 하루를 마친다)",then:()=>[M("셔터 아래 손잡이를 잡고 끌어내리자."),{t:"mini",kind:"shutter",dir:"down"}].concat(endDaySteps())},
+      {label:"다시 가게로 들어간다",then:[DO(()=>{S.lightsOff=false;}),N("불을 다시 켠다."),GO("counter")]}
+    ])];
+  }
+  if(!S.shutterUp) return [
+    M(S.day===1?"셔터가 생각보다 무겁다. 여러 번, 힘껏 밀어 올리자.":"오늘도 힘껏. 여러 번 밀어 올리자."),
+    {t:"mini",kind:"shutter",dir:"up"},
+    N("드르르르륵, 철컥."),
+    S.day===1?M("……팔 아파. 이모는 30년을 매일 이걸 했구나."):null];
+  return [{t:"goto",loc:"counter"}];
+}
+function hangerRun(){
+  if(S.phase==="d1_wash"){
+    if(S.ironed&&S.carry) return [
+      N("저고리를 옷걸이에 걸고 비닐을 씌운다. 노란 태그를 단다."),
+      M("끝! 첫 손님 빨래 완료."),
+      DO(()=>{S.hung=true;S.carry=false;S.phase="d1_close";}),
+      SKIP("해 질 녘","그날 오후"),
+      N("손님이 몇 명 더 다녀가고, 어느새 창밖이 어둑어둑하다."),
+      M("가게 문 닫을 준비를 하자. 정산하고, 다리미 코드 뽑고, 불 끄고, 셔터.")];
+    if(S.carry) return [M(S.washed?"다리기부터 해야지. 구김 있는 채로 걸 순 없어.":"빨래부터 해야지.")];
+  }
+  if(S.phase==="d2_pickup") return handoverSteps();
+  if(coatOnHanger()) return [M("도윤이네 저고리. 내일 찾으러 온다.")];
+  return [M("찾아갈 손님들 옷. 태그 번호 순서대로 걸려 있다. 이모 방식 그대로.")];
+}
+function coatRun(){
+  if(S.phase==="d1_wash") return [N("저고리를 곱게 개어 든다."),DO(()=>{S.carry=true;}),M("작업장으로 가져가자.")];
+  if(S.got.has("thread")) return [M("실 끝이 가위로 자른 듯 반듯했지.")];
+  return [
+    N("앞섶에 단추 다섯 개. 여섯 번째 자리엔 실 두 가닥만 남아 있다."),
+    M("단추가 떨어졌으면 실이 뜯기거나 늘어져 있어야 하는데…… 실 끝이 너무 반듯해. 가위로 자른 것 같아."),
+    CARD("thread")];
+}
+function bookRun(){
+  if(S.phase==="d2_invest"&&!S.got.has("ledger")) return [
+    N("어제 내가 쓴 접수 장부를 펼친다."),
+    DOC("memo_1104"),
+    M("……맡길 때부터 다섯 개였잖아. 확인한다고 적어 놓고 잊어버렸어."),
+    M("그리고 맡긴 사람은 도윤이."),
+    CARD("ledger")];
+  if(S.inv.includes("memo_1104")) return [DOC("memo_1104")];
+  return [M("이모가 쓰던 접수 장부. 오늘부터 내 글씨로 채운다.")];
+}
+function switchRun(){
+  if(S.lightsOff){
+    if(isClose()) return [N("딸깍. 불을 다시 켠다."),DO(()=>{S.lightsOff=false;})];
+    const out=[N("딸깍, 딸깍. 형광등이 몇 번 깜빡이다가 하얗게 켜진다."),DO(()=>{S.lightsOff=false;})];
+    if(S.phase==="d1_open") out.push(M("다림판, 세탁기, 행거. 이모가 놓아둔 그대로다."),M("문 팻말만 '영업중'으로 돌리면 오픈 준비 끝."));
+    if(S.phase==="d2_open"){
+      if(!S.ironOffPrev) out.push(N("불을 켜자마자 작업장부터 달려가 본다. 다리미 코드가 꽂힌 채다. 다행히 다리미는 식어 있었다."),M("……이모가 왜 늘 '불 조심'을 입에 달고 살았는지 알 것 같다."));
+      out.push(M("팻말을 '영업중'으로 돌리자. 도윤이가 곧 올 거다."));
+    }
+    return out;
+  }
+  if(!isClose()) return [M("아직 영업 중이야.")];
+  const left=[]; if(!S.cash)left.push("정산"); if(!S.ironOff)left.push("다리미 코드");
+  return [
+    left.length?M(`${left.join(", ")}…… 아직 안 한 게 있는데. 뭐, 괜찮겠지.`):null,
+    N("딸깍. 형광등이 꺼진다. 가게 안이 파랗게 어두워진다."),
+    DO(()=>{S.lightsOff=true;})];
+}
+function entranceRun(){
+  if(S.phase==="d1_open"||S.phase==="d2_open"){
+    if(S.lightsOff) return [M("어두워서 아무것도 안 보인다. 불부터 켜자.")];
+    return [N("출입문에 걸린 팻말을 뒤집는다. '준비중'에서 '영업중'으로."),DO(()=>{S.signOpen=true;})].concat(S.phase==="d1_open"?dropoffSteps():pickupSteps());
+  }
+  if(isClose()&&!S.lightsOff) return [M("불부터 끄고 나가자.")];
+  return [{t:"goto",loc:"street"}];
+}
+function storageDoorRun(){
+  if(S.phase!=="d2_close") return [M("'손대지 말 것.' 이모 글씨다."),M(S.phase==="d2_invest"?"지금은 단추가 먼저야.":"……아직은 열 용기가 안 난다.")];
+  return [{t:"goto",loc:"storage"}];
+}
+function washerRun(){
+  if(S.phase!=="d1_wash") return [M(isClose()?"오늘 빨래는 끝. 문을 살짝 열어 말려 둔다.":"이모가 30년 쓴 세탁기. 소리가 요란하다.")];
+  if(S.washed) return [M("세탁은 끝났다.")];
+  if(!S.carry) return [M("먼저 카운터에서 저고리를 가져와야지.")];
+  return [
+    N("저고리를 세탁망에 넣어 세탁기에 넣는다. 코스를 고른다."),
+    CHOICE([
+      {label:"섬세 코스 · 찬물",then:[M("한복이니까 살살.")]},
+      {label:"표준 코스 · 온수",set:()=>{S.washBad=true;},then:[M("빨리 끝나는 게 좋지 뭐.")]}
+    ]),
+    N("덜컹, 덜컹. 세탁기가 돌아가기 시작한다."),
+    SKIP("한 시간 뒤"),
+    N("삐- 삐-. 세탁이 끝났다. 저고리를 꺼낸다."),
+    ()=>S.washBad?M("……천이 좀 뻣뻣해진 것 같은데. 괜찮겠지?"):M("구김 하나 없이 깨끗하다."),
+    DO(()=>{S.washed=true;}),
+    M("이제 다리미대에서 다리자.")];
+}
+function ironRun(){
+  if(isClose()) return S.ironOff?[M("코드는 뽑았다.")]:[N("다리미 전원 코드를 뽑는다. 이모가 늘 코드를 두 번씩 확인하던 게 생각난다."),DO(()=>{S.ironOff=true;})];
+  if(S.phase==="d1_wash"&&S.washed&&!S.ironed) return [
+    N("다리미대에 저고리를 편다. 구김이 여기저기 잡혀 있다."),
+    M("동정은 약하니까 조심. 이모는 늘 낮은 온도로 천천히 다렸지."),
+    {t:"mini",kind:"iron"},
+    ()=>S.ironBad?M("앗…… 동정 끝이 누렇게 눌었다. 티 안 나겠지?"):M("구김 하나 없이 반듯하다. 이모가 하던 대로."),
+    DO(()=>{S.ironed=true;}),
+    M("다 됐다. 카운터 행거에 걸어 두자.")];
+  if(S.phase==="d1_wash"&&!S.washed) return [M("빨래부터 해야지.")];
+  return [M("이모 다리미는 무겁다. 30년 손때가 묻어 손잡이가 반질반질하다.")];
+}
+function filterRun(){
+  if(S.phase==="d2_invest"){
+    if(S.got.has("filter")) return [M("플라스틱 단추 하나뿐이었지.")];
+    return [
+      N("세탁기 문 아래 필터를 돌려 연다. 실보풀, 동전 하나, 흰 플라스틱 단추 하나."),
+      S.filterSeen?M("어제 봤을 때랑 똑같다. 자개단추는 처음부터 없었어."):M("세탁하다 떨어진 단추는 다 여기 걸리는데. 플라스틱 단추는 있고 자개단추는 없어."),
+      CARD("filter")];
+  }
+  if(S.washed&&!S.filterSeen) return [N("필터를 열어 본다. 실보풀, 동전 하나, 흰 플라스틱 단추 하나."),M("다른 손님 거겠지. 저고리 단추는 아니네."),DO(()=>{S.filterSeen=true;})];
+  return [M("세탁기 필터. 떨어진 단추는 전부 여기 걸린다고 이모가 그랬다.")];
+}
+function enterHook(loc){
+  if(loc==="counter"&&S.phase==="d1_street") return [DO(()=>{S.phase="d1_open";}),N("셔터를 올린 가게 안은 아직 컴컴하다. 바깥 빛이 유리문으로 조금 들어올 뿐."),M("스위치가 출입문 옆에 있었지.")];
+  if(loc==="counter"&&S.phase==="d2_street") return [DO(()=>{S.phase="d2_open";}),M("불부터 켜자.")];
+  if(loc==="storage"&&!S.storageSeen) return [
+    DO(()=>{S.storageSeen=true;}),
+    N("창고 문을 연다. '손대지 말 것' 종이가 팔랑인다."),
+    N("안은 캄캄하다. 휴대폰 손전등을 켠다."),
+    M("시장님까지 창고 얘기를 하시네. 정리는 못 해도, 뭐가 있는지는 알아야지.")];
+  return [];
+}
+
+/* =========================================================
+   RESOLUTION (built from what the player chose)
+   ========================================================= */
+function resolveSteps(){
+  const s=[SC("도윤이의 고백","counter",["봉순","도윤"])];
+  if(S.hurt) s.push(N("도윤이는 할머니 치마 뒤에 숨어 서하와 눈을 마주치지 않는다."),Y("봉순","애가 울면서 들어왔다. 뭘 어떻게 물어봤길래.","angry"));
+  else s.push(N("서하가 봉순 할머니를 부른다. 할머니와 도윤이가 카운터 앞에 선다."));
+  s.push(Y("서하","할머니, 어제 저고리 맡기러 왔을 때부터 단추는 다섯 개였어요. 제 장부에 그렇게 적혀 있어요."));
+  if(S.glass) s.push(Y("서하","카운터 밑에서 이 유리구슬도 나왔어요. 도윤이 거 맞지?"),Y("도윤","……어. 그거 찾고 있었는데.","o"));
+  s.push(Y("봉순","……도윤아.","o"));
+  if(S.hurt) s.push(N("자개단추는 이미 서하 손에 있다. 서하가 단추를 카운터에 내려놓는다."));
+  else s.push(N("도윤이가 주머니에서 자개단추를 꺼내 카운터에 올린다. 구슬 두 개가 같이 굴러 나온다."));
+  s.push(Y("도윤","……할아버지 단추가 제일 반짝거려서. 이거 있으면 할아버지랑 같이 노는 거 같아서.","sad"),
+    N("봉순 할머니의 손이 멈춘다. 잠깐의 정적."));
+  if(S.trust>=1&&!S.hurt) s.push(Y("봉순","……그랬구나. 할아버지 보고 싶었구나.","sad"),N("할머니가 도윤이 머리에 손을 얹는다. 그때 문종이 딸랑 울린다."));
+  else s.push(Y("봉순","이 녀석이, 그래도 말도 없이 가위를 대면……","angry"),N("할머니 목소리가 다시 높아지려는 순간, 문종이 딸랑 울린다."));
+  s.push(
+    SC("시장님의 방문","counter",["봉순","도윤"]),
+    CAST("봉순","박상철","도윤","남궁철"),
+    N("회색 코트에 '윤슬시장 박상철' 명찰. 뒤로 말없는 수행비서가 문 옆에 선다."),
+    Y("박상철","아이고, 봉순 여사님. 아침부터 목소리가 골목 끝까지 들립니다."),
+    Y("봉순","시장님! 아니 이 녀석이 글쎄……","o"),
+    N("박상철이 도윤이 앞에 쪼그려 앉는다."),
+    Y("박상철","할아버지 물건이 갖고 싶었구나. 나도 어릴 때 아버지 넥타이핀을 몰래 차고 학교 갔다가 혼쭐났지."),
+    Y("박상철","여사님, 오늘은 이 녀석 봐주시죠. 단추는 사장님이 달아 주실 거고. 그렇죠?"),
+    CHOICE([
+      {label:"\"네, 서비스로 달아 드릴게요.\"",set:()=>{S.trust++;},then:()=>S.hurt?[
+        Y("봉순","……그래, 고맙다.","flat"),Y("도윤","……흥.","angry"),M("도윤이는 아직 나를 안 본다.")]:[
+        Y("봉순","……정숙이 조카 맞네.","smile"),EMO("도윤","smile")]},
+      {label:"\"도윤이가 할머니께 먼저 사과하면요.\"",then:()=>S.hurt?[
+        Y("도윤","누나도 나한테 소리쳤잖아! 도둑이라고 했잖아!","angry"),
+        N("가게 안이 조용해진다. 시장이 흥미롭다는 듯 서하를 본다."),
+        CHOICE([
+          {label:"\"……그래. 누나가 먼저 미안해.\"",set:()=>{S.hurt=false;S.repaired=true;S.trust++;},then:[
+            Y("도윤","……잘못했어요. 할머니도, 누나도.","sad"),
+            N("봉순 할머니가 도윤이의 머리를 거칠게 쓰다듬는다."),EMO("봉순","smile"),
+            Y("박상철","허허, 사장님이 어른이시네.","smile")]},
+          {label:"\"그건 네가 말을 안 해서잖아.\"",set:()=>{S.trust--;S.doyunLeft=true;},then:[
+            Y("도윤","……몰라!","sad"),
+            N("도윤이가 가게 밖으로 뛰쳐나간다."),
+            CAST("봉순","박상철","남궁철"),
+            Y("봉순","……애한테 너무하는구나.","angry")]}
+        ])]:[
+        Y("도윤","……잘못했어요.","sad"),
+        N("봉순 할머니가 도윤이의 머리를 거칠게 쓰다듬는다."),EMO("봉순","smile"),EMO("도윤","smile")]}
+    ]),
+    N("분위기가 누그러진다. 박상철이 일어나 가게 안을 천천히 둘러본다. 코르크 보드, 다리미, 그리고 '손대지 말 것' 종이가 붙은 창고 문."),
+    Y("박상철","정숙 여사님 일은 정말 안됐습니다. 이 가게가 이 동네 기억 창고였지요.","flat"),
+    Y("박상철","가게 앞에 시청 안내문 붙은 거 보셨죠? 재개발 구역 상가들 창고 정리를 이번에 시에서 무상으로 도와드리고 있어요.","smile"),
+    Y("박상철","정숙 여사님 창고면 오래된 물건이 산더미일 텐데. 신청만 하시면 제가 차 먼저 보내 드릴게.","smile"),
+    ()=>S.readNotice?M("셔터 옆에 붙어 있던 그 안내문이구나. 시장님이 직접 챙기시네."):M("안내문? 셔터 옆에 뭐가 붙어 있었나."),
+    CHOICE([
+      {label:"\"네, 이번 주 안에 정리하려고요.\"",set:()=>{S.mayor="soon";},then:[
+        Y("박상철","잘됐네요. 그럼 모레 오전에 차 보내 드리죠. 제가 직접 말해 둘게요.","smile"),
+        M("모레? 너무 빠른데……"),
+        Y("서하","아, 네…… 감사합니다.")]},
+      {label:"\"아직 손도 못 댔어요.\"",set:()=>{S.mayor="later";},then:[
+        Y("박상철","천천히 하세요, 천천히. 이 동네 일이면 뭐든.")]},
+      {label:"\"이모 물건이라 당분간 그대로 두려고요.\"",set:()=>{S.mayor="keep";},then:[
+        EMO("박상철","flat"),
+        N("시장의 웃음이 반 박자 늦게 돌아온다."),
+        Y("박상철","……그러시군요. 정 필요하면 연락 주세요.","flat"),
+        N("문 옆의 수행비서가 처음으로 창고 문 쪽을 똑바로 쳐다본다.")]}
+    ]),
+    ITEM("p_mayor",true),ITEM("bizcard"),
+    N("명함 한 장이 카운터에 놓인다. 두 사람이 나간다."),
+    N("서하는 그 자리에서 여섯 번째 자개단추를 달아 드린다. 바늘을 쥔 손끝이 조금 떨린다."),
+    ()=>S.mayor==="keep"?null:N("문이 닫히기 직전, 수행비서의 눈길이 창고 문에 잠깐 머물렀다.")
+  );
+  s.push({t:"lazy",fn:()=>{
+    const out=[SC("돌아가는 길","front",(S.doyunLeft||S.hurt)?["봉순"]:["봉순","도윤"])];
+    if(S.trust>=1) out.push(
+      Y("봉순","저 양반이 이 골목 출신이라 이렇게 챙긴다니까. 재개발이다 뭐다 해도 우리 같은 사람들 신경 써 주는 건 시장님뿐이야.","smile"),
+      Y("봉순","단추 고맙다. 저녁에 멸치볶음 좀 갖다줄게. 정숙이가 좋아하던 거.","smile"));
+    else out.push(
+      Y("봉순","시장님이 저렇게 챙겨 주시는데, 너도 잘해라.","flat"),
+      Y("봉순","……단추는 고맙다.","flat"));
+    if(S.doyunLeft||S.hurt) out.push(N("도윤이는 골목 저편에서 이쪽을 한 번도 돌아보지 않는다."),M("사과할 방법을 생각해 둬야겠다."));
+    else out.push(CAST("도윤"),Y("도윤",S.repaired?"누나, 아까는…… 나도 미안해. 나 내일 또 와도 돼?":"누나, 나 내일 또 와도 돼?","smile"));
+    out.push(
+      DO(()=>{S.phase="d2_close";S.coatBack=false;}),
+      SKIP("해 질 녘","그날 오후"),
+      N("오후 내내 손님이 몇 명 더 다녀갔다. 어느새 창밖이 붉게 물든다."),
+      M("오늘도 문 닫을 준비를 하자."),
+      M("……그리고 창고. 오늘은 한번 열어 볼까."),
+      GO("counter"));
+    return out;
+  }});
+  return s;
+}
+
+/* =========================================================
+   END OF DAY
+   ========================================================= */
+function endDaySteps(){
+  const d=S.day;
+  const out=[N("쿵. 자물쇠를 채운다."),
+    SC("밤 · 서하의 방","home"),
+    N("가게 위층, 서하가 세 들어 사는 작은 방.")];
+  if(d===1){
+    out.push(
+      M(S.hung?"첫 손님 빨래를 혼자 다 해냈다. 이모, 나 잘했지?":"저고리 빨래를 다 못 끝냈다. 도윤이한테 뭐라고 하지……"),
+      S.ironBad?M("동정 누른 거…… 할머니가 눈치채시려나."):null,
+      S.washBad?M("뻣뻣해진 천도 좀 마음에 걸린다."):null,
+      S.askedCount?M("단추 물어봤을 때 도윤이 표정이 좀 이상했는데."):null,
+      !S.ironOff?M("……다리미 코드 뽑았던가? 기억이 안 난다."):null);
+  } else {
+    out.push(
+      S.trust>=1?N("문 앞에 반찬통이 놓여 있었다. 뚜껑 위 쪽지: '멸치볶음. 정숙이 거랑 똑같이 했다. 봉순'"):null,
+      S.trust>=1?M("……짜다. 그런데 맛있다. 이모 반찬 맛이다."):null,
+      S.trust<0?M("봉순 할머니한테 괜히 날을 세웠다. 내일 먼저 인사드려야지."):null,
+      (S.hurt||S.doyunLeft)?M("도윤이 우는 얼굴이 자꾸 생각난다. 내일 구슬 하나 사 들고 가 볼까."):S.repaired?M("서로 미안하다고 했으니까, 내일은 괜찮겠지."):M("내일 또 오겠다던 도윤이. 가게가 덜 조용하겠네."),
+      S.mayor==="soon"?SYS("문자 · [윤슬시청] 폐기물 수거 차량 예약 안내: 11월 12일(목) 오전 10시, 윤슬세탁소"):null,
+      S.mayor==="soon"?M("모레 오전 10시. 벌써 예약이 잡혔다고?"):null,
+      S.mayor==="keep"?M("시장님은 왜 그렇게 창고 얘기를 하셨을까. 웃음이 늦게 돌아오던데."):null,
+      S.dust?M("창고의 그 빈 칸. 누가, 언제, 뭘 꺼내 간 걸까."):null,
+      (S.inv.includes("letter")||S.inv.includes("bizcard"))?MENU("night"):null,
+      S.took2006?M("0417번의 주인. 해주. 누굴까……"):M(S.storageSeen?"창고는 결국 제대로 못 봤다. 내일 다시 보자.":"'손대지 말 것'이라고 써 붙인 창고. 뭐가 있길래."));
+  }
+  out.push(
+    N("불을 끄자, 창밖 등대 불빛이 천장을 천천히 쓸고 지나간다."),
+    {t:"daycard",small:d+"일째 끝",big:(d+1)+"일째",sub:DATES[d+1]},
+    {t:"newday",day:d+1});
+  return out;
+}
+function day3Steps(){
+  const ok=!(S.hurt||S.doyunLeft);
+  return [
+    {t:"chapter",tag:"CH.02",title:"월요일의 꽃다발"},
+    DO(()=>{S.shutterUp=true;curBg=null;}),
+    SC("3일째 · "+DATES[3],"front",ok?["도윤"]:[]),
+    N("아침. 셔터를 올린다. 어제보다는 조금 덜 삐걱거린다."),
+    ok?Y("도윤",S.repaired?"누나, 어제는…… 고마웠어. 학교 다녀올게!":"누나! 학교 가기 전에 들렀어. 다녀올게!","smile"):M("골목 계단이 비어 있다. 도윤이는 오지 않았다."),
+    S.trust<0?N("봉순반찬 셔터는 벌써 올라가 있다. 할머니는 이쪽을 보지 않는다."):N("봉순반찬에서 된장 냄새가 넘어온다. 할머니가 국자를 든 채 손을 흔든다."),
+    S.mayor==="soon"?M("폐기물 차량은 내일 오전 10시. 그 전에 창고를 다 봐야 해."):null,
+    !S.took2006?M("창고는 아직 그대로다. '손대지 말 것.' 오늘은 꼭 열어 보자."):null,
+    CAST("여름"),
+    N("꽃집 사장님이 흰 국화 한 다발을 안고 다가온다."),
+    Y("여름","사장님, 안녕하세요. 부탁드릴 게 있어서요. 조금…… 이상한 부탁이에요.","flat"),
+    SYS("2장 「월요일의 꽃다발」은 준비 중입니다. 메뉴(≡)의 '로비'에서 처음부터 다시 하거나, 나중에 '이어서'로 이 장면부터 볼 수 있어요."),
+    {t:"stop"}
+  ];
+}
+
+/* =========================================================
+   ENGINE
+   ========================================================= */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let queue=[],mode="line",typing=null,full="",history,emo,cast,curBg,curLoc=null,lastLoc="counter",hintIdx,nb,newItems,fit="slice";
+
+function resetState(){
+  S={day:1,phase:"d1_street",trust:0,hurt:false,repaired:false,doyunLeft:false,doyunGone:false,wary:false,askedMarbles:false,heard:false,
+     glass:false,sawDate:false,mayor:"later",dust:false,light:false,took2006:false,key:false,diary:false,marbleRoute:"",
+     shutterUp:false,lightsOff:true,signOpen:false,readNotice:false,cash:false,ironOff:false,cashPrev:true,ironOffPrev:true,
+     carry:false,washed:false,ironed:false,hung:false,gave:false,coatBack:false,washBad:false,ironBad:false,askedCount:false,filterSeen:false,
+     peek:false,metBong:false,metFlower:false,seenDoyun:false,storageSeen:false,
+     got:new Set(),inv:[],itemDay:{},cardDay:{},read:{}};
+}
+
+function tagBg(){
+  const svg=$("bg").querySelector("svg"); if(!svg)return;
+  const ns="http://www.w3.org/2000/svg", g=document.createElementNS(ns,"g"); g.id="bgroot";
+  [...svg.childNodes].forEach(n=>{ if(!(n.nodeName&&n.nodeName.toLowerCase()==="defs")) g.appendChild(n); });
+  svg.appendChild(g);
+}
+function setFit(f){ fit=f; ["bg"].forEach(id=>{const b=$(id).querySelector("svg"); if(b)b.setAttribute("preserveAspectRatio","xMidYMid "+f);}); }
+function setBg(k){
+  if(curBg!==k){ curBg=k; const b=$("bg"); b.innerHTML=BG[k](); tagBg(); b.classList.remove("bg-fade"); void b.offsetWidth; b.classList.add("bg-fade"); }
+  setFit(fit);
+  $("dark").hidden=(k!=="storage"); updateDark();
+  $("fx").innerHTML=k==="storage"?`<polygon points="0,96 30,104 30,800 0,800" fill="#F2CF86" opacity=".55"/><polygon points="30,104 70,140 90,800 30,800" fill="#F2CF86" opacity=".12"/>`:"";
+}
+function setTint(t){ const sc=$("scene"); sc.classList.remove("t-night","t-off","t-dusk"); if(t)sc.classList.add("t-"+t); }
+function tintFor(loc){
+  if(!S)return "";
+  if(loc==="street"||loc==="alley") return isClose()?"night":"";
+  if(loc==="counter"||loc==="workshop") return S.lightsOff?"off":"";
+  return "";
+}
+function updateDark(){ const d=$("dark"); d.style.setProperty("--r",S&&S.light?"340px":"130px"); d.style.setProperty("--a",S&&S.light?".5":".95"); }
+function setCast(list){ const prev=cast; cast=list.slice(); drawCast(null,prev); }
+function drawCast(speaker,prev){
+  const box=$("cast"); box.innerHTML="";
+  const front=cast.filter(k=>!CHARS[k].back), back=cast.filter(k=>CHARS[k].back);
+  const pos=front.length===1?[50]:front.length===2?[32,68]:front.length===3?[20,50,78]:[14,38,62,86];
+  const add=(k,left,isBack)=>{
+    const d=document.createElement("div"); d.className="fig"+(isBack?" back":"");
+    if(prev&&!prev.includes(k))d.classList.add("enter");
+    const c=CHARS[k]; d.style.left=left+"%"; d.style.height=(isBack?c.scale*72:c.scale*88)+"%"; d.style.zIndex=isBack?1:2;
+    if(speaker&&!isBack){ if(k===speaker)d.classList.add("talk"); else d.classList.add("dim"); }
+    d.innerHTML=figSVG(k,emo[k]); box.appendChild(d);
+  };
+  back.forEach(k=>add(k,90,true));
+  front.forEach((k,i)=>add(k,pos[i],false));
+}
+function chip(text){ const c=$("chip"); c.textContent=text; c.classList.add("on"); clearTimeout(chip.t); chip.t=setTimeout(()=>c.classList.remove("on"),2200); }
+function toast(text){ const t=$("toast"); t.textContent=text; t.classList.add("on"); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove("on"),2800); }
+function coreCount(){ return S?CORE.filter(k=>S.got.has(k)).length:0; }
+function nbReady(){ return false; }
+function updateCount(){ $("menu-dot").hidden=!(newItems||nbReady()); }
+function josa(w,a,b){
+  const ch=String(w).trim().slice(-1); const dig={"0":a,"1":a,"2":b,"3":a,"4":b,"5":b,"6":a,"7":a,"8":a,"9":b};
+  if(dig[ch])return dig[ch];
+  const c=ch.charCodeAt(0); if(c<0xAC00||c>0xD7A3)return a+"("+b+")";
+  return (c-0xAC00)%28?a:b;
+}
+function notify(kind,label,text){
+  const box=$("notes"); const n=document.createElement("div"); n.className="note";
+  n.innerHTML=`<span class="nt nt-${kind}">${esc(label)}</span>${esc(text)}`;
+  box.appendChild(n); while(box.children.length>3)box.firstChild.remove();
+  setTimeout(()=>{n.classList.add("out");setTimeout(()=>n.remove(),400);},3200);
+}
+function addItem(id,quiet){
+  if(S.inv.includes(id))return; S.inv.push(id); S.itemDay[id]=S.day; newItems=true; updateCount();
+  const it=ITEMS[id]; if(quiet||!it)return;
+  const nm=it.noteName||it.n;
+  if(it.cat==="thing") notify("thing",it.label||"소지품",`${nm}${josa(nm,"을","를")} ${it.verb||"챙겼다"}`);
+  else if(it.cat==="diary") notify("diary",it.label||"수첩",`${nm}${josa(nm,"을","를")} ${it.verb||"손에 넣었다"}`);
+  else if(it.cat==="people") notify("people","인물",`${nm}${josa(nm,"을","를")} 알게 됐다`);
+  else notify(it.verb?"thing":"memo",it.label||"기록",`${nm}${josa(nm,"을","를")} ${it.verb||"기록했다"}`);
+}
+function showBox(kind,name,text){
+  $("choices").hidden=true; $("box").hidden=false;
+  $("box").className="box "+kind;
+  const nm=$("name");
+  if(kind==="say"||kind.startsWith("read")){nm.hidden=false;nm.textContent=name;} else nm.hidden=true;
+  full=text; $("more").hidden=true;
+  const txt=$("txt"); clearInterval(typing); typing=null;
+  if(RM&&speed!=="slow"){txt.textContent=text;$("more").hidden=false;return;}
+  const sp=SPEEDS[speed]||SPEEDS.normal;
+  if(!sp.step){txt.textContent=text;$("more").hidden=false;return;}
+  let i=0; txt.textContent="";
+  typing=setInterval(()=>{ i+=sp.step; txt.textContent=text.slice(0,i); if(i>=text.length){clearInterval(typing);typing=null;$("more").hidden=false;} },sp.ms);
+}
+function finishType(){ clearInterval(typing); typing=null; $("txt").textContent=full; $("more").hidden=false; }
+function log(who,x,kind){ history.push({who,x,kind}); }
+
+function run(){
+  while(queue.length){
+    let s=queue.shift();
+    if(typeof s==="function")s=s();
+    if(!s)continue;
+    switch(s.t){
+      case "scene": leaveExplore(); setFit("slice"); setTint(""); $("scene-name").textContent=s.title; chip(s.title); setBg(s.bg); emo={}; setCast(s.cast); log("",s.title,"scene"); continue;
+      case "bg": setBg(s.bg); continue;
+      case "cast": setCast(s.cast); continue;
+      case "emo": emo[s.who]=s.e; drawCast(null); continue;
+      case "do": s.fn(); continue;
+      case "lazy": queue=resolve(s.fn).concat(queue); continue;
+      case "item": addItem(s.id,s.quiet); continue;
+      case "chapter": $("ch-tag").textContent=s.tag; $("ch-title").textContent=s.title; continue;
+      case "save": saveGame(s.cp); continue;
+      case "goto": queue=resolve(()=>enterHook(s.loc)).concat([GO(s.loc)],queue); continue;
+      case "newday": startDay(s.day); return;
+      case "narr": mode="line"; drawCast(null); showBox("narr","",s.x); log("",s.x,"narr"); return;
+      case "mono": mode="line"; drawCast(null); showBox("mono","",s.x); log("",s.x,"mono"); return;
+      case "sys": mode="line"; showBox("sys","",s.x); log("",s.x,"sys"); return;
+      case "say": mode="line"; if(s.e)emo[s.who]=s.e; drawCast(cast.includes(s.who)?s.who:null); showBox("say",s.who,s.x); log(s.who,s.x,"say"); return;
+      case "choice": showChoice(s); return;
+      case "menu": showMenu(s.id); return;
+      case "doc": { addItem(s.id,false); const it=ITEMS[s.id]; const lines=typeof it.read==="function"?it.read():(it.read||[]); queue=lines.map(l=>({t:"read",name:l[0],x:l[1],style:l[2]})).concat(queue); continue; }
+      case "read": mode="line"; drawCast(null); showBox("read "+s.style,s.name,s.x); log(s.name,s.x,"read"); return;
+      case "mini": startMini(s); return;
+      case "card": S.got.add(s.id); S.cardDay[s.id]=S.day; if(s.id==="glass")S.glass=true; newItems=true; updateCount(); log("",`단서 카드 획득 · ${cardOf(s.id).nm}`,"sys");
+        if(s.id!=="glass"&&coreCount()===4&&S.phase==="d2_invest") queue.unshift(M("단서가 다 모였다. 수첩에 정리해 보자."));
+        { const nm=cardOf(s.id).nm; notify("card",s.id==="glass"?"숨은 단서":"단서",`「${nm}」${josa(nm,"을","를")} 얻었다`); } continue;
+      case "explore": enterExplore(s.loc); return;
+      case "daycard": showDaycard(s); return;
+      case "stop": mode="stop"; $("more").hidden=true; return;
+    }
+  }
+}
+function advance(){
+  if(!$("sheet-inv").hidden||!$("sheet-log").hidden||!$("menu-panel").hidden)return;
+  if(mode==="line"){ if(typing){finishType();return;} run(); }
+  else if(mode==="doc"){ closeDoc(); run(); }
+  else if(mode==="daycard"){ $("daycard").hidden=true; mode="line"; run(); }
+}
+/* ---------- mini games ---------- */
+let mini=null;
+function endMini(){ const m=$("mini"); m.hidden=true; m.innerHTML=""; if(mini&&mini.raf)cancelAnimationFrame(mini.raf); mini=null; mode="line"; run(); }
+function startMini(s){
+  mode="mini"; $("box").hidden=true; $("choices").hidden=true;
+  if(s.kind==="shutter") startShutter(s.dir); else startIron();
+}
+function startShutter(dir){
+  S.peek=true; curBg=null; setBg("front"); setCast([]);
+  const m=$("mini"); m.className="mini shutter"; m.hidden=false;
+  m.innerHTML=`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid ${fit}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="shclip"><rect x="410" y="292" width="400" height="358"/></clipPath></defs><g id="shg" clip-path="url(#shclip)"></g><rect x="410" y="262" width="400" height="32" rx="4" fill="#7E8686"/><rect x="410" y="288" width="400" height="6" fill="#5E6666"/></svg><span class="mini-sr" aria-live="polite" id="mini-sr"></span>`;
+  const g=m.querySelector("#shg");
+  mini={kind:"shutter",dir,r:dir==="up"?0:1,shake:0,last:performance.now(),done:false,taps:0};
+  const draw=()=>{
+    const r=mini.r, bottom=292+358*(1-r), off=Math.sin(mini.shake*20)*mini.shake*4;
+    let h=""; for(let y=bottom-14;y>=292-14;y-=14) h+=`<rect x="410" y="${y+off}" width="400" height="12" fill="${Math.round((bottom-y)/14)%2?"#A3ABAA":"#B0B8B7"}"/>`;
+    if(r<0.995) h+=`<rect x="410" y="${bottom-8+off}" width="400" height="10" fill="#6E7676"/><rect x="580" y="${bottom-20+off}" width="60" height="12" rx="5" fill="#4E5656"/>`;
+    g.innerHTML=h;
+  };
+  const loop=t=>{
+    const dt=Math.min(.05,(t-mini.last)/1000); mini.last=t;
+    if(mini.dir==="up"&&mini.r>0&&mini.r<1) mini.r=Math.max(0,mini.r-0.16*dt);
+    mini.shake=Math.max(0,mini.shake-dt*4);
+    draw();
+    if(!mini.done&&((mini.dir==="up"&&mini.r>=1)||(mini.dir==="down"&&mini.r<=0))){
+      mini.done=true; S.shutterUp=mini.dir==="up"; S.peek=false;
+      setTimeout(()=>{ curBg=null; setBg("front"); endMini(); },250); return;
+    }
+    mini.raf=requestAnimationFrame(loop);
+  };
+  mini.raf=requestAnimationFrame(loop);
+}
+function shutterTap(){
+  if(!mini||mini.kind!=="shutter"||mini.done)return;
+  mini.taps++; mini.shake=1;
+  mini.r=mini.dir==="up"?Math.min(1,mini.r+0.075):Math.max(0,mini.r-0.21);
+  const sr=$("mini-sr"); if(sr)sr.textContent=Math.round((mini.dir==="up"?mini.r:1-mini.r)*100)+"%";
+}
+const WRINKLES=[[190,195],[240,212],[285,190],[560,196],[605,214],[640,198],[330,250],[350,290],[380,305],[430,280],[460,300],[480,250],[420,205],[330,200],[470,195],[400,320]];
+function startIron(){
+  const m=$("mini"); m.className="mini iron"; m.hidden=false;
+  m.innerHTML=`<div class="iron-wrap">
+    <div class="iron-top"><div class="temp" role="group" aria-label="다리미 온도"><button type="button" data-t="low" aria-pressed="true">낮은 온도</button><button type="button" data-t="high" aria-pressed="false">높은 온도</button></div><div class="iron-bar" aria-hidden="true"><i id="iron-fill"></i></div></div>
+    <svg id="iron-svg" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg" role="application" aria-label="다리미판. 끌어서 다리세요. 방향키로 움직이고 스페이스를 누르고 있으면 다려집니다." tabindex="0">
+      <defs><pattern id="ibStripe" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#EAE3D2"/><path d="M0 24 L24 0" stroke="#DCD3BE" stroke-width="5"/></pattern></defs>
+      <rect width="800" height="480" fill="#56666A"/>
+      <path d="M40 240 Q40 120 160 110 L690 128 Q780 150 780 240 Q780 330 690 352 L160 370 Q40 360 40 240Z" fill="url(#ibStripe)" stroke="#B7AE9C" stroke-width="5"/>
+      <path d="M150 175 L300 165 Q400 150 500 165 L650 175 L656 238 L500 230 L505 322 Q400 342 295 322 L300 230 L144 238 Z" fill="#8FCBB8" stroke="#6FA894" stroke-width="3"/>
+      <path d="M345 163 L400 250 L455 163" fill="none" stroke="#F8F4EA" stroke-width="14" stroke-linejoin="round"/>
+      <path d="M400 250 q-40 14 -58 40 M400 250 q30 20 40 46" fill="none" stroke="#C8436A" stroke-width="8" stroke-linecap="round"/>
+      ${[0,1,2,3,4].map(i=>`<circle cx="${472+i*3}" cy="${190+i*14}" r="4.5" fill="#F4F1FA" stroke="#A9A2C9" stroke-width="1.2"/>`).join("")}
+      <g id="wr"></g><g id="scorch"></g><g id="steam"></g><g id="ironG"></g>
+    </svg>
+    <span class="mini-sr" aria-live="polite" id="mini-sr"></span></div>`;
+  const svg=m.querySelector("#iron-svg");
+  mini={kind:"iron",temp:"low",press:false,pos:{x:400,y:420},prev:{x:400,y:420},dwell:0,collar:0,last:performance.now(),w:WRINKLES.map(p=>({x:p[0],y:p[1],f:0})),sc:[],done:false,hiss:0};
+  m.querySelectorAll("[data-t]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();mini.temp=b.dataset.t;m.querySelectorAll("[data-t]").forEach(x=>x.setAttribute("aria-pressed",x===b));svg.focus({preventScroll:true});}));
+  const toPt=e=>{const c=svg.getScreenCTM(); if(!c)return mini.pos; const p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; const q=p.matrixTransform(c.inverse()); return {x:Math.max(40,Math.min(760,q.x)),y:Math.max(60,Math.min(440,q.y))};};
+  svg.addEventListener("pointerdown",e=>{e.stopPropagation(); mini.press=true; mini.pos=toPt(e); try{svg.setPointerCapture(e.pointerId);}catch(_){}});
+  svg.addEventListener("pointermove",e=>{ if(mini)mini.pos=toPt(e); });
+  const up=()=>{ if(mini)mini.press=false; };
+  svg.addEventListener("pointerup",up); svg.addEventListener("pointercancel",up);
+  svg.addEventListener("click",e=>e.stopPropagation());
+  setTimeout(()=>svg.focus({preventScroll:true}),50);
+  const collarD=p=>{ const seg=(a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((p.x-a[0])*dx+(p.y-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(p.x-a[0]-t*dx,p.y-a[1]-t*dy);}; return Math.min(seg([345,163],[400,250]),seg([400,250],[455,163])); };
+  const loop=t=>{
+    if(!mini||mini.kind!=="iron")return;
+    const dt=Math.min(.05,(t-mini.last)/1000); mini.last=t;
+    const sp=Math.hypot(mini.pos.x-mini.prev.x,mini.pos.y-mini.prev.y)/Math.max(dt,.001); mini.prev={...mini.pos};
+    const hot=mini.temp==="high";
+    if(mini.press){
+      mini.w.forEach(w=>{ if(Math.hypot(w.x-mini.pos.x,w.y-mini.pos.y)<60) w.f=Math.min(1,w.f+dt*(hot?2.2:0.95)); });
+      if(hot){
+        if(sp<40)mini.dwell+=dt; else mini.dwell=Math.max(0,mini.dwell-dt*2);
+        if(collarD(mini.pos)<24)mini.collar+=dt;
+        if(mini.dwell>0.8||mini.collar>0.45){
+          if(!mini.sc.some(s=>Math.hypot(s.x-mini.pos.x,s.y-mini.pos.y)<50)) mini.sc.push({...mini.pos});
+          mini.dwell=0; mini.collar=0; S.ironBad=true; mini.hiss=1;
+        }
+      }
+    }
+    mini.hiss=Math.max(0,mini.hiss-dt*1.5);
+    const prog=mini.w.reduce((a,w)=>a+w.f,0)/mini.w.length;
+    svg.querySelector("#wr").innerHTML=mini.w.map(w=>w.f>=1?"":`<path d="M${w.x-20} ${w.y} q10 -8 20 0 t20 0" fill="none" stroke="#4F8C77" stroke-width="3.5" stroke-linecap="round" opacity="${(1-w.f).toFixed(2)}"/>`).join("");
+    svg.querySelector("#scorch").innerHTML=mini.sc.map(s=>`<ellipse cx="${s.x+8}" cy="${s.y}" rx="30" ry="18" fill="#8A5A2B" opacity=".45"/>`).join("");
+    const p=mini.pos, pr=mini.press;
+    svg.querySelector("#steam").innerHTML=pr?[0,1,2].map(i=>`<circle cx="${p.x+62+i*10}" cy="${p.y-14-i*16-((t/8)%16)}" r="${7+i*3}" fill="#fff" opacity="${.35-i*.09}"/>`).join(""):"";
+    svg.querySelector("#ironG").innerHTML=`<g transform="translate(${p.x} ${p.y})"><ellipse cx="6" cy="${pr?6:16}" rx="60" ry="${pr?22:26}" fill="#000" opacity="${pr?.18:.12}"/><g transform="translate(0 ${pr?0:-8})"><path d="M-52 -26 L20 -26 Q60 -26 64 0 Q60 26 20 26 L-52 26 Z" fill="#C9D3D8" stroke="#7C8A90" stroke-width="3"/><rect x="-40" y="-11" width="62" height="22" rx="11" fill="#2F4A52"/><circle cx="34" cy="0" r="6" fill="${hot?"#E0463C":"#E8B04A"}"/></g>${mini.hiss>0?`<text x="0" y="-44" text-anchor="middle" font-family="Gowun Batang,serif" font-size="26" font-weight="700" fill="#B03A48" opacity="${mini.hiss.toFixed(2)}">치익!</text>`:""}</g>`;
+    const fill=$("iron-fill"); if(fill)fill.style.width=Math.round(prog*100)+"%";
+    if(prog>=1&&!mini.done){ mini.done=true; const sr=$("mini-sr"); if(sr)sr.textContent="다림질 완료"; setTimeout(endMini,650); return; }
+    mini.raf=requestAnimationFrame(loop);
+  };
+  mini.raf=requestAnimationFrame(loop);
+}
+function miniKey(e){
+  if(!mini)return false;
+  if(mini.kind==="shutter"){ if(e.type==="keydown"&&(e.key===" "||e.key==="Enter")){ e.preventDefault(); if(!e.repeat)shutterTap(); return true; } return false; }
+  const step=22, k=e.key;
+  if(e.type==="keydown"){
+    if(k==="ArrowLeft")mini.pos.x=Math.max(40,mini.pos.x-step); else if(k==="ArrowRight")mini.pos.x=Math.min(760,mini.pos.x+step);
+    else if(k==="ArrowUp")mini.pos.y=Math.max(60,mini.pos.y-step); else if(k==="ArrowDown")mini.pos.y=Math.min(440,mini.pos.y+step);
+    else if(k===" "){ mini.press=true; } else return false;
+    e.preventDefault(); return true;
+  }
+  if(e.type==="keyup"&&k===" "){ mini.press=false; e.preventDefault(); return true; }
+  return false;
+}
+function startDay(day){
+  S.day=day; S.phase="d"+day+"_street";
+  S.cashPrev=S.cash; S.ironOffPrev=S.ironOff; S.cash=false; S.ironOff=false; S.lightsOff=true; S.signOpen=false; S.shutterUp=false; S.light=false;
+  curBg=null;
+  queue=morningSteps(day).concat(queue);
+  saveGame("day"); mode="line"; run();
+}
+
+function showChoice(s){
+  mode="choice"; $("more").hidden=true;
+  const box=$("choices"); box.innerHTML=""; box.hidden=false;
+  s.opts.forEach(o=>{
+    const b=document.createElement("button"); b.className="opt"; b.type="button"; b.textContent=o.label;
+    b.addEventListener("click",e=>{ e.stopPropagation(); box.hidden=true; log("",o.label,"pick"); if(o.set)o.set(); queue=resolve(o.then).concat(queue); mode="line"; run(); });
+    box.appendChild(b);
+  });
+  const f=box.querySelector("button"); if(f)f.focus({preventScroll:true});
+}
+function showMenu(id){
+  mode="choice"; $("more").hidden=true;
+  const m=MENUS[id]; S.read[id]=S.read[id]||[];
+  const box=$("choices"); box.innerHTML=""; box.hidden=false;
+  box.insertAdjacentHTML("beforeend",`<span class="menu-title">${esc(m.title)}</span>`);
+  m.opts.filter(o=>!o.show||o.show()).forEach(o=>{
+    const read=S.read[id].includes(o.id), lab=typeof o.label==="function"?o.label():o.label;
+    const b=document.createElement("button"); b.className="opt"+(read?" read":""); b.type="button";
+    b.innerHTML=esc(lab)+(read?`<span class="chk">들은 이야기</span>`:"");
+    b.addEventListener("click",e=>{ e.stopPropagation(); box.hidden=true; log("",lab,"pick");
+      const ret=o.ret===undefined?true:(typeof o.ret==="function"?o.ret():o.ret);
+      if(!S.read[id].includes(o.id))S.read[id].push(o.id);
+      if(o.set&&!read)o.set();
+      queue=resolve(o.then).concat(ret?[MENU(id)]:[],queue); mode="line"; run(); });
+    box.appendChild(b);
+  });
+  const x=document.createElement("button"); x.className="opt exit"; x.type="button"; x.textContent=m.exit;
+  x.addEventListener("click",e=>{ e.stopPropagation(); box.hidden=true; log("",m.exit,"pick"); mode="line"; run(); });
+  box.appendChild(x);
+  const f=box.querySelector("button"); if(f)f.focus({preventScroll:true});
+}
+
+function openDoc(kicker,html,ctx){
+  if(ctx==="story")mode="doc";
+  const o=$("over-in");
+  o.innerHTML=`<span class="kicker">${esc(kicker)}</span>${html}<div class="acts"><button class="btn primary" type="button" id="doc-ok">${ctx==="story"?"계속 ▸":"닫기"}</button></div>`;
+  $("over").hidden=false; o.scrollTop=0;
+  $("doc-ok").addEventListener("click",e=>{ e.stopPropagation(); if(ctx==="story")advance(); else closeDoc(); });
+  $("doc-ok").focus({preventScroll:true});
+}
+function closeDoc(){ $("over").hidden=true; $("over-in").innerHTML=""; }
+function showDaycard(s){
+  mode="daycard"; $("box").hidden=true; $("choices").hidden=true;
+  const d=$("daycard");
+  d.innerHTML=`${s.small?`<span class="dc-small">${esc(s.small)}</span>`:""}<span class="dc-big">${esc(s.big)}</span>${s.sub?`<span class="dc-sub">${esc(s.sub)}</span>`:""}<span class="dc-tap">눌러서 계속</span>`;
+  d.hidden=false;
+}
+
+/* ---------- exploration ---------- */
+let nearId=null;
+function visibleSpots(L){ return L.spots.filter(s=>!s.show||s.show()); }
+function enterExplore(loc){
+  const moved=curLoc!==loc;
+  mode="explore"; curLoc=loc; lastLoc=loc; const L=LOCS[loc];
+  $("box").hidden=true; $("choices").hidden=true;
+  emo={}; setCast([]);
+  setFit("slice"); setBg(L.bg); setTint(tintFor(loc));
+  $("scene-name").textContent=L.title;
+  if(moved) chip(L.title);
+  drawHot(); saveGame("explore");
+}
+function leaveExplore(){ const h=$("hot"); h.setAttribute("hidden",""); h.innerHTML=""; nearId=null; h.style.cursor=""; $("btn-nb").hidden=true; }
+function drawHot(){
+  const L=LOCS[curLoc], svg=$("hot");
+  svg.setAttribute("class","hot");
+  const vs=visibleSpots(L);
+  let h=`<g id="props">${vs.map(s=>s.art?s.art():"").join("")}</g><g id="lift"></g>`;
+  vs.forEach(s=>{ h+=`<rect class="spot" data-id="${s.id}" x="${s.x}" y="${s.y}" width="${s.w}" height="${s.h}" rx="10" tabindex="0" role="button" aria-label="${esc(typeof s.label==="function"?s.label():s.label)}"/>`; });
+  svg.innerHTML=h; svg.removeAttribute("hidden"); nearId=null; updateNbBtn();
+}
+function svgPoint(e){ const svg=$("hot"), ctm=svg.getScreenCTM(); if(!ctm)return null; const p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; return p.matrixTransform(ctm.inverse()); }
+function spotAt(pt){
+  if(!pt||!curLoc)return null;
+  let best=null,bd=1e9,ba=1e9;
+  visibleSpots(LOCS[curLoc]).forEach(s=>{
+    const dx=Math.max(s.x-pt.x,0,pt.x-(s.x+s.w)), dy=Math.max(s.y-pt.y,0,pt.y-(s.y+s.h)), d=Math.hypot(dx,dy), a=s.w*s.h;
+    if(d<=24&&(d<bd-.5||(Math.abs(d-bd)<=.5&&a<ba))){best=s;bd=d;ba=a;}
+  });
+  return best;
+}
+function setNear(s){
+  const id=s?s.id:null; if(id===nearId)return; nearId=id;
+  const svg=$("hot"), lift=svg.querySelector("#lift"); if(!lift)return;
+  svg.style.cursor=s?"pointer":"";
+  if(!s){ lift.innerHTML=""; return; }
+  const cx=s.x+s.w/2, cy=s.y+s.h/2;
+  const inner=s.art&&s.art()?s.art():`<clipPath id="liftclip"><rect x="${s.x}" y="${s.y}" width="${s.w}" height="${s.h}" rx="10"/></clipPath><use href="#bgroot" clip-path="url(#liftclip)"/>`;
+  lift.innerHTML=`<g class="lifted" style="transform-origin:${cx}px ${cy}px">${inner}</g>`;
+  const g=lift.firstElementChild; requestAnimationFrame(()=>requestAnimationFrame(()=>g&&g.classList.add("on")));
+}
+function runSpot(id){
+  const L=LOCS[curLoc], s=L.spots.find(x=>x.id===id); if(!s||(s.show&&!s.show()))return;
+  if(s.go){ leaveExplore(); queue=resolve(()=>enterHook(s.go)).concat([GO(s.go)]); mode="line"; run(); return; }
+  const steps=resolve(s.run);
+  leaveExplore(); setFit("slice"); emo={}; setCast(s.cast||[]);
+  queue=steps.concat([()=>(mode==="explore"?null:GO(curLoc))]); mode="line"; run();
+}
+$("hot").addEventListener("pointermove",e=>{ if(mode!=="explore")return; setNear(spotAt(svgPoint(e))); });
+$("hot").addEventListener("pointerleave",()=>setNear(null));
+$("hot").addEventListener("click",e=>{
+  if(mode!=="explore")return; e.stopPropagation();
+  const r=e.target.closest&&e.target.closest(".spot"); const s=r?LOCS[curLoc].spots.find(x=>x.id===r.dataset.id):spotAt(svgPoint(e));
+  if(s)runSpot(s.id);
+});
+$("hot").addEventListener("focusin",e=>{ const r=e.target.closest(".spot"); if(r)setNear(LOCS[curLoc].spots.find(x=>x.id===r.dataset.id)); });
+$("hot").addEventListener("keydown",e=>{ const r=e.target.closest(".spot"); if(r&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); e.stopPropagation(); runSpot(r.dataset.id); } });
+function moveLight(x,y){ const d=$("dark"); d.style.setProperty("--lx",x+"px"); d.style.setProperty("--ly",y+"px"); }
+$("scene").addEventListener("pointermove",e=>{ if($("dark").hidden)return; const sr=$("scene").getBoundingClientRect(); moveLight(e.clientX-sr.left,e.clientY-sr.top); });
+$("scene").addEventListener("pointerdown",e=>{ if($("dark").hidden)return; const sr=$("scene").getBoundingClientRect(); moveLight(e.clientX-sr.left,e.clientY-sr.top); });
+
+/* ---------- objectives & hints ---------- */
+const LOCNAME={street:"가게 앞",counter:"카운터",workshop:"작업장",alley:"골목",storage:"창고"};
+function objective(){
+  const p=S.phase;
+  if(curLoc==="storage"&&p==="d2_close"){
+    if(!S.took2006) return {t:"연도별 장부를 살펴보자. (창고는 둘러보지 않고 나가도 된다)",loc:"storage",spot:"ledgers"};
+    if(!S.diary) return {t:"편지 봉투의 열쇠가 맞는 곳을 찾아보자.",loc:"storage",spot:"drawer"};
+    return {t:"창고에서 나가자.",loc:"storage",spot:"exit"};
+  }
+  if(p==="d1_open"||p==="d2_open") return S.lightsOff?{t:"출입문 옆 스위치로 불을 켜자.",loc:"counter",spot:"switch"}:{t:"출입문 팻말을 '영업중'으로 돌리자.",loc:"counter",spot:"entrance"};
+  if(/_street$/.test(p)) return S.shutterUp?{t:"가게 안으로 들어가자.",loc:"street",spot:"shop"}:{t:"셔터부터 올리자.",loc:"street",spot:"shop"};
+  if(p==="d1_wash"){
+    if(!S.carry&&!S.washed) return {t:"카운터의 저고리를 들고 작업장으로 가자.",loc:"counter",spot:"coat"};
+    if(!S.washed) return {t:"작업장 세탁기에 저고리를 넣자.",loc:"workshop",spot:"m1"};
+    if(!S.ironed) return {t:"작업장 다리미대에서 저고리를 다리자.",loc:"workshop",spot:"iron"};
+    return {t:"다 된 저고리를 카운터 행거에 걸자.",loc:"counter",spot:"hanger"};
+  }
+  if(p==="d2_pickup") return {t:"행거에 걸린 저고리를 도윤이에게 건네자.",loc:"counter",spot:"hanger"};
+  if(p==="d2_invest"){
+    const order=[["thread","counter","coat","저고리를 자세히 살펴보자."],["ledger","counter","book","어제 쓴 접수 장부를 다시 보자."],["filter","workshop","filter","세탁 중에 떨어졌다면 어디에 남았을까."],["marble","alley","doyun","도윤이를 찾아가 보자. 골목 쪽으로 갔다."]];
+    const miss=order.find(o=>!S.got.has(o[0]));
+    if(!miss) return {t:"단서가 모두 모였다. 오른쪽 아래 수첩을 펼쳐 정리해 보자."};
+    return {t:miss[3],loc:miss[1],spot:miss[2]};
+  }
+  if(isClose()){
+    if(!S.cash) return {t:"금전등록기를 정산하자.",loc:"counter",spot:"reg"};
+    if(!S.ironOff) return {t:"작업장 다리미 코드를 뽑자.",loc:"workshop",spot:"iron"};
+    if(curLoc!=="street"&&!S.lightsOff) return {t:"출입문 옆 스위치로 불을 끄자."+(S.phase==="d2_close"&&!S.storageSeen?" (창고를 둘러봐도 된다)":""),loc:"counter",spot:"switch"};
+    if(curLoc!=="street") return {t:"출입문으로 나가자.",loc:"counter",spot:"entrance"};
+    return {t:"셔터를 내리자.",loc:"street",spot:"shop"};
+  }
+  return {t:"주변을 둘러보자."};
+}
+function hint(){
+  if(!S||mode!=="explore"){ toast("조사 중에 쓸 수 있어요."); return; }
+  const o=objective();
+  toast(o.loc&&o.loc!==curLoc?`${o.t} (${LOCNAME[o.loc]})`:o.t);
+  if(o.loc!==curLoc||!o.spot)return;
+  const s=LOCS[curLoc].spots.find(x=>x.id===o.spot); if(!s)return;
+  const svg=$("hot"), cx=s.x+s.w/2, cy=s.y+s.h/2, r=Math.max(s.w,s.h)/2+14;
+  svg.insertAdjacentHTML("beforeend",`<circle class="hintring" cx="${cx}" cy="${cy}" r="${r}"/>`);
+  setTimeout(()=>{const c=svg.querySelector(".hintring"); if(c)c.remove();},3400);
+  if(!$("dark").hidden){ const ctm=svg.getScreenCTM(), sr=$("scene").getBoundingClientRect(); if(ctm){ const p=svg.createSVGPoint(); p.x=cx; p.y=cy; const q=p.matrixTransform(ctm); moveLight(q.x-sr.left,q.y-sr.top); } }
+}
+
+/* ---------- burger menu ---------- */
+function openMenuPanel(){
+  const p=$("menu-panel");
+  const where=S?`${S.day}일째 · ${DATES[S.day]||""}`:"로비";
+  const loc=S&&mode==="explore"&&curLoc?LOCNAME[curLoc]:(S?$("scene-name").textContent:"");
+  let h=`<div class="mp-head"><b>${esc(where)}</b><span>${esc(loc)}</span></div>`;
+  h+=`<button class="mp-item" type="button" data-mp="inv"${S?"":" disabled"}>소지품 ${newItems?'<span class="pip"></span>':""}</button>`;
+  h+=`<button class="mp-item" type="button" data-mp="log"${S?"":" disabled"}>기록</button>`;
+  h+=`<button class="mp-item" type="button" data-mp="hint"${S&&mode==="explore"?"":" disabled"}>힌트</button>`;
+  h+=`<button class="mp-item" type="button" data-mp="lobby">로비</button>`;
+  p.innerHTML=h; p.hidden=false; $("btn-menu").setAttribute("aria-expanded","true");
+  p.querySelectorAll("[data-mp]").forEach(b=>b.addEventListener("click",e=>{ e.stopPropagation(); closeMenuPanel(); const a=b.dataset.mp;
+    if(a==="inv")openInv(); else if(a==="log")openLog(); else if(a==="hint")hint(); else openLobby(); }));
+  const f=p.querySelector(".mp-item:not([disabled])"); if(f)f.focus({preventScroll:true});
+}
+function closeMenuPanel(){ $("menu-panel").hidden=true; $("btn-menu").setAttribute("aria-expanded","false"); }
+$("btn-nb").addEventListener("click",e=>{ e.stopPropagation(); openNotebook(); });
+$("btn-menu").addEventListener("click",e=>{ e.stopPropagation(); if($("menu-panel").hidden)openMenuPanel(); else closeMenuPanel(); });
+$("menu-panel").addEventListener("click",e=>e.stopPropagation());
+document.addEventListener("click",e=>{ if(!$("menu-panel").hidden&&!e.target.closest("#menu-panel")&&!e.target.closest("#btn-menu"))closeMenuPanel(); });
+
+/* ---------- notebook ---------- */
+const BLANKS=[
+  {n:"①",q:"언제 없어졌나",opts:["세탁하는 중","세탁소에 맡기기 전","찾아간 뒤"],ans:1,cards:["ledger","filter"],wrong:{
+    0:["봉순","그럼 그 세탁기 통 안에 있어야 할 거 아니냐?"],
+    2:["봉순","찾아오자마자 풀어 봤다니까! 도윤이가 들고 오는 동안 어디 갔겠냐?"]}},
+  {n:"②",q:"누가 가져갔나",opts:["서하","도윤이","봉순 할머니"],ans:1,cards:["marble","ledger"],wrong:{
+    0:["서하","나는 받아서 빨고 다렸을 뿐이야. 장부에도 처음부터 다섯 개라고 적어 뒀고."],
+    2:["봉순","내가 미쳤냐, 영감 단추를!"]}},
+  {n:"③",q:"왜 가져갔나",opts:["단추가 떨어질 것 같아서","구슬치기 왕구슬로 쓰려고","할머니를 골탕 먹이려고"],ans:1,cards:["marble","thread","glass"],wrong:{
+    0:["서하","그랬다면 할머니한테 드렸겠지. 주머니에, 그것도 구슬 사이에 넣어 두진 않았을 거야."],
+    2:["서하","도윤이 표정은 장난친 얼굴이 아니었어. 뭔가 갖고 싶었던 얼굴이지."]}}
+];
+const HINTS=["옷보다 먼저 장부를 봐라. 장부는 거짓말을 안 한다.","맡길 때 몇 개였는지 네가 직접 적어 놨잖니.","애들 주머니에는 그 애가 제일 아끼는 게 들어 있단다."];
+function nbInit(){ if(!nb) nb=BLANKS.map(()=>({opt:null,card:null,ok:false,fb:null})); }
+function updateNbBtn(){
+  const b=$("btn-nb"); const show=!!(S&&S.phase==="d2_invest"&&mode==="explore");
+  b.hidden=!show;
+  const solved=nb&&nb.every(s=>s.ok);
+  $("nb-dot").hidden=!(show&&coreCount()>=4&&!solved);
+}
+function openNotebook(){
+  if(!S||S.phase!=="d2_invest")return;
+  leaveExplore(); mode="note"; nbInit(); hintShown=false;
+  $("nbk").hidden=false; drawNotebook();
+  const c=$("nbk-close"); if(c)c.focus({preventScroll:true});
+}
+function closeNotebook(){ $("nbk").hidden=true; $("nbk").innerHTML=""; enterExplore(lastLoc); }
+let hintShown=false;
+function drawNotebook(){
+  const root=$("nbk");
+  const pr=root.querySelector(".nbk-page.right"), keep=pr?pr.scrollTop:0;
+  const cards=CORE.concat(["glass"]).filter(k=>S.got.has(k));
+  const all=nb.every(s=>s.ok);
+  const blank=i=>nb[i].ok?`<span class="nbk-fill">${esc(BLANKS[i].opts[BLANKS[i].ans])}</span>`:`<span class="nbk-blank">${BLANKS[i].n}</span>`;
+  const left=`<div class="nbk-date">11월 10일 (화)</div>
+    <h2 class="nbk-h">사건 · 사라진 단추</h2>
+    <p class="nbk-sentence${all?" solved":""}">단추는 ${blank(0)}에 이미 없었다.<br>가져간 사람은 ${blank(1)},<br>이유는 ${blank(2)}.</p>
+    <h3 class="nbk-sub">모은 단서 <span class="nbk-cnt">${Math.min(4,coreCount())}/4${S.got.has("glass")?" +1":""}</span></h3>
+    <ul class="nbk-clues">${cards.map(k=>`<li><b>${esc(cardOf(k).nm)}</b> ${esc(cardOf(k).ds)}</li>`).join("")}${coreCount()<4?`<li class="dim">……아직 더 있을 것 같다.</li>`:""}</ul>
+    <button class="nbk-sticky" type="button" id="nbk-hint">${hintShown?`<span class="who">이모라면</span>${esc(HINTS[(hintIdx-1+HINTS.length)%HINTS.length])}`:`<span class="who">막힐 땐</span>이모라면 뭐라고 했을까?`}</button>`;
+  const right=all?`<div class="nbk-done"><span class="nbk-bigstamp">해결</span><p>할머니랑 도윤이를 불러서<br>차근차근 이야기하자.</p><button class="nbk-go" type="button" id="nbk-go">해결하러 가기 →</button></div>`
+    :BLANKS.map((b,i)=>{ const s=nb[i];
+      if(s.ok) return `<div class="nbk-q ok"><span class="nbk-num">${b.n}</span>${esc(b.q)}? <span class="nbk-tick">${esc(b.opts[b.ans])} — ${esc(cardOf(s.card).nm)}</span></div>`;
+      return `<div class="nbk-q"><div class="nbk-qh"><span class="nbk-num">${b.n}</span>${esc(b.q)}?</div>
+        <div class="nbk-words">${b.opts.map((o,j)=>`<button class="nbk-word" type="button" data-q="${i}" data-o="${j}" aria-pressed="${s.opt===j}">${esc(o)}</button>`).join("")}</div>
+        <div class="nbk-why">근거로 붙일 단서</div>
+        <div class="nbk-tags">${cards.length?cards.map(k=>`<button class="nbk-tag" type="button" data-q="${i}" data-c="${k}" aria-pressed="${s.card===k}">${esc(cardOf(k).nm)}</button>`).join(""):`<span class="dim">아직 붙일 단서가 없다.</span>`}</div>
+        <div class="nbk-row"><button class="nbk-stamp" type="button" data-ok="${i}"${s.opt===null||s.card===null?" disabled":""}>확인</button>${s.fb?`<span class="nbk-fb">${s.fb}</span>`:""}</div></div>`; }).join("");
+  root.innerHTML=`<div class="nbk-book" role="dialog" aria-modal="true" aria-label="추리 수첩">
+    <button class="nbk-close" type="button" id="nbk-close">덮기</button>
+    <div class="nbk-page left">${left}</div><div class="nbk-spine" aria-hidden="true"></div><div class="nbk-page right">${right}</div></div>`;
+  const npr=root.querySelector(".nbk-page.right"); if(npr)npr.scrollTop=keep;
+  root.querySelectorAll(".nbk-word").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const s=nb[+b.dataset.q];s.opt=+b.dataset.o;s.fb=null;drawNotebook();}));
+  root.querySelectorAll(".nbk-tag").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const s=nb[+b.dataset.q];s.card=b.dataset.c;s.fb=null;drawNotebook();}));
+  root.querySelectorAll("[data-ok]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();check(+b.dataset.ok);}));
+  $("nbk-hint").addEventListener("click",e=>{e.stopPropagation();hintIdx++;hintShown=true;drawNotebook();});
+  $("nbk-close").addEventListener("click",e=>{e.stopPropagation();closeNotebook();});
+  const go=$("nbk-go"); if(go)go.addEventListener("click",e=>{e.stopPropagation();$("nbk").hidden=true;$("nbk").innerHTML="";S.phase="d2_resolve";queue=resolveSteps();mode="line";run();});
+}
+function check(i){
+  const b=BLANKS[i],s=nb[i];
+  if(s.opt!==b.ans){ const w=b.wrong[s.opt]; s.fb=`<b>${esc(w[0])}:</b> ${esc(w[1])}`; }
+  else if(!b.cards.includes(s.card)){ s.fb=`답은 맞는 것 같은데, '${esc(cardOf(s.card).nm)}'로는 설명이 안 돼. 다른 단서를 붙여 보자.`; }
+  else { s.ok=true; s.fb=null; }
+  drawNotebook();
+}
+
+/* ---------- inventory ---------- */
+let invTab="clue";
+function invTabs(){
+  const t=[["clue","단서"],["memo","메모"],["thing","물건"]];
+  if(S.inv.some(id=>ITEMS[id]&&ITEMS[id].cat==="diary"))t.push(["diary","이모의 수첩"]);
+  t.push(["people","인물"]); return t;
+}
+function openInv(tab){ if(!S)return; invTab=tab||invTab; newItems=false; updateCount(); $("sheet-inv").hidden=false; drawInv(); $("inv-close").focus(); }
+function daySection(day,inner,count){
+  const open=day===S.day;
+  return `<details class="day"${open?" open":""}><summary><span>${esc(day+"일째 · "+(DATES[day]||""))}</span><span class="day-n">${count}</span></summary><div class="day-body">${inner}</div></details>`;
+}
+function drawInv(){
+  const tabs=$("inv-tabs"); tabs.innerHTML="";
+  const list=invTabs(); if(!list.some(t=>t[0]===invTab))invTab="clue";
+  list.forEach(([k,label])=>{ const b=document.createElement("button"); b.type="button"; b.className="tabbtn"; b.setAttribute("role","tab"); b.setAttribute("aria-selected",invTab===k); b.textContent=label;
+    b.addEventListener("click",()=>{invTab=k;drawInv();}); tabs.appendChild(b); });
+  const body=$("inv-body"); body.innerHTML="";
+  if(invTab==="clue"){
+    const ks=CORE.concat(["glass"]).filter(k=>S.got.has(k));
+    if(!ks.length){body.innerHTML=`<p class="empty">아직 모은 단서가 없다.</p>`;return;}
+    const byDay={}; ks.forEach(k=>{const d=S.cardDay[k]||1;(byDay[d]=byDay[d]||[]).push(k);});
+    Object.keys(byDay).sort((a,b)=>b-a).forEach(d=>body.insertAdjacentHTML("beforeend",daySection(+d,`<div class="card-stack">${byDay[d].map(k=>tagHTML(cardOf(k))).join("")}</div>`,byDay[d].length+"장")));
+    return;
+  }
+  const items=S.inv.filter(id=>ITEMS[id]&&ITEMS[id].cat===invTab);
+  const empty={people:"아직 만난 사람이 없다.",memo:"아직 적어 둔 메모가 없다.",thing:"아직 챙긴 물건이 없다.",diary:"아직 수첩이 없다."};
+  if(!items.length){body.innerHTML=`<p class="empty">${empty[invTab]}</p>`;return;}
+  const cell=id=>{const it=ITEMS[id];return `<button type="button" class="inv-item" data-item="${id}"><span class="k">${esc(it.k)}</span><span class="n">${esc(it.n)}</span><span class="d">${esc(it.d)}</span></button>`;};
+  if(invTab==="people"){ body.insertAdjacentHTML("beforeend",`<div class="inv-grid">${items.map(cell).join("")}</div>`); }
+  else if(invTab==="thing"){
+    const tile=id=>{const it=ITEMS[id];return `<button type="button" class="thing-tile" data-item="${id}" aria-label="${esc(it.n)}" title="${esc(it.n)}">${it.art?it.art():""}<span class="thing-cap">${esc(it.n)}</span></button>`;};
+    const byDay={}; items.forEach(id=>{const d=S.itemDay[id]||1;(byDay[d]=byDay[d]||[]).push(id);});
+    Object.keys(byDay).sort((a,b)=>b-a).forEach(d=>body.insertAdjacentHTML("beforeend",daySection(+d,`<div class="thing-grid">${byDay[d].map(tile).join("")}</div>`,byDay[d].length+"개")));
+  }
+  else{
+    const byDay={}; items.forEach(id=>{const d=S.itemDay[id]||1;(byDay[d]=byDay[d]||[]).push(id);});
+    Object.keys(byDay).sort((a,b)=>b-a).forEach(d=>body.insertAdjacentHTML("beforeend",daySection(+d,`<div class="inv-grid">${byDay[d].map(cell).join("")}</div>`,byDay[d].length+"개")));
+  }
+  body.querySelectorAll("[data-item]").forEach(b=>b.addEventListener("click",()=>viewItem(b.dataset.item)));
+}
+function viewItem(id){
+  const it=ITEMS[id]; const body=$("inv-body");
+  body.innerHTML=it.art?`<div class="thing-view"><div class="thing-big">${it.art()}</div><h3>${esc(it.n)}</h3><p>${esc(it.note?it.note():it.d)}</p></div>`:`<span style="font-family:var(--f-mono);font-size:11.5px;color:var(--muted)">${esc(it.k)} · ${esc(it.n)}</span>${it.html()}`;
+  const back=document.createElement("button"); back.type="button"; back.className="btn"; back.textContent="◂ 목록으로"; back.style.alignSelf="flex-start";
+  back.addEventListener("click",drawInv); body.appendChild(back); body.scrollTop=0;
+}
+$("inv-close").addEventListener("click",()=>{$("sheet-inv").hidden=true;});
+$("sheet-inv").addEventListener("click",e=>{if(e.target.id==="sheet-inv")$("sheet-inv").hidden=true;});
+
+/* ---------- backlog ---------- */
+function openLog(){
+  if(!history)return;
+  const b=$("log-body"); b.innerHTML="";
+  history.forEach(h=>{
+    if(h.kind==="scene"){b.insertAdjacentHTML("beforeend",`<div class="back-row"><span class="w m">장면</span><span class="x" style="font-family:var(--f-display);font-weight:700">${esc(h.x)}</span></div>`);return;}
+    const w=h.kind==="say"?h.who:h.kind==="pick"?"선택":"";
+    b.insertAdjacentHTML("beforeend",`<div class="back-row${h.kind==="pick"?" pick":""}"><span class="w${h.kind==="say"?"":" m"}">${esc(w)}</span><span class="x ${h.kind}">${esc(h.x)}</span></div>`);
+  });
+  $("sheet-log").hidden=false; requestAnimationFrame(()=>{b.scrollTop=b.scrollHeight;}); $("log-close").focus();
+}
+$("log-close").addEventListener("click",()=>{$("sheet-log").hidden=true;});
+$("sheet-log").addEventListener("click",e=>{if(e.target.id==="sheet-log")$("sheet-log").hidden=true;});
+
+/* ---------- input ---------- */
+$("mini").addEventListener("pointerdown",e=>{ if(mode!=="mini"||!mini||mini.kind!=="shutter")return; e.stopPropagation(); shutterTap(); });
+$("mini").addEventListener("click",e=>e.stopPropagation());
+document.addEventListener("keyup",e=>{ if(mode==="mini")miniKey(e); });
+$("scene").addEventListener("click",e=>{ if(mode==="explore"||mode==="mini")return; if(e.target.closest("button")||e.target.closest(".over-in")||e.target.closest(".menu-panel"))return; advance(); });
+document.addEventListener("keydown",e=>{
+  if(mode==="mini"&&$("lobby").hidden&&$("sheet-inv").hidden&&$("sheet-log").hidden&&miniKey(e))return;
+  if(e.key==="Escape"){ if(!$("sheet-inv").hidden||!$("sheet-log").hidden){ $("sheet-inv").hidden=true; $("sheet-log").hidden=true; return; } if(!$("nbk").hidden&&mode==="note"){ closeNotebook(); return; } closeMenuPanel(); return; }
+  if(!$("sheet-inv").hidden||!$("sheet-log").hidden||!$("lobby").hidden||!$("menu-panel").hidden)return;
+  if(e.target.closest&&(e.target.closest("button")||e.target.closest(".spot")))return;
+  if(e.key==="Enter"||e.key===" "){ e.preventDefault(); advance(); }
+});
+
+/* ---------- save / load (this browser only) ---------- */
+const SAVE_KEY="yunseul-save-v2", SET_KEY="yunseul-settings-v1";
+const SPEEDS={slow:{step:1,ms:45},normal:{step:2,ms:28},fast:{step:4,ms:18},instant:{step:0,ms:0}};
+let speed="normal", running=false;
+try{ const st=JSON.parse(localStorage.getItem(SET_KEY)||"{}"); if(SPEEDS[st.speed])speed=st.speed; }catch(e){}
+function saveSettings(){ try{localStorage.setItem(SET_KEY,JSON.stringify({speed}));}catch(e){} }
+function saveGame(cp){
+  if(!S)return;
+  const data={cp,loc:curLoc,S:{...S,got:[...S.got]},nb,tag:$("ch-tag").textContent,title:$("ch-title").textContent,when:Date.now()};
+  try{ localStorage.setItem(SAVE_KEY,JSON.stringify(data)); }catch(e){}
+}
+function readSave(){ try{ const d=JSON.parse(localStorage.getItem(SAVE_KEY)||"null"); return d&&d.S?d:null; }catch(e){ return null; } }
+function freshRuntime(){
+  closeDoc(); closeMenuPanel(); $("nbk").hidden=true; $("nbk").innerHTML=""; queue=[]; history=[]; emo={}; cast=[]; curBg=null; curLoc=null; lastLoc="counter"; hintIdx=0; nb=null; newItems=false; mode="line"; fit="slice";
+  leaveExplore(); setTint(""); $("choices").hidden=true; $("daycard").hidden=true; $("box").hidden=false;
+}
+function start(){
+  freshRuntime(); resetState();
+  queue=openingSteps(); running=true; updateCount(); run();
+}
+function continueGame(){
+  const d=readSave(); if(!d){ start(); return; }
+  freshRuntime(); resetState();
+  Object.assign(S,d.S,{got:new Set(d.S.got)});
+  nb=d.nb||null; $("ch-tag").textContent=d.tag||"CH.01"; $("ch-title").textContent=d.title||"사라진 단추";
+  running=true; updateCount();
+  if(d.cp==="day"){ S.day=S.day||1; queue=morningSteps(S.day); run(); }
+  else enterExplore(LOCS[d.loc]?d.loc:"street");
+}
+
+/* ---------- lobby ---------- */
+function openLobby(){ drawLobby(); $("lobby").hidden=false; const f=$("lobby").querySelector(".lb-item:not([disabled])"); if(f)f.focus({preventScroll:true}); }
+function closeLobby(){ $("lobby").hidden=true; }
+function drawLobby(view){
+  const m=$("lb-menu"), save=readSave();
+  if(view==="confirm"){
+    m.innerHTML=`<p class="lb-note">지금까지 진행한 내용이 사라집니다.<br>처음부터 다시 할까요?</p><button class="lb-item" type="button" data-act="new-yes">처음부터 다시 하기</button><button class="lb-item" type="button" data-act="back">돌아가기</button>`;
+  } else if(view==="settings"){
+    m.innerHTML=`<p class="lb-note">글자 나오는 속도</p><div class="lb-speed">${[["slow","느리게"],["normal","보통"],["fast","빠르게"],["instant","바로"]].map(([k,l])=>`<button type="button" class="lb-chip" data-speed="${k}" aria-pressed="${speed===k}">${l}</button>`).join("")}</div><p class="lb-note small">진행 상황은 이 브라우저에만 저장됩니다. 장소를 옮기거나 하루가 바뀔 때 자동 저장돼요.</p><button class="lb-item" type="button" data-act="back">돌아가기</button>`;
+  } else {
+    const where=save?`${save.S.day||1}일째 · ${save.cp==="day"?"아침":(LOCNAME[save.loc]||"조사")}`:"";
+    const cont=running?`<button class="lb-item" type="button" data-act="resume">계속하기</button>`:`<button class="lb-item" type="button" data-act="continue"${save?"":" disabled"}>이어서${save?`<span class="lb-sub">${esc(where)}</span>`:""}</button>`;
+    m.innerHTML=`<button class="lb-item" type="button" data-act="new">처음부터</button>${cont}<button class="lb-item" type="button" data-act="settings">게임 설정</button>`;
+  }
+  m.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>{
+    const a=b.dataset.act;
+    if(a==="new"){ if(running||readSave())drawLobby("confirm"); else { closeLobby(); start(); } }
+    else if(a==="new-yes"){ try{localStorage.removeItem(SAVE_KEY);}catch(e){} closeLobby(); start(); }
+    else if(a==="continue"){ closeLobby(); continueGame(); }
+    else if(a==="resume"){ closeLobby(); }
+    else if(a==="settings"){ drawLobby("settings"); }
+    else if(a==="back"){ drawLobby(); }
+  }));
+  m.querySelectorAll("[data-speed]").forEach(b=>b.addEventListener("click",()=>{ speed=b.dataset.speed; saveSettings(); drawLobby("settings"); }));
+}
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("lobby").hidden&&running){ closeLobby(); } },true);
+
+$("lb-art").innerHTML=LOBBY_ART;
+openLobby();
+})();
+</script>
+</body>
+</html>
