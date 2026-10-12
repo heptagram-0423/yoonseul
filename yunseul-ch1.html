@@ -708,104 +708,94 @@ ${[0,1,2,3,4,5,6].map(i=>`<rect x="${420+i*42}" y="${560+(i%2)*6}" width="34" he
 };
 
 const LOBBY_ART=(()=>{
-const INK="#2E231D";
-const ol=(w=3)=>`stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
-const ln=(d,w,c,o)=>`<path d="${d}" fill="none" stroke="${c||INK}" stroke-width="${w||2}" stroke-linecap="round" stroke-linejoin="round"${o?` stroke-opacity="${o}"`:""}/>`;
-const wire=`<path d="M0 22 L0 8 q0 -14 10 -14 q10 0 10 10" fill="none" stroke="#A9A496" stroke-width="3" stroke-linecap="round"/><path d="M0 22 L-54 44 L54 44Z" fill="none" stroke="#A9A496" stroke-width="3" stroke-linejoin="round"/>`;
-const vinyl=h=>`<path d="M-68 30 Q0 4 68 30 L74 ${h} L-74 ${h}Z" fill="url(#lbVinyl)" stroke="#D4E2E6" stroke-opacity=".5" stroke-width="2"/>${ln(`M-42 44 L-50 ${h-24}`,7,"#fff",".16")}${ln(`M30 60 L34 ${h-60}`,3,"#fff",".12")}`;
-const ticket=(x,y,r,c)=>`<g transform="translate(${x} ${y}) rotate(${r})"><rect x="-11" y="0" width="22" height="28" rx="2" fill="${c}" ${ol(1.6)}/>${ln("M-6 9 L6 9",1.5,INK,".45")}${ln("M-6 15 L3 15",1.5,INK,".45")}<circle cx="0" cy="3.5" r="1.6" fill="${INK}"/></g>`;
-const sleeves=(c,s,len)=>`<path d="M-44 46 Q-62 54 -64 84 L-68 ${len} L-47 ${len+2} L-46 120Z" fill="${c}" ${ol()}/><path d="M44 46 Q62 54 64 84 L68 ${len} L47 ${len+2} L46 120Z" fill="${s}" ${ol()}/>${ln(`M-68 ${len-15} L-47 ${len-13}`,2.4)}${ln(`M68 ${len-15} L47 ${len-13}`,2.4)}`;
-const shirt=()=>{const c="#DCE6EE",s="#AFC0CF";return `${sleeves(c,s,236)}
-<path d="M-48 46 Q-30 36 -14 34 L14 34 Q30 36 48 46 L50 300 Q0 308 -50 300Z" fill="${c}" ${ol()}/>
-<path d="M20 58 Q36 60 48 62 L50 300 Q36 304 24 305 Q30 180 20 58Z" fill="${s}" opacity=".75"/>
-${ln("M0 54 L0 304",2)}${ln("M8 54 L8 304",1.4,INK,".35")}
-${[86,126,166,206,246,286].map(y=>`<circle cx="4" cy="${y}" r="3.2" fill="#F8F6F0" stroke="${INK}" stroke-width="1.5"/>`).join("")}
-<path d="M-38 98 h24 v24 q-12 5 -24 0Z" fill="none" ${ol(2)}/>
-<path d="M-16 30 Q0 25 16 30 L15 40 Q0 35 -15 40Z" fill="${s}" ${ol(2.4)}/>
-<path d="M-15 36 L0 56 L-22 68 L-29 42Z" fill="#F5F8FB" ${ol(2.4)}/>
-<path d="M15 36 L0 56 L22 68 L29 42Z" fill="#E1E9EF" ${ol(2.4)}/>`;};
-const dress=()=>{const c="#A8414F",s="#7C2C3A";return `${ln("M-22 42 L-26 76",3)}${ln("M22 42 L26 76",3)}
-<path d="M-30 72 Q-16 88 0 86 Q16 88 30 72 L30 134 L-30 134Z" fill="${c}" ${ol()}/>
-<path d="M14 80 L30 72 L30 134 L16 134Z" fill="${s}" opacity=".7"/>
-<path d="M-30 140 L30 140 L76 318 Q0 338 -76 318Z" fill="${c}" ${ol()}/>
-<path d="M12 140 L30 140 L76 318 Q54 326 34 330 Q30 230 12 140Z" fill="${s}" opacity=".75"/>
-${ln("M-8 148 L-24 328",2,INK,".55")}${ln("M-22 146 L-52 322",2,INK,".55")}${ln("M8 148 L14 332",2,INK,".55")}
-<path d="M-12 102 Q-6 96 0 100" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/>
-<rect x="-32" y="128" width="64" height="14" rx="3" fill="#EAD7B6" ${ol(2.4)}/>
-<path d="M0 135 L-13 128 L-13 142Z M0 135 L13 128 L13 142Z" fill="#EAD7B6" ${ol(2)}/>${ln("M0 135 L-6 156 M0 135 L6 156",2.4,"#EAD7B6")}`;};
-const blazer=()=>{const c="#34435F",s="#222D42",l="#42557A";return `${sleeves(c,s,256)}
-<path d="M-50 46 Q-30 36 -18 34 L18 34 Q30 36 50 46 L54 278 Q0 286 -54 278Z" fill="${c}" ${ol()}/>
-<path d="M22 70 Q40 66 50 60 L54 278 Q40 282 26 283 Q34 170 22 70Z" fill="${s}" opacity=".8"/>
-<path d="M-18 34 L0 132 L18 34Z" fill="#ECE5D5" ${ol(2.4)}/>
-<path d="M-6 36 L0 46 L6 36 M0 46 L-5 120 L0 130 L5 120Z" fill="#9C4A3C" ${ol(2)}/>
-<path d="M-18 34 L0 138 L-30 98 L-26 86 L-38 82 L-25 40Z" fill="${l}" ${ol(2.6)}/>
-<path d="M18 34 L0 138 L30 98 L26 86 L38 82 L25 40Z" fill="${c}" ${ol(2.6)}/>
-${ln("M0 138 L0 280",2.4)}
-<circle cx="0" cy="174" r="4.4" fill="#C9B27A" stroke="${INK}" stroke-width="1.6"/><circle cx="0" cy="214" r="4.4" fill="#C9B27A" stroke="${INK}" stroke-width="1.6"/>
-<path d="M-46 214 h30 v8 h-30Z M16 214 h30 v8 h-30Z M20 104 h22 v5 h-22Z" fill="${s}" ${ol(2)}/>`;};
-const trousers=()=>{const c="#8C8474",s="#6A6356";return `<path d="M-40 42 Q0 36 40 42 L46 302 L8 304 L0 120 L-8 304 L-46 302Z" fill="${c}" ${ol()}/>
-<path d="M2 128 L4 64 L40 42 L46 302 L8 304Z" fill="${s}" opacity=".7"/>
-${ln("M-24 64 L-27 300",1.8,INK,".5")}${ln("M24 64 L27 300",1.8,INK,".5")}
-${ln("M-46 288 L-8 290",2.4)}${ln("M8 290 L46 288",2.4)}
-<path d="M-40 40 Q0 34 40 40 L41 66 Q0 60 -41 66Z" fill="${c}" ${ol(2.6)}/>`;};
-const back=(x,body,h,tk)=>`<g transform="translate(${x} 228)" filter="url(#lbWob)">${wire}${body()}${vinyl(h)}${ticket(tk[0],tk[1],tk[2],tk[3])}</g>`;
+const INK="#2A221D";
+const ol=(w=1.5)=>`stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
+const ln=(d,w,c,o)=>`<path d="${d}" fill="none" stroke="${c||INK}" stroke-width="${w||1.2}" stroke-linecap="round" stroke-linejoin="round"${o?` stroke-opacity="${o}"`:""}/>`;
 
-/* knit sweater */
-const B="#ECDDBF",SH="#CDB890",DP="#A89069",HL="#FBF3E1";
-const cable=cx=>{let o="";for(let k=0;k<8;k++){const y=304+k*26;
-  const a=`M${cx-9} ${y} C${cx-9} ${y+13} ${cx+9} ${y+13} ${cx+9} ${y+26}`, b=`M${cx+9} ${y} C${cx+9} ${y+13} ${cx-9} ${y+13} ${cx-9} ${y+26}`;
-  const rope=d=>ln(d,10,DP)+ln(d,5.5,k%2?B:HL);
+/* storage shelves */
+const PAPER=["#B9A57F","#98A39B","#A68F86","#8E9CA8","#A9A08A"], CLOTH=["#6F7F8C","#8C6E6A","#7D8A6E","#A39070","#5F6B78"];
+const item=(kind,x,y,w,k)=>{
+  if(kind==="binder"){const h=84-(k%2)*6;return `<rect x="${x}" y="${y-h}" width="${w}" height="${h}" rx="2" fill="${["#6E3A3A","#3E5566","#6B5A3B","#3F5A48","#5A3B57","#7A5A3B","#3B3E66"][k%7]}" ${ol(1.2)}/><rect x="${x+4}" y="${y-h+8}" width="${w-8}" height="14" fill="#E9DFC8" opacity=".85"/><text x="${x+w/2}" y="${y-24}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#E9DFC8" transform="rotate(-90 ${x+w/2} ${y-30})">${2003+k%7}</text>`;}
+  if(kind==="stack"){let o="";for(let j=0;j<3;j++){const yy=y-15*(j+1);o+=`<rect x="${x+(j%2)*3}" y="${yy}" width="${w-3}" height="15" rx="5" fill="${CLOTH[(k+j)%5]}" ${ol(1.2)}/>${ln(`M${x+6+(j%2)*3} ${yy+9} q${(w-12)/2} 4 ${w-15} 0`,1,INK,".35")}`;}return o;}
+  const h=50+(k*13)%26, c=PAPER[k%5];
+  if(kind==="wrap") return `<rect x="${x}" y="${y-h}" width="${w}" height="${h}" rx="9" fill="${CLOTH[k%5]}" ${ol(1.2)}/><rect x="${x}" y="${y-h}" width="${w}" height="${h}" rx="9" fill="#DCE8EA" opacity=".22"/>${ln(`M${x+8} ${y-h+8} L${x+10} ${y-8}`,3,"#fff",".25")}<rect x="${x+w-20}" y="${y-h+10}" width="13" height="17" rx="1.5" fill="#E8D48E" ${ol(1)}/>`;
+  return `<rect x="${x}" y="${y-h}" width="${w}" height="${h}" rx="5" fill="${c}" ${ol(1.2)}/><rect x="${x+w*.62}" y="${y-h+1}" width="${w*.38-1}" height="${h-2}" rx="4" fill="#000" opacity=".12"/>${ln(`M${x+w/2} ${y-h} L${x+w/2} ${y}`,1.1,"#EDE2C2",".9")}${ln(`M${x} ${y-h/2} L${x+w} ${y-h/2}`,1.1,"#EDE2C2",".9")}<rect x="${x+5}" y="${y-h+6}" width="13" height="17" rx="1.5" fill="#E8D48E" ${ol(1)}/>`;
+};
+const shelf=(x0,w,side)=>{
+  let g=`<rect x="${x0}" y="118" width="8" height="580" fill="#44535A" ${ol(1.3)}/><rect x="${x0+w-8}" y="118" width="8" height="580" fill="#3A474D" ${ol(1.3)}/>`;
+  [212,342,472,602].forEach((y,r)=>{
+    let x=x0+14,i=0;
+    for(;;){
+      const kind=side==="R"&&r===2?"binder":["parcel","stack","wrap","parcel"][(i+r*2+(side==="L"?0:1))%4];
+      const iw=kind==="binder"?24:kind==="stack"?58:[50,56,46][(i+r)%3];
+      if(x+iw>x0+w-14)break;
+      g+=item(kind,x,y,iw,side==="R"&&r===2?i:i+r*3+(side==="L"?0:2));
+      x+=iw+(kind==="binder"?3:7);i++;
+    }
+    g+=`<rect x="${x0-4}" y="${y}" width="${w+8}" height="8" rx="1.5" fill="#5A6B70" ${ol(1.3)}/>${ln(`M${x0} ${y+2} L${x0+w} ${y+2}`,1,"#8FA2A6",".6")}`;
+  });
+  return g;
+};
+
+/* sage-green button cardigan (8-head proportions: shoulder 2H, body 3.4H, sleeve 3H) */
+const B="#A3BB9C",SH="#86A07F",DP="#68805F",HL="#C9DBC1",IN="#4F6550",BT="#8A6440";
+const cable=cx=>{let o="";for(let k=0;k<10;k++){const y=300+k*18;
+  const a=`M${cx-6} ${y} C${cx-6} ${y+9} ${cx+6} ${y+9} ${cx+6} ${y+18}`, b=`M${cx+6} ${y} C${cx+6} ${y+9} ${cx-6} ${y+9} ${cx-6} ${y+18}`;
+  const rope=d=>ln(d,6,DP)+ln(d,3.4,k%2?B:HL);
   o+=k%2?rope(a)+rope(b):rope(b)+rope(a);}
-  return o+ln(`M${cx-18} 300 L${cx-18} 512`,2.2,SH)+ln(`M${cx+18} 300 L${cx+18} 512`,2.2,SH);};
-const seed=x=>{let o="";for(let y=306;y<508;y+=13)o+=ln(`M${x-4} ${y} l4 5 l4 -5`,1.7,SH);return o;};
-const ribs=(f)=>{let o="";for(let i=0;i<=24;i++){const t=i/24,x=264+172*t,b=28*t*(1-t);o+=ln(`M${x} ${f+2+b} L${x} ${f+18+b}`,1.8,SH);}return o;};
-const neck=()=>{let o="";for(let i=1;i<12;i++){const t=i/12;o+=ln(`M${322+56*t} ${266+52*t*(1-t)} L${312+76*t} ${272+72*t*(1-t)}`,1.8,SH);}return o;};
-const sleeveKnit=(x0,x1)=>{let o="";for(let k=0;k<9;k++){const t=k/8,x=x0+(x1-x0)*t,y=340+k*22;o+=ln(`M${x-5} ${y} l5 5 l5 -5`,1.7,SH)+ln(`M${x-5} ${y+10} l5 5 l5 -5`,1.7,SH,".6");}return o;};
-const cuffRibs=(x0,dx)=>{let o="";for(let i=0;i<5;i++){const x=x0+i*dx;o+=ln(`M${x} 543 L${x} 559`,1.6,DP);}return o;};
-const sweater=`<g filter="url(#lbWob)">
-<path d="M350 262 L350 236 q0 -15 10 -15 q10 0 10 10" fill="none" stroke="#C7C0AF" stroke-width="3.4" stroke-linecap="round"/>
-<path d="M244 300 Q350 258 456 300 L453 310 Q350 272 247 310Z" fill="#A6744A" ${ol(2.4)}/>
-<path d="M270 296 Q246 306 240 350 L224 556 Q240 566 258 562 L268 380Z" fill="${B}" ${ol()}/>
-<path d="M430 296 Q454 306 460 350 L476 556 Q460 566 442 562 L432 380Z" fill="${SH}" ${ol()}/>
-${sleeveKnit(252,240)}${sleeveKnit(448,460)}
-<path d="M225 536 Q241 545 259 541 L258 562 Q240 566 224 556Z" fill="${SH}" ${ol(2.4)}/>${cuffRibs(229,7)}
-<path d="M475 536 Q459 545 441 541 L442 562 Q460 566 476 556Z" fill="${DP}" ${ol(2.4)}/>${cuffRibs(445,7)}
-<path d="M270 294 Q300 276 326 268 Q350 286 374 268 Q400 276 430 294 L436 530 Q350 544 264 530Z" fill="${B}" ${ol()}/>
-<path d="M404 290 Q420 292 430 294 L436 530 Q420 534 402 536 Q414 420 404 290Z" fill="${SH}" opacity=".85"/>
-<path d="M326 268 Q350 290 374 268 Q368 302 350 304 Q332 302 326 268Z" fill="${SH}" opacity=".8"/>
-${cable(306)}${cable(350)}${cable(394)}${seed(328)}${seed(372)}
-${[276,284,292].map(x=>ln(`M${x} 312 L${x-1} 508`,1.7,SH)).join("")}${[408,416,424].map(x=>ln(`M${x} 312 L${x+1} 508`,1.7,DP,".7")).join("")}
-${ln("M282 304 Q300 290 320 286",5,HL,".9")}${ln("M246 360 Q244 400 238 450",4,HL,".6")}
-${ln("M286 330 q8 30 2 64",2,DP,".45")}${ln("M416 330 q-8 30 -2 64",2,DP,".55")}
-<path d="M264 512 Q350 526 436 512 L436 532 Q350 546 264 532Z" fill="${B}" ${ol(2.6)}/>${ribs(512)}
-<path d="M396 517 Q416 515 436 512 L436 532 Q416 535 396 537Z" fill="${SH}" opacity=".7"/>
-<path d="M322 266 Q350 292 378 266 L388 272 Q350 308 312 272Z" fill="${B}" ${ol(2.6)}/>${neck()}
-${ln("M470 548 Q478 572 490 588",1.6,"#D9CCAE")}
-<g transform="translate(490 588) rotate(9)"><rect x="-22" y="0" width="46" height="60" rx="4" fill="#F1DE9E" ${ol(2.4)}/><circle cx="1" cy="10" r="4" fill="#24302F" ${ol(1.6)}/>${ln("M-12 24 L14 24",1.8,INK,".4")}${ln("M-12 32 L8 32",1.8,INK,".4")}<path d="M1 38 l3 6.5 7 1 -5 4.8 1.2 7 -6.2 -3.3 -6.2 3.3 1.2 -7 -5 -4.8 7 -1Z" fill="#C8436A" ${ol(1.4)}/></g>
+  return o+ln(`M${cx-12} 298 L${cx-12} 482`,1.1,SH)+ln(`M${cx+12} 298 L${cx+12} 482`,1.1,SH);};
+const seedCol=(x,y0,y1)=>{let o="";for(let y=y0;y<y1;y+=10)o+=ln(`M${x-3} ${y} l3 3.5 l3 -3.5`,1,SH);return o;};
+const ribRow=(x0,x1,y0,y1,step,c)=>{let o="";for(let x=x0;x<=x1;x+=step)o+=ln(`M${x} ${y0} L${x} ${y1}`,1,c||SH);return o;};
+const sleeveKnit=(x0,x1)=>{let o="";for(let k=0;k<8;k++){const t=k/7,x=x0+(x1-x0)*t,y=300+k*22;o+=ln(`M${x-3.5} ${y} l3.5 3.5 l3.5 -3.5`,1,SH);}return o;};
+const card=`<g transform="translate(350 390) scale(1.28) translate(-350 -390)" filter="url(#lbWob)">
+<circle cx="350" cy="212" r="5" fill="#B89A5A" ${ol(1.2)}/>
+<path d="M350 256 L350 226 q0 -12 8 -12 q6 0 6 6" fill="none" stroke="#C7C0AF" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M272 278 Q350 240 428 278 L426 285 Q350 250 274 285Z" fill="#A6744A" ${ol(1.3)}/>
+<path d="M286 276 Q270 284 268 312 L260 478 L284 480 L288 340Z" fill="${B}" ${ol()}/>
+<path d="M414 276 Q430 284 432 312 L440 478 L416 480 L412 340Z" fill="${SH}" ${ol()}/>
+${sleeveKnit(276,270)}${sleeveKnit(424,430)}
+<path d="M260 478 L284 480 L284 500 L259 498Z" fill="${SH}" ${ol(1.3)}/>${ribRow(263,281,481,497,4,DP)}
+<path d="M440 478 L416 480 L416 500 L441 498Z" fill="${DP}" ${ol(1.3)}/>${ribRow(419,437,481,497,4,IN)}
+<path d="M331 258 Q350 268 369 258 L356 390 L344 390Z" fill="${IN}" ${ol(1.3)}/>
+<path d="M331 258 L286 274 Q282 296 282 322 L276 510 Q312 516 350 514 L350 392 Z" fill="${B}" ${ol()}/>
+<path d="M369 258 L414 274 Q418 296 418 322 L424 510 Q388 516 350 514 L350 392 Z" fill="${B}" ${ol()}/>
+<path d="M398 280 L414 274 Q418 296 418 322 L424 510 Q410 513 396 514 Q404 400 398 280Z" fill="${SH}" opacity=".85"/>
+${cable(316)}${cable(384)}${seedCol(296,300,486)}${seedCol(404,300,486)}
+${ribRow(286,290,306,488,4)}${ribRow(410,414,306,488,4,DP)}
+<path d="M292 418 h40 v44 q-20 5 -40 0Z" fill="${B}" ${ol(1.2)}/>${ribRow(295,329,420,428,3.4)}
+<path d="M368 418 h40 v44 q-20 5 -40 0Z" fill="${SH}" ${ol(1.2)}/>${ribRow(371,405,420,428,3.4,DP)}
+<path d="M276 492 Q312 498 350 496 L350 514 Q312 516 276 510Z" fill="${B}" ${ol(1.2)}/>${ribRow(280,346,497,511,4)}
+<path d="M424 492 Q388 498 350 496 L350 514 Q388 516 424 510Z" fill="${SH}" ${ol(1.2)}/>${ribRow(354,420,497,511,4,DP)}
+<path d="M331 258 L348 390 L348 514 L340 514 L340 392 L324 262Z" fill="${SH}" ${ol(1.2)}/>
+<path d="M369 258 L352 390 L352 514 L361 514 L361 392 L376 262Z" fill="${B}" ${ol(1.2)}/>
+${[398,424,450,476].map(y=>`<circle cx="356" cy="${y}" r="4.2" fill="${BT}" ${ol(1.1)}/><circle cx="355" cy="${y-1}" r="1.2" fill="#C9A36E"/>`).join("")}
+${ln("M292 286 Q306 278 322 272",3,HL,".85")}${ln("M274 310 Q272 360 268 410",2.4,HL,".55")}
+${ln("M300 330 q6 24 2 50",1.1,DP,".5")}${ln("M402 330 q-6 24 -2 50",1.1,DP,".6")}
+${ln("M405 462 Q410 488 410 518",1,"#E2D6B8")}<circle cx="405" cy="462" r="1.8" fill="#C9C1AE"/>
+<g transform="translate(410 516) rotate(7)"><rect x="-19" y="0" width="38" height="50" rx="3" fill="#F1DE9E" ${ol(1.2)}/><circle cx="0" cy="7" r="2.6" fill="#24302F"/><text x="0" y="27" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="600" fill="#3A2F12">0417</text><path d="M0 32 l2.2 4.6 5 .7 -3.6 3.4 .9 5 -4.5 -2.4 -4.5 2.4 .9 -5 -3.6 -3.4 5 -.7Z" fill="#C8436A" ${ol(.9)}/></g>
 </g>`;
 const spark=(x,y,s,d)=>`<path class="tw" style="animation-delay:${d}s" transform="translate(${x} ${y}) scale(${s})" d="M0 -9 Q1.2 -1.2 9 0 Q1.2 1.2 0 9 Q-1.2 1.2 -9 0 Q-1.2 -1.2 0 -9Z" fill="#FFEBB4"/>`;
+const dust=[[300,180],[412,232],[262,300],[448,350],[320,560],[392,620],[236,420],[470,500]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${1+(i%3)*.5}" fill="#FFE9B8" opacity="${.25+(i%3)*.15}"/>`).join("");
 return `<svg viewBox="0 0 700 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<radialGradient id="lbGlow" cx="350" cy="130" r="480" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFD991" stop-opacity=".55"/><stop offset=".45" stop-color="#D9A45E" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
-<linearGradient id="lbCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3A6" stop-opacity=".28"/><stop offset="1" stop-color="#FFE3A6" stop-opacity="0"/></linearGradient>
-<linearGradient id="lbVinyl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B9CCD1" stop-opacity=".16"/><stop offset=".4" stop-color="#EEF5F6" stop-opacity=".26"/><stop offset=".6" stop-color="#B9CCD1" stop-opacity=".08"/><stop offset="1" stop-color="#B9CCD1" stop-opacity=".18"/></linearGradient>
-<radialGradient id="lbVig" cx="350" cy="400" r="560" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#0B0F10" stop-opacity=".8"/></radialGradient>
-<pattern id="lbPaper" width="44" height="44" patternUnits="userSpaceOnUse"><rect width="44" height="44" fill="#24312F"/><rect width="22" height="44" fill="#273533"/><path d="M11 6 l3 4 -3 4 -3 -4Z M33 28 l3 4 -3 4 -3 -4Z" fill="#2E3D3A"/></pattern>
-<filter id="lbWob" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter>
-<filter id="lbGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 .95  0 0 0 0 .85  0 0 0 .09 0"/></filter>
+<radialGradient id="lbGlow" cx="350" cy="110" r="470" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFD991" stop-opacity=".5"/><stop offset=".45" stop-color="#D9A45E" stop-opacity=".14"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<linearGradient id="lbCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3A6" stop-opacity=".22"/><stop offset="1" stop-color="#FFE3A6" stop-opacity="0"/></linearGradient>
+<radialGradient id="lbVig" cx="350" cy="400" r="540" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#0B0F10" stop-opacity=".82"/></radialGradient>
+<pattern id="lbWall" width="60" height="40" patternUnits="userSpaceOnUse"><rect width="60" height="40" fill="#222C2F"/><path d="M0 39.5 H60 M30 0 V20 M0 20 H60 M0 0 V0" stroke="#1C2427" stroke-width="1"/></pattern>
+<filter id="lbWob" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="1.6" xChannelSelector="R" yChannelSelector="G"/></filter>
+<filter id="lbGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 .95  0 0 0 0 .85  0 0 0 .08 0"/></filter>
 </defs>
-<rect width="700" height="800" fill="url(#lbPaper)"/>
-<rect x="0" y="612" width="700" height="112" fill="#1D2826"/>${ln("M0 612 L700 612",5,"#3A4A46")}${[0,1,2,3,4].map(i=>`<rect x="${22+i*136}" y="632" width="112" height="72" rx="3" fill="none" stroke="#2D3B38" stroke-width="3"/>`).join("")}
-<rect x="0" y="724" width="700" height="76" fill="#3B2E25"/>${ln("M0 724 L700 724",4,"#21180F")}${[0,1,2,3,4,5,6].map(i=>ln(`M${i*118-20} 800 L${i*118+30} 724`,2,"#2A2018")).join("")}
+<rect width="700" height="800" fill="url(#lbWall)"/>
+<rect x="0" y="696" width="700" height="104" fill="#2C2722"/>${ln("M0 696 L700 696",3,"#1A1612")}${[0,1,2,3,4,5,6].map(i=>ln(`M${i*118-30} 800 L${i*118+20} 696`,1.2,"#1F1A16")).join("")}
 <rect width="700" height="800" fill="url(#lbGlow)"/>
-<path d="M330 128 L170 760 L530 760 L370 128Z" fill="url(#lbCone)"/>
-<g filter="url(#lbWob)"><rect x="40" y="232" width="9" height="500" fill="#6F6B62" ${ol(2.4)}/><rect x="651" y="232" width="9" height="500" fill="#6F6B62" ${ol(2.4)}/><path d="M28 734 h34 M638 734 h34" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><rect x="34" y="223" width="632" height="10" rx="5" fill="#9C978B" ${ol(2.4)}/>${ln("M44 226 L656 226",2,"#D8D2C2",".7")}</g>
-${back(100,shirt,330,[30,300,-6,"#E8D48E"])}${back(212,dress,348,[-48,318,8,"#E6B8C0"])}${back(490,blazer,304,[44,276,-5,"#DCE6DC"])}${back(602,trousers,326,[-30,302,6,"#E8D48E"])}
-<rect x="0" y="200" width="700" height="520" fill="#141A1B" opacity=".14"/>
-<ellipse cx="350" cy="728" rx="150" ry="11" fill="#000" opacity=".35"/>
-${sweater}
-<g filter="url(#lbWob)">${ln("M350 0 L350 96",3,"#0E1212")}<path d="M318 124 Q322 92 350 90 Q378 92 382 124Z" fill="#3D5049" ${ol(2.6)}/><ellipse cx="350" cy="126" rx="13" ry="8" fill="#FFF3CC"/>${ln("M330 112 Q336 100 348 98",3,"#7E968C",".8")}</g>
-${spark(268,196,1.2,0)}${spark(462,236,.8,1.1)}${spark(218,452,.7,.6)}${spark(520,420,1,1.7)}${spark(300,640,.7,2.2)}${spark(436,170,.6,.3)}
+<path d="M336 118 L190 760 L510 760 L364 118Z" fill="url(#lbCone)"/>
+<g filter="url(#lbWob)">${shelf(16,206,"L")}${shelf(478,206,"R")}</g>
+<g filter="url(#lbWob)" transform="translate(124 352) rotate(-5)"><rect x="-2" y="0" width="64" height="46" fill="#EFE7D2" ${ol(1.2)}/><circle cx="30" cy="5" r="2.4" fill="#B03A48"/><text x="30" y="24" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="17" fill="#9A2F3C">손대지</text><text x="30" y="40" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="17" fill="#9A2F3C">말 것</text></g>
+<ellipse cx="350" cy="704" rx="120" ry="9" fill="#000" opacity=".35"/>
+${card}
+<g filter="url(#lbWob)">${ln("M350 0 L350 92",2,"#0E1212")}<rect x="342" y="88" width="16" height="12" rx="2" fill="#3A3A36" ${ol(1.2)}/><ellipse cx="350" cy="114" rx="13" ry="16" fill="#FFF0C2" ${ol(1.1)}/>${ln("M344 106 Q346 100 350 99",1.4,"#fff",".9")}${ln("M362 112 L370 136",1,"#9A8F7A")}<circle cx="370" cy="139" r="3" fill="#C9B26A" ${ol(.9)}/></g>
+${dust}
+${spark(262,170,1.1,0)}${spark(454,214,.8,1.1)}${spark(230,470,.7,.6)}${spark(478,430,.9,1.7)}${spark(300,650,.6,2.2)}
 <rect width="700" height="800" fill="url(#lbVig)"/>
 <rect width="700" height="800" filter="url(#lbGrain)"/>
 </svg>`;})();
@@ -1024,8 +1014,8 @@ const ITEMS={
     html:()=>`<div class="letter"><p>"요즘 구슬치기에 빠져서 밥도 안 먹고 골목에 붙어 있다. 반에서 왕구슬 가진 애가 대장이라나."</p><span class="sign">봉순 할머니</span></div>`},
   say_yeoreum:{cat:"memo",k:"들은 말",n:"꽃집 사장의 말",d:"도윤이가 골목 계단에 혼자 앉아 있었다",
     html:()=>`<div class="letter"><p>"아까 도윤이가 골목 계단에 혼자 앉아 있던데요. 주머니만 계속 만지작거리면서."</p><span class="sign">한여름</span></div>`},
-  memo_0417:{cat:"memo",k:"메모",n:"2006년 장부 · 0417",d:"20년 가까이 찾아가지 않은 니트",read:[["2006년 접수 장부","12/24(일) 22:00  ·  0417\n여자 꽈배기 니트(크림) 1\n이름: 해주   \"내일 찾으러 올게요\"\n찾아가지 않음. ★","ledger"]],
-    html:()=>`<div class="ledger">12/24(일) 22:00 &nbsp;<span class="dim">0417</span><br>여자 꽈배기 니트(크림) 1<br>이름: 해주 &nbsp;"내일 찾으러 올게요"<br><span class="red">찾아가지 않음. ★</span></div><p class="note-cap">이름 칸만 맡긴 사람이 직접 썼다. 'ㅎ'의 꼭지가 옆으로 누운 특이한 필체. 다른 줄은 전부 '폐기' 도장인데 이 줄만 별표다.</p>`},
+  memo_0417:{cat:"memo",k:"메모",n:"2006년 장부 · 0417",d:"20년 가까이 찾아가지 않은 니트",read:[["2006년 접수 장부","12/24(일) 22:00  ·  0417\n여자 니트 가디건(연녹색) 1\n이름: 해주   \"내일 찾으러 올게요\"\n찾아가지 않음. ★","ledger"]],
+    html:()=>`<div class="ledger">12/24(일) 22:00 &nbsp;<span class="dim">0417</span><br>여자 니트 가디건(연녹색) 1<br>이름: 해주 &nbsp;"내일 찾으러 올게요"<br><span class="red">찾아가지 않음. ★</span></div><p class="note-cap">이름 칸만 맡긴 사람이 직접 썼다. 'ㅎ'의 꼭지가 옆으로 누운 특이한 필체. 다른 줄은 전부 '폐기' 도장인데 이 줄만 별표다.</p>`},
   letter:{cat:"memo",k:"편지",n:"이모의 편지",d:"2006년 장부 뒤표지에 끼워져 있던 봉투",verb:"챙겼다",label:"편지",read:()=>LETTER.map(p=>["이모의 편지",p,"letter"]),
     html:()=>`<div class="letter">${LETTER.map(p=>`<p>${p}</p>`).join("")}<span class="sign">이모가</span></div>`},
   memo_notice:{cat:"memo",k:"메모",n:"시청 안내문",d:"셔터 옆 벽에 붙어 있던 안내문",read:[["윤슬시청 안내문","2차 재개발 예정 구역 상가 여러분께.\n오래된 집기와 창고 물품을 무상으로 수거해 드립니다.\n신청: 윤슬시청 도시재생과 (방문·전화)\n※ 접수 순서대로 차량이 배정됩니다.","letter"]],
