@@ -127,7 +127,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:0 10px;flex-wrap:w
 .note-cap{font-size:13.5px;color:var(--muted)}
 .person{display:flex;gap:14px;align-items:center}
 .person .pf{width:84px;height:110px;flex:none;background:var(--surface-2);border-radius:10px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
-.person .pf svg{height:118%;width:auto;margin-bottom:-8%}
+.person .pf svg{height:100%;width:auto}
 .person h3{margin:0;font-family:var(--f-display);font-size:18px}
 .person p{margin:0;font-size:14.5px}
 
@@ -930,172 +930,155 @@ ${spark(262,170,1.1,0)}${spark(454,214,.8,1.1)}${spark(230,470,.7,.6)}${spark(47
 <rect width="700" height="800" filter="url(#lbGrain)"/>
 </svg>`;})();
 const CHARS={
-  "봉순":{skin:"#EFC9A8",shade:"#D9AE8C",hair:"#CFCBC3",style:"bun",top:"#5F7F6E",outfit:"apron",apron:"#EFE7D3",wr:true,scale:.8},
-  "도윤":{skin:"#F5D3B3",shade:"#E2B997",hair:"#2E2723",style:"kid",top:"#F2C14E",outfit:"tee",scale:.6,blush:true},
-  "박상철":{skin:"#E8C3A0",shade:"#CFA582",hair:"#9A9792",style:"slick",top:"#5D6468",outfit:"coat",glasses:true,scale:.9},
-  "여름":{skin:"#F2D2B6",shade:"#DBB396",hair:"#2B2224",style:"bangs",hairBack:true,top:"#EDE6D6",outfit:"apron",apron:"#6E8F6A",scale:.84},
-  "남궁철":{skin:"#D9B596",shade:"#BF9A7B",hair:"#1C1C1E",style:"crop",top:"#23272A",outfit:"suit",scale:.86,back:true}
+  "봉순":{skin:"#F2D2B4",shade:"#DDB08E",hair:"#D8D3CA",top:"#7A3F5E",apron:"#F1EADB",iris:"#5A3A2A",H:140,y0:256,cx:146,back:false},
+  "도윤":{skin:"#F8DDC2",shade:"#E8BE9A",hair:"#25212A",top:"#F2C14E",iris:"#3B2A22",H:146,y0:376,cx:150},
+  "박상철":{skin:"#EFCDAE",shade:"#D3A887",hair:"#A19E98",top:"#5D6468",iris:"#3E3430",H:146,y0:26,cx:150},
+  "여름":{skin:"#F6DCC4",shade:"#E2B899",hair:"#25212B",top:"#EFE8D8",apron:"#6E8F6A",iris:"#4A3A30",H:139,y0:86,cx:150},
+  "남궁철":{skin:"#E2BE9E",shade:"#C79E7E",hair:"#1A1A1D",top:"#23272A",iris:"#2A2422",H:149,y0:20,cx:150,back:true}
 };
-const HAIR={
-  bun:'<path d="M76 214 C70 140 112 116 150 116 C188 116 230 140 224 214 C214 176 190 160 150 158 C110 160 86 176 76 214Z" fill="H"/><circle cx="150" cy="104" r="30" fill="H"/><path d="M128 104 q22 -14 44 0" stroke="#fff" stroke-opacity=".35" stroke-width="4" fill="none"/>',
-  bangs:'<path d="M76 208 C72 136 112 108 150 108 C190 108 230 136 224 208 C216 180 204 168 190 170 L180 146 L164 172 L148 144 L134 172 L120 148 L110 176 C96 176 84 188 76 208Z" fill="H"/>',
-  kid:'<path d="M72 224 C62 140 108 112 150 112 C196 112 240 140 228 224 C222 186 208 170 188 174 C172 158 134 166 116 178 C98 174 82 192 72 224Z" fill="H"/>',
-  slick:'<path d="M76 212 C72 140 112 116 152 116 C192 116 230 142 224 212 C218 168 196 150 170 150 L140 146 C112 150 86 170 76 212Z" fill="H"/><path d="M140 122 L132 158" stroke="#6F6C68" stroke-width="3"/>',
-  crop:'<path d="M78 202 C76 146 114 122 150 122 C186 122 224 146 222 202 C212 168 186 154 150 154 C114 154 88 168 78 202Z" fill="H"/>'
-};
-const MOUTH={
-  smile:'<path d="M132 262 Q150 278 168 262" stroke="#6B3A33" stroke-width="4" fill="none" stroke-linecap="round"/>',
-  flat:'<path d="M136 266 L164 266" stroke="#6B3A33" stroke-width="4" stroke-linecap="round"/>',
-  angry:'<path d="M134 272 Q150 260 166 272" stroke="#6B3A33" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="150" cy="270" rx="9" ry="5" fill="#7A3A36"/>',
-  sad:'<path d="M136 272 Q150 264 164 272" stroke="#6B3A33" stroke-width="4" fill="none" stroke-linecap="round"/>',
-  o:'<ellipse cx="150" cy="268" rx="7" ry="9" fill="#7A3A36"/>'
-};
-const BROW={
-  smile:'<path d="M110 190 Q123 184 138 190 M162 190 Q177 184 190 190"/>',
-  flat:'<path d="M110 190 L138 190 M162 190 L190 190"/>',
-  angry:'<path d="M108 184 L138 196 M162 196 L192 184"/>',
-  sad:'<path d="M110 196 L138 186 M162 186 L190 196"/>',
-  o:'<path d="M110 184 Q123 178 138 184 M162 184 Q177 178 190 184"/>'
-};
-/* ---- detailed illustration set (sample): 봉순, 도윤 ---- */
-function vnEye(cx,cy,s,iris,mode,side,lidFill){
-  // side: +1 when the nose side is +x
-  if(mode==="closed") return `<path d="M${cx-15*s} ${cy+3*s} Q${cx} ${cy-11*s} ${cx+15*s} ${cy+3*s}" stroke="#2B1E1A" stroke-width="${4.6*s}" fill="none" stroke-linecap="round"/><path d="M${cx-side*17*s} ${cy+2*s} l${-side*5*s} ${-3*s}" stroke="#2B1E1A" stroke-width="${2.4*s}" stroke-linecap="round"/>`;
-  const w=15*s, h=(mode==="wide"?15:12.5)*s;
-  let e=`<ellipse cx="${cx}" cy="${cy}" rx="${w}" ry="${h}" fill="#FFFDF9"/>`
-   +`<ellipse cx="${cx+side*1.5*s}" cy="${cy+1.5*s}" rx="${9.5*s}" ry="${h*.95}" fill="${iris}"/>`
-   +`<ellipse cx="${cx+side*1.5*s}" cy="${cy+4*s}" rx="${8*s}" ry="${h*.55}" fill="#fff" opacity=".18"/>`
-   +`<ellipse cx="${cx+side*1.5*s}" cy="${cy+1.5*s}" rx="${4.4*s}" ry="${6*s}" fill="#1A1210"/>`
-   +`<circle cx="${cx+side*1.5*s+3.6*s}" cy="${cy-3.8*s}" r="${3.3*s}" fill="#fff"/><circle cx="${cx+side*1.5*s-3.2*s}" cy="${cy+5*s}" r="${1.5*s}" fill="#fff" opacity=".85"/>`;
-  const o=cx-side*(w+3*s), n=cx+side*(w+3*s), top=cy-h-8*s;
-  if(mode==="angry"||mode==="sad"){
-    const yo=mode==="angry"?cy-h*.55:cy-h*.05, yn=mode==="angry"?cy-h*.02:cy-h*.62;
-    e+=`<polygon points="${o},${top} ${n},${top} ${n},${yn} ${o},${yo}" fill="${lidFill}"/><path d="M${o} ${yo} L${n} ${yn}" stroke="#2B1E1A" stroke-width="${4.4*s}" stroke-linecap="round"/>`;
-  } else {
-    e+=`<path d="M${o} ${cy-1*s} Q${cx} ${cy-h-7*s} ${n} ${cy-3*s}" stroke="#2B1E1A" stroke-width="${4.6*s}" fill="none" stroke-linecap="round"/><path d="M${o} ${cy-1*s} l${-side*5*s} ${-4*s}" stroke="#2B1E1A" stroke-width="${2.6*s}" stroke-linecap="round"/>`;
-  }
-  e+=`<path d="M${cx-w*.7} ${cy+h+1.5*s} Q${cx} ${cy+h+4*s} ${cx+w*.7} ${cy+h+1.5*s}" stroke="#7A5446" stroke-width="${1.6*s}" fill="none" opacity=".6"/>`;
-  return e;
+/* ---- anime-style 8-head figures. viewBox 0 0 300 1200, feet at y=1196; heads drawn in a 0..140 local unit ---- */
+const OL="#3A2A26";
+const ow=(w)=>`stroke="${OL}" stroke-width="${w||2.2}" stroke-linejoin="round" stroke-linecap="round"`;
+function aEye(x,side,iris,mode,skin,sc){
+  const g=(s)=>`<g transform="translate(${x} 82) scale(${sc}) translate(${-x} -82)">${s}</g>`;
+  const I=x-side*12, O=x+side*14;
+  if(mode==="closed") return g(`<path d="M${x-side*13} 86 Q${x} 71 ${O} 84" fill="none" ${ow(3.2)}/><path d="M${O} 84 l${side*4} 2" ${ow(1.8)}/>`);
+  const top=mode==="wide"?61:65, ir=mode==="wide"?[8,10.5]:[9,12.5];
+  let e=`<path d="M${I} 80 Q${x} ${top} ${O} 77 Q${x+side*10} 96 ${x} 97 Q${x-side*10} 95 ${I} 80Z" fill="#FFFDF8"/>`
+   +`<ellipse cx="${x+side}" cy="84" rx="${ir[0]}" ry="${ir[1]}" fill="${iris}"/>`
+   +`<ellipse cx="${x+side}" cy="88" rx="${ir[0]*.7}" ry="${ir[1]*.45}" fill="#fff" opacity=".22"/>`
+   +`<ellipse cx="${x+side}" cy="84" rx="${mode==="wide"?2.8:3.8}" ry="${mode==="wide"?4.5:6}" fill="#140E0C"/>`
+   +`<path d="M${I} 80 Q${x} ${top} ${O} 77 L${O-side} 82 Q${x} 72 ${I+side} 85Z" fill="#1A1210" opacity=".28"/>`
+   +`<circle cx="${x-side*3}" cy="78" r="3.4" fill="#fff"/><circle cx="${x+side*4}" cy="90" r="1.5" fill="#fff" opacity=".9"/>`;
+  if(mode==="half"||mode==="sad"||mode==="angry"){
+    const yi=mode==="half"?77:mode==="sad"?71:82, yo=mode==="half"?76:mode==="sad"?81:71;
+    e+=`<path d="M${I-side*2} 58 L${O+side*3} 58 L${O+side*3} ${yo} L${I-side*2} ${yi}Z" fill="${skin}"/><path d="M${I-side} ${yi} L${O+side*2} ${yo}" ${ow(3)}/>`;
+  } else e+=`<path d="M${I} 80 Q${x} ${top} ${O} 77" fill="none" ${ow(3.4)}/><path d="M${O} 77 l${side*5} -3" ${ow(1.8)}/>`;
+  e+=`<path d="M${x-side*9} 97 Q${x} 99.5 ${x+side*12} 93" fill="none" stroke="${OL}" stroke-width="1.2" opacity=".7"/>`;
+  return g(e);
 }
-function permHair(base,hi,sh){
-  let back="",front="",hl="";
-  const put=(x,y,r,i)=>{back+=`<circle cx="${x+3}" cy="${y+4}" r="${r}" fill="${sh}"/>`;front+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${base}"/>`;hl+=`<path d="M${x-r*.55} ${y-r*.1} a${r*.6} ${r*.6} 0 0 1 ${r*.7} ${-r*.5}" stroke="${hi}" stroke-width="3" fill="none" stroke-linecap="round"/>`;};
-  let i=0;
-  for(let a=172;a<=368;a+=11){const t=a*Math.PI/180;put(150+84*Math.cos(t),196+90*Math.sin(t),17+(i%3)*2,i++);}
-  for(let a=205;a<=335;a+=14){const t=a*Math.PI/180;put(150+58*Math.cos(t),182+66*Math.sin(t),16+(i%2)*3,i++);}
-  for(let a=240;a<=300;a+=20){const t=a*Math.PI/180;put(150+30*Math.cos(t),170+40*Math.sin(t),15,i++);}
-  return {cap:`<path d="M70 222 C62 132 108 100 150 100 C192 100 238 132 230 222 C216 176 190 158 150 158 C110 158 84 176 70 222Z" fill="${sh}"/>`,back,front,hl};
+const BROWS={smile:[58,50,57],flat:[57,55,57],angry:[52,54,62],sad:[61,56,50],o:[52,44,51]};
+const MOUTHS={
+  smile:`<path d="M-9 115 Q0 125 9 115 Q0 119 -9 115Z" fill="#A5534F" ${ow(1.4)}/>`,
+  flat:`<path d="M-6 119 Q0 120 6 119" fill="none" ${ow(1.6)}/>`,
+  angry:`<path d="M-9 121 Q0 112 9 121 Q0 128 -9 121Z" fill="#7A2E2E" ${ow(1.4)}/><path d="M-6 118 Q0 115 6 118" fill="none" stroke="#fff" stroke-width="2"/>`,
+  sad:`<path d="M-7 122 Q0 116 7 122" fill="none" ${ow(1.6)}/>`,
+  o:`<ellipse cx="0" cy="120" rx="4" ry="5.5" fill="#7A2E2E" ${ow(1.3)}/>`
+};
+function aHead(c,emo,o){
+  o=o||{};
+  const eye={smile:o.smileEye||"open",flat:o.flatEye||"half",angry:"angry",sad:"sad",o:"wide"}[emo]||"open";
+  const es=o.eyeScale||1, B=BROWS[emo]||BROWS.flat;
+  const jaw=o.round?"M-50 52 C-50 18 -28 0 0 0 C28 0 50 18 50 52 C50 92 40 118 24 132 C14 140 -14 140 -24 132 C-40 118 -50 92 -50 52Z":"M-47 50 C-47 18 -28 0 0 0 C28 0 47 18 47 50 C47 84 40 106 24 125 C14 136 6 140 0 140 C-6 140 -14 136 -24 125 C-40 106 -47 84 -47 50Z";
+  let f=`<ellipse cx="-47" cy="80" rx="7" ry="13" fill="${c.skin}" ${ow(1.8)}/><ellipse cx="47" cy="80" rx="7" ry="13" fill="${c.shade}" ${ow(1.8)}/>`
+   +`<path d="${jaw}" fill="${c.skin}" ${ow(2.2)}/>`
+   +`<path d="M30 40 C46 70 42 104 22 128 C36 100 38 70 30 40Z" fill="${c.shade}" opacity=".55"/>`
+   +aEye(-23,-1,c.iris,eye,c.skin,es)+aEye(23,1,c.iris,eye,c.skin,es)
+   +`<path d="M${-36} ${B[0]} Q-23 ${B[1]} ${-8} ${B[2]}" fill="none" stroke="${o.brow||c.hair}" stroke-width="${o.browW||2.8}" stroke-linecap="round"/>`
+   +`<path d="M${36} ${B[0]} Q23 ${B[1]} ${8} ${B[2]}" fill="none" stroke="${o.brow||c.hair}" stroke-width="${o.browW||2.8}" stroke-linecap="round"/>`
+   +`<path d="M2 99 L-2 105 L3 106" fill="none" stroke="${c.shade}" stroke-width="1.8" stroke-linecap="round"/>`
+   +((o.mouth&&o.mouth[emo])||MOUTHS[emo]||MOUTHS.flat);
+  if(o.blush!==false) f+=`<ellipse cx="-30" cy="104" rx="10" ry="5" fill="#F29A92" opacity="${o.blushA||.3}"/><ellipse cx="30" cy="104" rx="10" ry="5" fill="#F29A92" opacity="${o.blushA||.3}"/>`;
+  if(emo==="sad"&&o.tear) f+=`<path d="M34 98 q4 9 0 13 q-4 -4 0 -13Z" fill="#9CD2EE" ${ow(1)}/>`;
+  return f+(o.extra||"");
 }
-const DRAW={
+const head=(c,local)=>`<g transform="translate(${c.cx} ${c.y0}) scale(${c.H*1.12/140})">${local}</g>`;
+const neckSh=(c,x,y)=>`<path d="M${x-14} ${y} Q${x} ${y+16} ${x+14} ${y} L${x+14} ${y+10} Q${x} ${y+26} ${x-14} ${y+10}Z" fill="${c.shade}"/>`;
+const FIG={
+  "여름":(emo)=>{
+    const c=CHARS["여름"], hc="#25212B", hs="#3A3546";
+    const back=`<path d="M-52 30 C-60 -16 60 -16 52 30 C60 110 66 230 70 340 Q40 356 0 350 Q-40 356 -70 340 C-66 230 -60 110 -52 30Z" fill="${hc}" ${ow()}/><path d="M40 80 C50 170 56 260 58 330" fill="none" stroke="${hs}" stroke-width="2"/><path d="M-44 90 C-52 180 -56 260 -58 330" fill="none" stroke="${hs}" stroke-width="2"/>`;
+    const front=`<path d="M-50 52 C-54 4 -20 -10 6 -8 C34 -6 54 10 52 50 C46 36 40 30 34 28 L36 56 C28 40 22 34 14 30 L10 60 C2 40 -8 32 -20 30 L-28 56 C-30 42 -36 36 -42 34 C-46 40 -48 46 -50 52Z" fill="${hc}" ${ow()}/>`
+      +`<path d="M-50 40 C-58 84 -56 124 -46 156 L-38 126 C-42 94 -42 66 -44 48Z" fill="${hc}" ${ow()}/><path d="M50 40 C58 84 56 124 46 156 L38 126 C42 94 42 66 44 48Z" fill="${hc}" ${ow()}/>`
+      +`<path d="M-36 18 Q-6 4 26 12" fill="none" stroke="#6E6C8A" stroke-width="4" stroke-linecap="round" opacity=".75"/><path d="M-12 0 C-16 14 -18 22 -20 30 M18 -2 C20 10 18 22 14 30" fill="none" stroke="${hs}" stroke-width="1.6"/>`;
+    return `${head(c,back)}
+<path d="M138 222 L138 266 Q150 274 162 266 L162 222Z" fill="${c.skin}" ${ow()}/>${neckSh(c,150,236)}
+<path d="M96 492 L204 492 L214 620 L210 760 L90 760 L86 620Z" fill="#5A6E8C" ${ow()}/><path d="M150 560 L150 760" ${ow(1.4)}/>
+<path d="M88 296 Q150 274 212 296 L218 420 Q214 470 204 500 L96 500 Q86 470 82 420Z" fill="#EFE8D8" ${ow()}/>
+<path d="M180 300 Q206 300 212 330 L216 440 Q206 476 198 500 L180 500 Q194 420 180 300Z" fill="#D9CFBA" opacity=".8"/>
+<path d="M126 262 Q150 284 174 262 L180 274 Q150 300 120 274Z" fill="#FBF8F0" ${ow(1.8)}/>
+<path d="M108 336 L192 336 L196 500 L214 760 L86 760 L104 500Z" fill="#6E8F6A" ${ow()}/><path d="M168 340 L178 500 L190 760 L214 760 L196 500 L192 336Z" fill="#587A55"/>
+<path d="M112 338 L130 270 M188 338 L170 270" fill="none" stroke="#6E8F6A" stroke-width="9" stroke-linecap="round"/><path d="M112 338 L130 270 M188 338 L170 270" fill="none" ${ow(1.4)}/>
+<path d="M104 500 L196 500" ${ow(1.6)}/><path d="M86 496 Q70 506 74 524 M214 496 Q230 506 226 524" fill="none" stroke="#587A55" stroke-width="6" stroke-linecap="round"/>
+<rect x="120" y="566" width="62" height="58" rx="4" fill="#628360" ${ow(1.6)}/><path d="M134 566 l-6 -26 M144 566 l4 -24" stroke="#C8463A" stroke-width="5" stroke-linecap="round"/><circle cx="128" cy="538" r="6" fill="none" stroke="#C8463A" stroke-width="3"/><circle cx="148" cy="540" r="6" fill="none" stroke="#C8463A" stroke-width="3"/>
+<path d="M120 640 Q150 650 180 640 M110 700 Q150 712 190 700" fill="none" stroke="#587A55" stroke-width="2"/>
+<path d="M88 298 Q68 330 64 420 L60 590 L88 594 Q90 540 94 470 Q98 400 104 336Z" fill="#EFE8D8" ${ow()}/>
+<path d="M212 298 Q232 330 236 420 L240 590 L212 594 Q210 540 206 470 Q202 400 196 336Z" fill="#D9CFBA" ${ow()}/>
+<path d="M58 586 L90 590 L90 610 L58 606Z M242 586 L210 590 L210 610 L242 606Z" fill="#FBF8F0" ${ow(1.8)}/>
+<path d="M62 608 Q56 644 70 656 Q84 656 88 634 L88 610Z" fill="${c.skin}" ${ow(1.8)}/><path d="M238 608 Q244 644 230 656 Q216 656 212 634 L212 610Z" fill="${c.shade}" ${ow(1.8)}/>
+${head(c,aHead(c,emo,{brow:"#2B2530"})+front)}`;
+  },
+  "박상철":(emo)=>{
+    const c=CHARS["박상철"];
+    const hair=`<path d="M-48 46 C-52 0 -20 -16 8 -14 C38 -12 54 6 50 44 C46 26 32 14 10 12 C-14 12 -36 22 -48 46Z" fill="${c.hair}" ${ow()}/><path d="M-30 18 Q-6 2 22 4 M-24 26 Q2 10 32 14 M-12 -6 L-18 14" fill="none" stroke="#7E7B76" stroke-width="1.6"/><path d="M-47 46 L-47 66 M47 46 L47 64" ${ow(1.6)}/>`;
+    const gl=`<g fill="none" stroke="#3A3A3A" stroke-width="2"><rect x="-41" y="70" width="34" height="26" rx="6"/><rect x="7" y="70" width="34" height="26" rx="6"/><path d="M-7 80 Q0 76 7 80 M-41 78 L-48 76 M41 78 L48 76"/></g><path d="M-38 74 l8 -2" stroke="#fff" stroke-width="2" opacity=".6"/>`;
+    const lines=`<path d="M-20 112 q-4 8 0 14 M20 112 q4 8 0 14" fill="none" stroke="${c.shade}" stroke-width="1.6"/>`;
+    return `<path d="M136 176 L136 224 Q150 234 164 224 L164 176Z" fill="${c.skin}" ${ow()}/>${neckSh(c,150,184)}
+<path d="M106 470 L194 470 L198 760 L102 760Z" fill="#2E3338" ${ow()}/><path d="M150 500 L150 760" stroke="#454B52" stroke-width="2"/>
+<path d="M80 240 Q150 216 220 240 L228 470 Q150 486 72 470Z" fill="#3F454C" ${ow()}/>
+<path d="M124 224 L150 300 L176 224Z" fill="#F7F5EF" ${ow(1.6)}/><path d="M146 234 L154 234 L158 252 L162 384 L150 398 L138 384 L142 252Z" fill="#7A2E3B" ${ow(1.6)}/>
+<path d="M124 224 L150 336 L118 300 L126 270 L112 262Z M176 224 L150 336 L182 300 L174 270 L188 262Z" fill="#4A515A" ${ow(1.6)}/>
+<circle cx="150" cy="364" r="3.4" fill="#2A2E33"/><circle cx="150" cy="420" r="3.4" fill="#2A2E33"/>
+<path d="M70 236 Q98 222 120 220 L136 330 L116 760 L56 760 Q58 600 64 470Z" fill="#5D6468" ${ow()}/><path d="M230 236 Q202 222 180 220 L164 330 L184 760 L244 760 Q242 600 236 470Z" fill="#4C5257" ${ow()}/>
+<path d="M120 220 L136 330 L108 280 L112 256 L96 248Z" fill="#6A7277" ${ow(1.6)}/><path d="M180 220 L164 330 L192 280 L188 256 L204 248Z" fill="#575E63" ${ow(1.6)}/>
+<rect x="184" y="304" width="40" height="15" rx="2" fill="#F4F1EA" ${ow(1.2)}/><rect x="188" y="308" width="8" height="7" fill="#2F4A52"/><rect x="199" y="309" width="21" height="2.4" fill="#8F9396"/><rect x="199" y="313" width="16" height="2" fill="#8F9396"/>
+<path d="M72 244 Q50 282 48 400 L48 598 L82 602 L88 420 Q90 330 98 270Z" fill="#5D6468" ${ow()}/><path d="M228 244 Q250 282 252 400 L252 598 L218 602 L212 420 Q210 330 202 270Z" fill="#4C5257" ${ow()}/>
+<path d="M50 600 Q44 642 60 658 Q78 660 82 632 L82 602Z" fill="${c.skin}" ${ow(1.8)}/><path d="M250 600 Q256 642 240 658 Q222 660 218 632 L218 602Z" fill="${c.shade}" ${ow(1.8)}/>
+<path d="M96 600 L104 760 M204 600 L196 760" stroke="#4C5257" stroke-width="2"/>
+${head(c,aHead(c,emo,{smileEye:"closed",brow:"#7E7B76",blushA:.12,extra:lines+gl})+hair)}`;
+  },
+  "남궁철":(emo)=>{
+    const c=CHARS["남궁철"];
+    const hair=`<path d="M-48 46 C-50 2 -22 -12 0 -12 C22 -12 50 2 48 46 C42 26 22 18 0 18 C-22 18 -42 26 -48 46Z" fill="${c.hair}" ${ow()}/><path d="M-30 6 l2 4 M-10 0 l2 4 M12 0 l2 4 M30 8 l2 4" stroke="#3A3A40" stroke-width="1.4"/>`;
+    const ear=`<path d="M52 86 q8 6 4 20 q-6 14 -2 40" fill="none" stroke="#D9D2C2" stroke-width="1.6"/>`;
+    return `<path d="M134 176 L134 256 Q150 266 166 256 L166 176Z" fill="${c.skin}" ${ow()}/>${neckSh(c,150,184)}
+<path d="M98 480 L202 480 L206 760 L94 760Z" fill="#1E2124" ${ow()}/><path d="M150 520 L150 760" stroke="#33383C" stroke-width="2"/>
+<path d="M64 222 Q150 196 236 222 L240 480 Q150 498 60 480Z" fill="#23272A" ${ow()}/>
+<path d="M126 254 L150 330 L174 254Z" fill="#F4F2EC" ${ow(1.6)}/><path d="M147 262 L153 262 L156 280 L159 400 L150 412 L141 400 L144 280Z" fill="#111315" ${ow(1.4)}/>
+<path d="M126 254 L150 360 L118 320 L124 290 L110 282Z M174 254 L150 360 L182 320 L176 290 L190 282Z" fill="#2C3134" ${ow(1.6)}/>
+<path d="M66 230 Q44 276 46 420 L126 596 L156 604 L152 570 L84 418 Q86 320 96 262Z" fill="#23272A" ${ow()}/><path d="M234 230 Q256 276 254 420 L174 596 L144 604 L148 570 L216 418 Q214 320 204 262Z" fill="#1C1F22" ${ow()}/>
+<path d="M126 590 Q132 616 152 618 Q172 616 176 594 Q160 580 150 580 Q140 580 126 590Z" fill="${c.skin}" ${ow(1.8)}/><path d="M138 598 Q150 606 164 598" fill="none" stroke="${c.shade}" stroke-width="1.6"/>
+${head(c,aHead(c,emo==="smile"?"flat":emo,{flatEye:"half",browW:3.6,blush:false,extra:ear})+hair)}`;
+  },
   "봉순":(emo)=>{
-    emo=emo||"smile";
-    const eyeMode={smile:"closed",angry:"angry",o:"wide",flat:"open",sad:"sad"}[emo];
-    const P=permHair("#D3CEC5","#F3F0EA","#9E988E");
-    const mouth={
-      smile:'<path d="M130 276 Q150 296 170 276 Q150 286 130 276Z" fill="#9C4A45"/><path d="M130 276 Q150 286 170 276" stroke="#7A3531" stroke-width="3" fill="none" stroke-linecap="round"/>',
-      angry:'<path d="M132 270 Q150 262 168 270 Q164 298 150 300 Q136 298 132 270Z" fill="#6E2A2A"/><path d="M136 272 Q150 267 164 272 L162 278 Q150 274 138 278Z" fill="#F3EEE6"/><path d="M142 292 Q150 288 158 292" stroke="#C0616A" stroke-width="5" stroke-linecap="round"/>',
-      o:'<ellipse cx="150" cy="282" rx="8" ry="10" fill="#6E2A2A"/>',
-      flat:'<path d="M136 280 Q150 283 164 280" stroke="#8A4540" stroke-width="3.5" fill="none" stroke-linecap="round"/>',
-      sad:'<path d="M136 284 Q150 274 164 284" stroke="#8A4540" stroke-width="3.5" fill="none" stroke-linecap="round"/>'
-    }[emo];
-    const brow={smile:"M106 196 Q122 188 138 194 M162 194 Q178 188 194 196",angry:"M104 188 L138 202 M162 202 L196 188",o:"M106 188 Q122 180 138 186 M162 186 Q178 180 194 188",flat:"M106 196 L138 194 M162 194 L194 196",sad:"M106 202 L138 190 M162 190 L194 202"}[emo];
-    return `<svg viewBox="0 0 300 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
-<linearGradient id="bsSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5D6BA"/><stop offset="1" stop-color="#E6B893"/></linearGradient>
-<linearGradient id="bsCardi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A4868"/><stop offset="1" stop-color="#5E2C47"/></linearGradient>
-<linearGradient id="bsApron" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4EDDF"/><stop offset="1" stop-color="#DCD0B8"/></linearGradient>
-<pattern id="bsFlower" width="18" height="18" patternUnits="userSpaceOnUse"><rect width="18" height="18" fill="#FBF3EA"/><circle cx="5" cy="5" r="2.4" fill="#E68AA0"/><circle cx="13" cy="13" r="2" fill="#8CB38A"/></pattern>
-</defs>
-${P.cap}${P.back}
-<path d="M22 460 C26 370 82 330 150 326 C218 330 274 370 278 460Z" fill="url(#bsCardi)"/>
-<path d="M116 330 L150 408 L184 330Z" fill="url(#bsFlower)"/>
-<path d="M114 330 L134 360 L150 336 L166 360 L186 330" fill="#FFF9F1" stroke="#D9CBB8" stroke-width="2"/>
-<path d="M116 332 L102 460 M184 332 L198 460" stroke="#4A2338" stroke-width="5"/>
-<circle cx="192" cy="386" r="6" fill="#E9D6A2"/><circle cx="195" cy="424" r="6" fill="#E9D6A2"/>
-<path d="M56 402 Q76 428 70 460 M244 402 Q224 428 230 460" stroke="#4A2338" stroke-width="3" fill="none" opacity=".55"/>
-<path d="M92 460 L98 394 Q150 382 202 394 L208 460Z" fill="url(#bsApron)"/>
-<path d="M98 394 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 8 -4" fill="none" stroke="#CFC2A6" stroke-width="3"/>
-<path d="M104 394 L112 334 M196 394 L188 334" stroke="#E9E0CC" stroke-width="10" stroke-linecap="round"/>
-<rect x="126" y="416" width="48" height="30" rx="5" fill="none" stroke="#C9BA9A" stroke-width="3"/>
-<path d="M130 268 L130 330 Q150 344 170 330 L170 268Z" fill="#DDAA86"/>
-<ellipse cx="150" cy="300" rx="30" ry="10" fill="#B9825F" opacity=".35"/>
-<ellipse cx="84" cy="228" rx="11" ry="17" fill="#E9BD99"/><ellipse cx="216" cy="228" rx="11" ry="17" fill="#E0B08B"/>
-<circle cx="84" cy="246" r="4" fill="#E6C66B"/><circle cx="216" cy="246" r="4" fill="#E6C66B"/>
-<path d="M84 204 C84 142 112 118 150 118 C188 118 216 142 216 204 C216 256 194 298 150 306 C106 298 84 256 84 204Z" fill="url(#bsSkin)"/>
-<path d="M192 154 C216 186 218 242 198 276 C186 294 170 302 150 306 C178 284 198 240 192 154Z" fill="#C98E6C" opacity=".22"/>
-<path d="M90 184 Q150 158 210 184 Q150 172 90 196Z" fill="#B98A6E" opacity=".28"/>
-<ellipse cx="112" cy="258" rx="15" ry="8" fill="#EE9C8C" opacity=".35"/><ellipse cx="188" cy="258" rx="15" ry="8" fill="#EE9C8C" opacity=".35"/>
-<g stroke="#C08A6B" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".75"><path d="M126 176 Q150 170 174 176"/><path d="M130 184 Q150 179 170 184"/><path d="M127 262 Q120 276 127 290"/><path d="M173 262 Q180 276 173 290"/><path d="M112 240 Q122 244 132 240"/><path d="M168 240 Q178 244 188 240"/></g>
-<path d="M150 230 Q147 252 140 260 Q150 266 160 260" stroke="#BF8666" stroke-width="3" fill="none" stroke-linecap="round"/>
-${vnEye(122,224,.9,"#5A3A2A",eyeMode,1,"#F0CBAA")}${vnEye(178,224,.9,"#5A3A2A",eyeMode,-1,"#EBC2A0")}
-<path d="${brow}" stroke="#9D978D" stroke-width="5.5" fill="none" stroke-linecap="round"/>
-${mouth}
-${P.front}${P.hl}
-</svg>`;
+    const c=CHARS["봉순"];
+    let curls="",cb="";
+    const put=(x,y,r)=>{cb+=`<circle cx="${x+2}" cy="${y+3}" r="${r}" fill="#A9A399" ${ow(1.6)}/>`;curls+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${c.hair}"/><path d="M${x-r*.5} ${y-r*.05} a${r*.55} ${r*.55} 0 0 1 ${r*.65} ${-r*.45}" fill="none" stroke="#F6F3EE" stroke-width="2" stroke-linecap="round"/>`;};
+    for(let a=172;a<=368;a+=12){const t=a*Math.PI/180;put(56*Math.cos(t),50+58*Math.sin(t),14);}
+    for(let a=205;a<=335;a+=16){const t=a*Math.PI/180;put(34*Math.cos(t),40+38*Math.sin(t),13);}
+    const wr=`<g fill="none" stroke="${c.shade}" stroke-width="1.6" stroke-linecap="round"><path d="M-44 80 l-6 -2 M-44 86 l-6 2 M44 80 l6 -2 M44 86 l6 2"/><path d="M-16 108 q-6 10 -2 20 M16 108 q6 10 2 20"/><path d="M-16 42 Q0 38 16 42"/></g><circle cx="-47" cy="98" r="3.4" fill="#E6C66B" ${ow(1)}/><circle cx="47" cy="98" r="3.4" fill="#E6C66B" ${ow(1)}/>`;
+    return `${head(c,cb)}
+<path d="M136 396 L134 444 Q148 454 162 444 L160 396Z" fill="${c.skin}" ${ow()}/>${neckSh(c,148,404)}
+<path d="M86 452 Q150 424 214 452 L232 640 Q238 700 232 760 L68 760 Q62 700 68 640Z" fill="${c.top}" ${ow()}/>
+<path d="M188 460 Q214 462 222 520 L232 640 Q236 700 232 760 L200 760 Q214 640 188 460Z" fill="#5E2C47" opacity=".8"/>
+<path d="M122 436 L150 506 L178 436Z" fill="#FBF3EA" ${ow(1.6)}/>${[[138,452,"#E68AA0"],[160,460,"#8CB38A"],[148,480,"#E68AA0"],[132,468,"#8CB38A"],[166,446,"#E68AA0"]].map(([x,y,f])=>`<circle cx="${x}" cy="${y}" r="3" fill="${f}"/>`).join("")}
+<path d="M122 436 L112 760 M178 436 L190 760" fill="none" stroke="#5E2C47" stroke-width="3"/>${[530,590].map(y=>`<circle cx="186" cy="${y}" r="5" fill="#E9D6A2" ${ow(1.2)}/>`).join("")}
+<path d="M96 566 Q150 552 204 566 L214 760 L86 760Z" fill="${c.apron}" ${ow()}/><path d="M104 566 L116 448 M196 566 L184 448" fill="none" stroke="${c.apron}" stroke-width="9" stroke-linecap="round"/><path d="M104 566 L116 448 M196 566 L184 448" fill="none" ${ow(1.4)}/>
+<path d="M98 566 q9 -8 18 0 q9 -8 18 0 q9 -8 18 0 q9 -8 18 0 q9 -8 18 0 q9 -8 16 0" fill="none" stroke="#CFC2A6" stroke-width="2.4"/>
+<path d="M88 456 Q62 492 62 566 Q64 610 128 620 L138 594 Q100 586 98 546 Q100 504 110 474Z" fill="${c.top}" ${ow()}/><path d="M212 456 Q238 492 238 566 Q236 610 172 620 L162 594 Q200 586 202 546 Q200 504 190 474Z" fill="#5E2C47" ${ow()}/>
+<path d="M124 590 Q118 616 136 624 L166 624 Q182 616 176 590 Q150 580 124 590Z" fill="${c.skin}" ${ow(1.8)}/><path d="M138 600 L138 618 M150 598 L150 620 M162 600 L162 618" stroke="${c.shade}" stroke-width="1.4"/>
+${head(c,aHead(c,emo,{smileEye:"closed",eyeScale:.82,brow:"#A39D93",blushA:.38,extra:wr})+curls)}`;
   },
   "도윤":(emo)=>{
-    emo=emo||"smile";
-    const eyeMode={smile:"open",o:"wide",flat:"open",sad:"sad",angry:"angry"}[emo];
-    const mouth={
-      smile:'<path d="M130 266 Q150 290 170 266Z" fill="#8E3B3B"/><path d="M134 267 L166 267 L164 272 L136 272Z" fill="#fff"/><path d="M142 280 Q150 286 158 280" stroke="#D86B73" stroke-width="5" stroke-linecap="round"/>',
-      o:'<ellipse cx="150" cy="274" rx="7" ry="8" fill="#8E3B3B"/>',
-      flat:'<path d="M140 272 Q150 274 160 272" stroke="#8E3B3B" stroke-width="3.5" fill="none" stroke-linecap="round"/>',
-      sad:'<path d="M138 278 Q150 268 162 278" stroke="#8E3B3B" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M144 280 Q150 284 156 280" stroke="#8E3B3B" stroke-width="2" fill="none"/>',
-      angry:'<path d="M138 276 Q150 268 162 276" stroke="#8E3B3B" stroke-width="3.5" fill="none" stroke-linecap="round"/>'
-    }[emo];
-    const brow={smile:"M104 184 Q120 176 136 182 M164 182 Q180 176 196 184",o:"M104 176 Q120 168 136 174 M164 174 Q180 168 196 176",flat:"M104 184 L136 182 M164 182 L196 184",sad:"M104 190 L136 176 M164 176 L196 190",angry:"M104 176 L136 188 M164 188 L196 176"}[emo];
-    const tear=emo==="sad"?'<path d="M206 240 q5 10 0 14 q-5 -4 0 -14Z" fill="#9CD2EE" opacity=".9"/>':"";
-    return `<svg viewBox="0 0 300 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
-<linearGradient id="dySkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FADCC0"/><stop offset="1" stop-color="#EDC29E"/></linearGradient>
-<linearGradient id="dyHood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7CD55"/><stop offset="1" stop-color="#DDA22A"/></linearGradient>
-<linearGradient id="dyHair" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C2A33"/><stop offset="1" stop-color="#1A1719"/></linearGradient>
-</defs>
-<path d="M24 460 C28 376 82 332 150 330 C218 332 272 376 276 460Z" fill="url(#dyHood)"/>
-<path d="M82 336 Q150 300 218 336 Q206 368 150 370 Q94 368 82 336Z" fill="#C98E22"/>
-<path d="M96 340 Q150 318 204 340 Q194 360 150 362 Q106 360 96 340Z" fill="#E9B43E"/>
-<path d="M132 360 L126 420 M168 360 L174 420" stroke="#F8F1E0" stroke-width="4" stroke-linecap="round"/>
-<rect x="121" y="418" width="10" height="16" rx="3" fill="#8A8F96"/><rect x="169" y="418" width="10" height="16" rx="3" fill="#8A8F96"/>
-<path d="M86 432 Q150 446 214 432" stroke="#C98E22" stroke-width="4" fill="none"/>
-<g transform="translate(206 390)"><circle r="15" fill="#3E6E8C"/><circle r="15" fill="none" stroke="#F8F1E0" stroke-width="3"/><circle cx="-4" cy="-4" r="4" fill="#fff" opacity=".7"/></g>
-<path d="M60 400 Q78 424 72 460 M240 400 Q222 424 228 460" stroke="#B8801C" stroke-width="3" fill="none" opacity=".6"/>
-<path d="M134 276 L134 336 Q150 346 166 336 L166 276Z" fill="#E6B48E"/>
-<ellipse cx="80" cy="214" rx="12" ry="17" fill="#F0C6A2"/><ellipse cx="220" cy="214" rx="12" ry="17" fill="#E8BB96"/>
-<path d="M76 196 C76 134 110 108 150 108 C190 108 224 134 224 196 C224 250 192 290 150 294 C108 290 76 250 76 196Z" fill="url(#dySkin)"/>
-<path d="M200 150 C222 180 224 234 204 264 C192 280 172 292 150 294 C180 272 204 232 200 150Z" fill="#D39A74" opacity=".2"/>
-<ellipse cx="108" cy="246" rx="16" ry="9" fill="#F4968F" opacity=".42"/><ellipse cx="192" cy="246" rx="16" ry="9" fill="#F4968F" opacity=".42"/>
-<g transform="rotate(-18 188 250)"><rect x="170" y="243" width="36" height="14" rx="6" fill="#F3D2B0" stroke="#D9B08A" stroke-width="1.5"/><rect x="182" y="243" width="12" height="14" fill="#E9C59F"/><circle cx="185" cy="248" r="1" fill="#C99C75"/><circle cx="191" cy="252" r="1" fill="#C99C75"/></g>
-<path d="M150 236 Q148 246 144 250" stroke="#D09474" stroke-width="3" fill="none" stroke-linecap="round"/>
-${vnEye(118,214,1.1,"#3B2A22",eyeMode,1,"#F5D1B2")}${vnEye(182,214,1.1,"#3B2A22",eyeMode,-1,"#EFC6A4")}
-${tear}
-<path d="${brow}" stroke="#2A2328" stroke-width="5.5" fill="none" stroke-linecap="round"/>
-${mouth}
-<path d="M70 206 C60 128 104 96 150 96 C198 96 244 128 230 206 C226 178 216 162 204 158 L210 180 L190 150 L186 172 L168 144 L160 170 L140 142 L134 168 L116 146 L112 172 L96 156 L94 184 C84 178 76 190 70 206Z" fill="url(#dyHair)"/>
-<path d="M150 94 L140 70 L162 88 L172 66 L176 96Z" fill="#221F26"/>
-<path d="M104 124 Q150 100 196 124" stroke="#56627A" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
-<path d="M120 114 Q140 106 160 108" stroke="#8A97B0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
-</svg>`;
+    const c=CHARS["도윤"];
+    const hair=`<path d="M-54 60 C-62 4 -24 -14 2 -14 C34 -14 62 6 54 60 C50 42 44 34 36 32 L40 52 L26 30 L22 50 L8 26 L2 50 L-12 28 L-16 52 L-28 32 L-32 54 C-40 40 -48 46 -54 60Z" fill="${c.hair}" ${ow()}/><path d="M0 -12 L-8 -34 L8 -18 L16 -38 L18 -10Z" fill="${c.hair}" ${ow(1.8)}/><path d="M-34 8 Q0 -8 34 8" fill="none" stroke="#5A6280" stroke-width="4" stroke-linecap="round" opacity=".7"/>`;
+    const band=`<g transform="rotate(-16 30 108)"><rect x="18" y="102" width="26" height="11" rx="5" fill="#F5D8B8" ${ow(1.2)}/><rect x="27" y="102" width="9" height="11" fill="#EBC9A4"/></g>`;
+    const mouth={smile:`<path d="M-11 114 Q0 130 11 114Z" fill="#8E3B3B" ${ow(1.4)}/><path d="M-8 115 L8 115 L7 118 L-7 118Z" fill="#fff"/>`}[emo];
+    return `<path d="M138 524 L138 560 Q150 568 162 560 L162 524Z" fill="${c.skin}" ${ow()}/>${neckSh(c,150,530)}
+<path d="M98 560 Q150 540 202 560 L212 700 L216 760 L84 760 L88 700Z" fill="${c.top}" ${ow()}/>
+<path d="M180 566 Q204 568 210 640 L216 760 L196 760 Q198 650 180 566Z" fill="#DDA22A" opacity=".85"/>
+<path d="M100 556 Q150 520 200 556 Q190 592 150 594 Q110 592 100 556Z" fill="#D9A23A" ${ow(1.8)}/><path d="M112 560 Q150 540 188 560 Q180 582 150 584 Q120 582 112 560Z" fill="#E9B43E"/>
+<path d="M136 584 L132 650 M164 584 L168 650" stroke="#F8F1E0" stroke-width="3" stroke-linecap="round"/><rect x="128" y="648" width="8" height="12" rx="2" fill="#8A8F96" ${ow(1)}/><rect x="164" y="648" width="8" height="12" rx="2" fill="#8A8F96" ${ow(1)}/>
+<g transform="translate(190 620)"><circle r="11" fill="#3E6E8C" ${ow(1.4)}/><circle cx="-3" cy="-3" r="3" fill="#fff" opacity=".75"/></g>
+<path d="M104 700 L196 700 L200 760 L100 760Z" fill="#E6AF3C" ${ow(1.6)}/>
+<path d="M100 566 Q78 600 80 660 Q84 702 126 716 L136 698 Q108 690 106 650 Q106 612 114 584Z" fill="${c.top}" ${ow()}/><path d="M200 566 Q222 600 220 660 Q216 702 174 716 L164 698 Q192 690 194 650 Q194 612 186 584Z" fill="#DDA22A" ${ow()}/>
+${head(c,aHead(c,emo,{round:true,eyeScale:1.12,brow:"#2A2328",blushA:.45,tear:true,mouth,extra:band})+hair)}`;
   }
 };
-function figSVG(key,emo){
-  if(DRAW[key])return DRAW[key](emo);
+function figSVG(key,emo,view){
   const c=CHARS[key]; emo=emo||(c.back?"flat":"smile");
-  let body=`<path d="M28 460 C32 366 86 324 150 324 C214 324 268 366 272 460Z" fill="${c.top}"/>`;
-  if(c.outfit==="apron")body+=`<path d="M96 460 L102 356 Q150 344 198 356 L204 460Z" fill="${c.apron}"/><path d="M104 356 L92 330 M196 356 L208 330" stroke="${c.apron}" stroke-width="10"/><rect x="128" y="392" width="44" height="30" rx="4" fill="none" stroke="#CFC4A8" stroke-width="3"/>`;
-  if(c.outfit==="tee")body+=`<path d="M120 330 Q150 354 180 330" stroke="#C9972F" stroke-width="7" fill="none"/><path d="M110 404 L190 404" stroke="#fff" stroke-opacity=".45" stroke-width="10"/>`;
-  if(c.outfit==="coat"||c.outfit==="suit"){
-    body+=`<path d="M128 328 L150 392 L172 328Z" fill="#F4F1EA"/><path d="M145 342 L155 342 L159 404 L150 416 L141 404Z" fill="${c.outfit==="coat"?"#7A2E3B":"#2B2F33"}"/><path d="M150 330 L114 460 M150 330 L186 460" stroke="rgba(0,0,0,.28)" stroke-width="5"/>`;
-    if(c.outfit==="coat")body+=`<rect x="192" y="386" width="40" height="15" rx="2" fill="#F4F1EA"/><rect x="196" y="391" width="30" height="4" fill="#8F9396"/>`;
-  }
-  const neck=`<rect x="128" y="270" width="44" height="66" rx="14" fill="${c.shade}"/>`;
-  const ears=`<circle cx="80" cy="220" r="13" fill="${c.shade}"/><circle cx="220" cy="220" r="13" fill="${c.shade}"/>`;
-  const head=`<ellipse cx="150" cy="214" rx="72" ry="84" fill="${c.skin}"/>`;
-  let face=`<ellipse cx="124" cy="220" rx="6" ry="${emo==="o"?9:8}" fill="#2A2422"/><ellipse cx="176" cy="220" rx="6" ry="${emo==="o"?9:8}" fill="#2A2422"/>`;
-  face+=`<g stroke="${c.style==="bun"?"#9B968E":"#3A302B"}" stroke-width="5" stroke-linecap="round" fill="none">${BROW[emo]}</g>`;
-  face+=MOUTH[emo];
-  if(c.blush)face+=`<ellipse cx="108" cy="248" rx="13" ry="7" fill="#F2A09A" opacity=".55"/><ellipse cx="192" cy="248" rx="13" ry="7" fill="#F2A09A" opacity=".55"/>`;
-  if(c.wr)face+=`<path d="M100 214 l-10 -3 M100 224 l-10 3 M200 214 l10 -3 M200 224 l10 3 M128 290 q22 8 44 0" stroke="#C9A083" stroke-width="3" fill="none" stroke-linecap="round"/>`;
-  const hair=HAIR[c.style].replace(/fill="H"/g,`fill="${c.hair}"`);
-  const gl=c.glasses?`<g fill="none" stroke="#3A3A3A" stroke-width="4"><rect x="102" y="202" width="42" height="32" rx="11"/><rect x="156" y="202" width="42" height="32" rx="11"/><path d="M144 214 L156 214"/></g>`:"";
-  return `<svg viewBox="0 0 300 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${body}${c.hairBack?`<path d="M62 214 C56 126 106 96 150 96 C194 96 244 126 238 214 L246 376 Q226 392 206 378 L200 300 L100 300 L94 378 Q74 392 54 376 Z" fill="${c.hair}"/>`:""}${neck}${ears}${head}${face}${hair}${gl}</svg>`;
+  const vb=view==="bust"?`${c.cx-92} ${c.y0-34} 184 ${Math.round(c.H*1.95+34)}`:"0 0 300 760";
+  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${FIG[key](emo)}</svg>`;
 }
 
 /* =========================================================
@@ -1134,7 +1117,7 @@ const BIZCARD_ART=`<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"
 <rect x="44" y="104" width="78" height="3" fill="#B9C2C0"/><rect x="44" y="111" width="56" height="3" fill="#B9C2C0"/>
 <rect x="150" y="98" width="18" height="18" fill="none" stroke="#C23A55" stroke-width="1.6" opacity=".8"/><text x="159" y="111" text-anchor="middle" font-family="Gowun Batang,serif" font-size="9" fill="#C23A55" opacity=".8">印</text></g></svg>`;
 const KEY_SVG=`<svg viewBox="0 0 160 60" width="180" aria-hidden="true"><circle cx="34" cy="30" r="20" fill="none" stroke="#B58B3A" stroke-width="9"/><rect x="52" y="25" width="92" height="10" rx="3" fill="#B58B3A"/><rect x="120" y="35" width="8" height="14" fill="#B58B3A"/><rect x="134" y="35" width="8" height="10" fill="#B58B3A"/><path d="M20 12 q10 -8 22 -2" stroke="#C8436A" stroke-width="4" fill="none"/></svg>`;
-function person(face,title,desc){return `<div class="person"><div class="pf">${figSVG(face,"smile")}</div><div><h3>${title}</h3><p>${desc}</p></div></div>`;}
+function person(face,title,desc){return `<div class="person"><div class="pf">${figSVG(face,"smile","bust")}</div><div><h3>${title}</h3><p>${desc}</p></div></div>`;}
 const ITEMS={
   memo_1104:{cat:"memo",k:"메모",n:"접수 장부 · 11월 9일",d:"내 글씨로 적은 저고리 접수 기록",read:[["접수 장부","11/9(월)  옥색 한복 저고리 1\n자개단추 5  (6개 아닌가? 확인!)\n맡긴 사람: 도윤 (할머니 심부름)","ledger"]],
     html:()=>`<div class="ledger">11/9(월) &nbsp;옥색 한복 저고리 1<br>자개단추 5 <span class="red">(6개 아닌가? 확인!)</span><br>맡긴 사람: 도윤 (할머니 심부름)</div><p class="note-cap">내가 직접 적은 접수 기록. 확인한다고 적어 놓고 잊어버렸다.</p>`},
@@ -1501,7 +1484,7 @@ const LOCS={
     {id:"backdoor",x:556,y:356,w:98,h:206,label:"골목 끝 문",run:()=>[M("골목 끝 창고 문. 녹슨 자물쇠가 걸려 있다.")]},
     {id:"pots",x:776,y:526,w:250,h:190,label:"화분",run:()=>[M("봉순 할머니네 고추 모종. 흙이 아직 촉촉하다.")]},
     {id:"stairs",x:40,y:620,w:420,h:176,label:"계단",show:()=>!(S.phase==="d2_invest"&&!S.doyunGone),run:()=>[M(S.doyunGone?"도윤이가 앉아 있던 계단. 구슬 하나가 굴러다닌다.":"오래된 돌계단. 도윤이가 자주 앉아 논다고 했다.")]},
-    {id:"doyun",x:150,y:350,w:290,h:445,label:"도윤이",show:()=>S.phase==="d2_invest"&&!S.doyunGone,art:()=>figSVG("도윤",S.got.has("marble")?"smile":"flat").replace("<svg ",'<svg x="150" y="350" width="290" height="445" '),cast:["도윤"],run:()=>S.got.has("marble")?[
+    {id:"doyun",x:150,y:350,w:290,h:445,label:"도윤이",show:()=>S.phase==="d2_invest"&&!S.doyunGone,art:()=>figSVG("도윤",S.got.has("marble")?"smile":"flat","bust").replace("<svg ",'<svg x="150" y="350" width="290" height="445" '),cast:["도윤"],run:()=>S.got.has("marble")?[
       Y("도윤","누나, 할머니한테 진짜 말할 거야?","sad"),Y("서하","같이 말하자. 누나가 옆에 있을게."),Y("도윤","……응.","flat")]:[
       S.seenDoyun?null:N("계단에 쪼그려 앉은 도윤이. 주머니에서 구슬 부딪히는 소리가 난다."),
       DO(()=>{S.seenDoyun=true;}),
@@ -2039,7 +2022,7 @@ function drawCast(speaker,prev){
   const add=(k,left,isBack)=>{
     const d=document.createElement("div"); d.className="fig"+(isBack?" back":"");
     if(prev&&!prev.includes(k))d.classList.add("enter");
-    const c=CHARS[k]; d.style.left=left+"%"; d.style.height=(isBack?c.scale*72:c.scale*88)+"%"; d.style.zIndex=isBack?1:2;
+    const c=CHARS[k]; d.style.left=left+"%"; d.style.height=(isBack?84:98)+"%"; d.style.zIndex=isBack?1:2;
     if(speaker&&!isBack){ if(k===speaker)d.classList.add("talk"); else d.classList.add("dim"); }
     d.innerHTML=figSVG(k,emo[k]); box.appendChild(d);
   };
