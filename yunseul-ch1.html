@@ -333,12 +333,10 @@ details.day summary span:first-child{flex:1}
 .lobby{position:fixed;inset:0;z-index:50;background:#141A1B;color:#E4DCC6;display:grid;grid-template-columns:minmax(280px,1fr) minmax(0,1.15fr);overflow:hidden;
   background-image:radial-gradient(ellipse at 30% 40%,rgba(80,96,92,.35),transparent 60%),repeating-linear-gradient(97deg,rgba(255,255,255,.018) 0 2px,transparent 2px 7px)}
 .lb-left{display:flex;flex-direction:column;justify-content:center;gap:40px;padding:48px 24px 48px max(24px,6vw);position:relative;z-index:2}
-.lb-logo{position:relative;align-self:flex-start;display:flex;flex-direction:column;gap:2px;border:2px solid #E4DCC6;border-radius:6px 30px 30px 6px;padding:18px 34px 16px 56px;background:rgba(20,26,27,.6)}
+.lb-logo{position:relative;align-self:flex-start;display:flex;flex-direction:column;gap:2px;border:2px solid #E4DCC6;border-radius:6px 30px 30px 6px;padding:20px 34px 18px 56px;background:rgba(20,26,27,.6)}
 .lb-logo::before{content:"";position:absolute;left:20px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;border:2px solid #E4DCC6;background:#141A1B}
 .lb-logo::after{content:"";position:absolute;left:-46px;top:50%;width:50px;height:30px;margin-top:-30px;border:2px solid #B03A48;border-right:none;border-bottom:none;border-radius:40px 0 0 0}
-.lb-shop{font-family:var(--f-body);font-size:14px;letter-spacing:.5em;color:#A8B3AF}
-.lb-title{font-family:var(--f-display);font-size:clamp(42px,6vw,68px);font-weight:700;line-height:1.1;letter-spacing:.04em}
-.lb-no{font-family:var(--f-mono);font-size:12px;color:#D9657A;letter-spacing:.08em}
+.lb-title{font-family:var(--f-display);font-size:clamp(38px,5.4vw,62px);font-weight:700;line-height:1.1;letter-spacing:.06em;white-space:nowrap}
 .lb-menu{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
 .lb-item{font:inherit;font-family:var(--f-display);font-size:21px;color:#B9B19C;background:none;border:none;padding:6px 10px 6px 30px;cursor:pointer;position:relative;text-align:left;display:flex;flex-direction:column;line-height:1.3}
 .lb-item::before{content:"";position:absolute;left:4px;top:15px;width:16px;height:10px;border:1.5px solid #E4DCC6;border-radius:2px 6px 6px 2px;opacity:0;transition:opacity .15s}
@@ -355,12 +353,16 @@ details.day summary span:first-child{flex:1}
 .lb-chip:focus-visible{outline:2px solid #D9657A;outline-offset:2px}
 .lb-art{position:relative;min-height:0}
 .lb-art svg{position:absolute;inset:0;width:100%;height:100%}
+.lb-art .tw{transform-box:fill-box;transform-origin:center;animation:lbTw 3.2s ease-in-out infinite;opacity:.2}
+@keyframes lbTw{0%,100%{opacity:.15}50%{opacity:.95}}
+@media (prefers-reduced-motion:reduce){.lb-art .tw{animation:none;opacity:.6}}
 .lb-ver,.lb-copy{position:absolute;bottom:calc(10px + env(safe-area-inset-bottom,0px));font-family:var(--f-mono);font-size:11px;color:#5F6A68;z-index:2}
 .lb-ver{left:16px}.lb-copy{right:16px}
 @media (max-width:720px){
   .lobby{grid-template-columns:1fr}
-  .lb-art{position:absolute;inset:0;opacity:.35}
-  .lb-left{padding:40px 24px 56px 64px;gap:28px}
+  .lb-art{position:absolute;inset:calc(96px + env(safe-area-inset-top,0px)) 0 150px}
+  .lb-art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#141A1B 0,rgba(20,26,27,0) 12%,rgba(20,26,27,0) 78%,#141A1B 100%)}
+  .lb-left{padding:calc(32px + env(safe-area-inset-top,0px)) 24px 52px 64px;gap:24px;justify-content:space-between}
   .lb-copy{display:none}
 }
 @media (prefers-reduced-motion: reduce){.daycard,.dc-tap{animation:none}}
@@ -438,16 +440,14 @@ body{padding-inline:0}
 
 <div class="lobby" id="lobby" hidden>
   <div class="lb-left">
-    <div class="lb-logo" aria-label="윤슬세탁소 사건 수첩">
-      <span class="lb-shop">윤슬세탁소</span>
-      <span class="lb-title">사건 수첩</span>
-      <span class="lb-no">No. 0417 · 찾아가지 않음</span>
+    <div class="lb-logo">
+      <span class="lb-title">윤슬세탁소</span>
     </div>
     <nav class="lb-menu" id="lb-menu"></nav>
   </div>
   <div class="lb-art" aria-hidden="true" id="lb-art"></div>
   <span class="lb-ver">ver 0.9 · 1장 체험판</span>
-  <span class="lb-copy">윤슬세탁소 사건 수첩 · 프로토타입</span>
+  <span class="lb-copy">윤슬세탁소 · 프로토타입</span>
 </div>
 
 <div class="sheet" id="sheet-inv" hidden>
@@ -707,37 +707,108 @@ ${[0,1,2,3,4,5,6].map(i=>`<rect x="${420+i*42}" y="${560+(i%2)*6}" width="34" he
 </svg>`
 };
 
-const LOBBY_ART=`<svg viewBox="0 0 700 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+const LOBBY_ART=(()=>{
+const INK="#2E231D";
+const ol=(w=3)=>`stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
+const ln=(d,w,c,o)=>`<path d="${d}" fill="none" stroke="${c||INK}" stroke-width="${w||2}" stroke-linecap="round" stroke-linejoin="round"${o?` stroke-opacity="${o}"`:""}/>`;
+const wire=`<path d="M0 22 L0 8 q0 -14 10 -14 q10 0 10 10" fill="none" stroke="#A9A496" stroke-width="3" stroke-linecap="round"/><path d="M0 22 L-54 44 L54 44Z" fill="none" stroke="#A9A496" stroke-width="3" stroke-linejoin="round"/>`;
+const vinyl=h=>`<path d="M-68 30 Q0 4 68 30 L74 ${h} L-74 ${h}Z" fill="url(#lbVinyl)" stroke="#D4E2E6" stroke-opacity=".5" stroke-width="2"/>${ln(`M-42 44 L-50 ${h-24}`,7,"#fff",".16")}${ln(`M30 60 L34 ${h-60}`,3,"#fff",".12")}`;
+const ticket=(x,y,r,c)=>`<g transform="translate(${x} ${y}) rotate(${r})"><rect x="-11" y="0" width="22" height="28" rx="2" fill="${c}" ${ol(1.6)}/>${ln("M-6 9 L6 9",1.5,INK,".45")}${ln("M-6 15 L3 15",1.5,INK,".45")}<circle cx="0" cy="3.5" r="1.6" fill="${INK}"/></g>`;
+const sleeves=(c,s,len)=>`<path d="M-44 46 Q-62 54 -64 84 L-68 ${len} L-47 ${len+2} L-46 120Z" fill="${c}" ${ol()}/><path d="M44 46 Q62 54 64 84 L68 ${len} L47 ${len+2} L46 120Z" fill="${s}" ${ol()}/>${ln(`M-68 ${len-15} L-47 ${len-13}`,2.4)}${ln(`M68 ${len-15} L47 ${len-13}`,2.4)}`;
+const shirt=()=>{const c="#DCE6EE",s="#AFC0CF";return `${sleeves(c,s,236)}
+<path d="M-48 46 Q-30 36 -14 34 L14 34 Q30 36 48 46 L50 300 Q0 308 -50 300Z" fill="${c}" ${ol()}/>
+<path d="M20 58 Q36 60 48 62 L50 300 Q36 304 24 305 Q30 180 20 58Z" fill="${s}" opacity=".75"/>
+${ln("M0 54 L0 304",2)}${ln("M8 54 L8 304",1.4,INK,".35")}
+${[86,126,166,206,246,286].map(y=>`<circle cx="4" cy="${y}" r="3.2" fill="#F8F6F0" stroke="${INK}" stroke-width="1.5"/>`).join("")}
+<path d="M-38 98 h24 v24 q-12 5 -24 0Z" fill="none" ${ol(2)}/>
+<path d="M-16 30 Q0 25 16 30 L15 40 Q0 35 -15 40Z" fill="${s}" ${ol(2.4)}/>
+<path d="M-15 36 L0 56 L-22 68 L-29 42Z" fill="#F5F8FB" ${ol(2.4)}/>
+<path d="M15 36 L0 56 L22 68 L29 42Z" fill="#E1E9EF" ${ol(2.4)}/>`;};
+const dress=()=>{const c="#A8414F",s="#7C2C3A";return `${ln("M-22 42 L-26 76",3)}${ln("M22 42 L26 76",3)}
+<path d="M-30 72 Q-16 88 0 86 Q16 88 30 72 L30 134 L-30 134Z" fill="${c}" ${ol()}/>
+<path d="M14 80 L30 72 L30 134 L16 134Z" fill="${s}" opacity=".7"/>
+<path d="M-30 140 L30 140 L76 318 Q0 338 -76 318Z" fill="${c}" ${ol()}/>
+<path d="M12 140 L30 140 L76 318 Q54 326 34 330 Q30 230 12 140Z" fill="${s}" opacity=".75"/>
+${ln("M-8 148 L-24 328",2,INK,".55")}${ln("M-22 146 L-52 322",2,INK,".55")}${ln("M8 148 L14 332",2,INK,".55")}
+<path d="M-12 102 Q-6 96 0 100" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/>
+<rect x="-32" y="128" width="64" height="14" rx="3" fill="#EAD7B6" ${ol(2.4)}/>
+<path d="M0 135 L-13 128 L-13 142Z M0 135 L13 128 L13 142Z" fill="#EAD7B6" ${ol(2)}/>${ln("M0 135 L-6 156 M0 135 L6 156",2.4,"#EAD7B6")}`;};
+const blazer=()=>{const c="#34435F",s="#222D42",l="#42557A";return `${sleeves(c,s,256)}
+<path d="M-50 46 Q-30 36 -18 34 L18 34 Q30 36 50 46 L54 278 Q0 286 -54 278Z" fill="${c}" ${ol()}/>
+<path d="M22 70 Q40 66 50 60 L54 278 Q40 282 26 283 Q34 170 22 70Z" fill="${s}" opacity=".8"/>
+<path d="M-18 34 L0 132 L18 34Z" fill="#ECE5D5" ${ol(2.4)}/>
+<path d="M-6 36 L0 46 L6 36 M0 46 L-5 120 L0 130 L5 120Z" fill="#9C4A3C" ${ol(2)}/>
+<path d="M-18 34 L0 138 L-30 98 L-26 86 L-38 82 L-25 40Z" fill="${l}" ${ol(2.6)}/>
+<path d="M18 34 L0 138 L30 98 L26 86 L38 82 L25 40Z" fill="${c}" ${ol(2.6)}/>
+${ln("M0 138 L0 280",2.4)}
+<circle cx="0" cy="174" r="4.4" fill="#C9B27A" stroke="${INK}" stroke-width="1.6"/><circle cx="0" cy="214" r="4.4" fill="#C9B27A" stroke="${INK}" stroke-width="1.6"/>
+<path d="M-46 214 h30 v8 h-30Z M16 214 h30 v8 h-30Z M20 104 h22 v5 h-22Z" fill="${s}" ${ol(2)}/>`;};
+const trousers=()=>{const c="#8C8474",s="#6A6356";return `<path d="M-40 42 Q0 36 40 42 L46 302 L8 304 L0 120 L-8 304 L-46 302Z" fill="${c}" ${ol()}/>
+<path d="M2 128 L4 64 L40 42 L46 302 L8 304Z" fill="${s}" opacity=".7"/>
+${ln("M-24 64 L-27 300",1.8,INK,".5")}${ln("M24 64 L27 300",1.8,INK,".5")}
+${ln("M-46 288 L-8 290",2.4)}${ln("M8 290 L46 288",2.4)}
+<path d="M-40 40 Q0 34 40 40 L41 66 Q0 60 -41 66Z" fill="${c}" ${ol(2.6)}/>`;};
+const back=(x,body,h,tk)=>`<g transform="translate(${x} 228)" filter="url(#lbWob)">${wire}${body()}${vinyl(h)}${ticket(tk[0],tk[1],tk[2],tk[3])}</g>`;
+
+/* knit sweater */
+const B="#ECDDBF",SH="#CDB890",DP="#A89069",HL="#FBF3E1";
+const cable=cx=>{let o="";for(let k=0;k<8;k++){const y=304+k*26;
+  const a=`M${cx-9} ${y} C${cx-9} ${y+13} ${cx+9} ${y+13} ${cx+9} ${y+26}`, b=`M${cx+9} ${y} C${cx+9} ${y+13} ${cx-9} ${y+13} ${cx-9} ${y+26}`;
+  const rope=d=>ln(d,10,DP)+ln(d,5.5,k%2?B:HL);
+  o+=k%2?rope(a)+rope(b):rope(b)+rope(a);}
+  return o+ln(`M${cx-18} 300 L${cx-18} 512`,2.2,SH)+ln(`M${cx+18} 300 L${cx+18} 512`,2.2,SH);};
+const seed=x=>{let o="";for(let y=306;y<508;y+=13)o+=ln(`M${x-4} ${y} l4 5 l4 -5`,1.7,SH);return o;};
+const ribs=(f)=>{let o="";for(let i=0;i<=24;i++){const t=i/24,x=264+172*t,b=28*t*(1-t);o+=ln(`M${x} ${f+2+b} L${x} ${f+18+b}`,1.8,SH);}return o;};
+const neck=()=>{let o="";for(let i=1;i<12;i++){const t=i/12;o+=ln(`M${322+56*t} ${266+52*t*(1-t)} L${312+76*t} ${272+72*t*(1-t)}`,1.8,SH);}return o;};
+const sleeveKnit=(x0,x1)=>{let o="";for(let k=0;k<9;k++){const t=k/8,x=x0+(x1-x0)*t,y=340+k*22;o+=ln(`M${x-5} ${y} l5 5 l5 -5`,1.7,SH)+ln(`M${x-5} ${y+10} l5 5 l5 -5`,1.7,SH,".6");}return o;};
+const cuffRibs=(x0,dx)=>{let o="";for(let i=0;i<5;i++){const x=x0+i*dx;o+=ln(`M${x} 543 L${x} 559`,1.6,DP);}return o;};
+const sweater=`<g filter="url(#lbWob)">
+<path d="M350 262 L350 236 q0 -15 10 -15 q10 0 10 10" fill="none" stroke="#C7C0AF" stroke-width="3.4" stroke-linecap="round"/>
+<path d="M244 300 Q350 258 456 300 L453 310 Q350 272 247 310Z" fill="#A6744A" ${ol(2.4)}/>
+<path d="M270 296 Q246 306 240 350 L224 556 Q240 566 258 562 L268 380Z" fill="${B}" ${ol()}/>
+<path d="M430 296 Q454 306 460 350 L476 556 Q460 566 442 562 L432 380Z" fill="${SH}" ${ol()}/>
+${sleeveKnit(252,240)}${sleeveKnit(448,460)}
+<path d="M225 536 Q241 545 259 541 L258 562 Q240 566 224 556Z" fill="${SH}" ${ol(2.4)}/>${cuffRibs(229,7)}
+<path d="M475 536 Q459 545 441 541 L442 562 Q460 566 476 556Z" fill="${DP}" ${ol(2.4)}/>${cuffRibs(445,7)}
+<path d="M270 294 Q300 276 326 268 Q350 286 374 268 Q400 276 430 294 L436 530 Q350 544 264 530Z" fill="${B}" ${ol()}/>
+<path d="M404 290 Q420 292 430 294 L436 530 Q420 534 402 536 Q414 420 404 290Z" fill="${SH}" opacity=".85"/>
+<path d="M326 268 Q350 290 374 268 Q368 302 350 304 Q332 302 326 268Z" fill="${SH}" opacity=".8"/>
+${cable(306)}${cable(350)}${cable(394)}${seed(328)}${seed(372)}
+${[276,284,292].map(x=>ln(`M${x} 312 L${x-1} 508`,1.7,SH)).join("")}${[408,416,424].map(x=>ln(`M${x} 312 L${x+1} 508`,1.7,DP,".7")).join("")}
+${ln("M282 304 Q300 290 320 286",5,HL,".9")}${ln("M246 360 Q244 400 238 450",4,HL,".6")}
+${ln("M286 330 q8 30 2 64",2,DP,".45")}${ln("M416 330 q-8 30 -2 64",2,DP,".55")}
+<path d="M264 512 Q350 526 436 512 L436 532 Q350 546 264 532Z" fill="${B}" ${ol(2.6)}/>${ribs(512)}
+<path d="M396 517 Q416 515 436 512 L436 532 Q416 535 396 537Z" fill="${SH}" opacity=".7"/>
+<path d="M322 266 Q350 292 378 266 L388 272 Q350 308 312 272Z" fill="${B}" ${ol(2.6)}/>${neck()}
+${ln("M470 548 Q478 572 490 588",1.6,"#D9CCAE")}
+<g transform="translate(490 588) rotate(9)"><rect x="-22" y="0" width="46" height="60" rx="4" fill="#F1DE9E" ${ol(2.4)}/><circle cx="1" cy="10" r="4" fill="#24302F" ${ol(1.6)}/>${ln("M-12 24 L14 24",1.8,INK,".4")}${ln("M-12 32 L8 32",1.8,INK,".4")}<path d="M1 38 l3 6.5 7 1 -5 4.8 1.2 7 -6.2 -3.3 -6.2 3.3 1.2 -7 -5 -4.8 7 -1Z" fill="#C8436A" ${ol(1.4)}/></g>
+</g>`;
+const spark=(x,y,s,d)=>`<path class="tw" style="animation-delay:${d}s" transform="translate(${x} ${y}) scale(${s})" d="M0 -9 Q1.2 -1.2 9 0 Q1.2 1.2 0 9 Q-1.2 1.2 -9 0 Q-1.2 -1.2 0 -9Z" fill="#FFEBB4"/>`;
+return `<svg viewBox="0 0 700 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<radialGradient id="lbGlow" cx="350" cy="120" r="520" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F6D48C" stop-opacity=".5"/><stop offset=".45" stop-color="#C99B55" stop-opacity=".14"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
-<linearGradient id="lbCoat" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E3CFA6"/><stop offset="1" stop-color="#A88D62"/></linearGradient>
-<linearGradient id="lbVinyl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9FB3B8" stop-opacity=".18"/><stop offset=".4" stop-color="#E6EEF0" stop-opacity=".32"/><stop offset=".55" stop-color="#9FB3B8" stop-opacity=".12"/><stop offset="1" stop-color="#9FB3B8" stop-opacity=".2"/></linearGradient>
-<radialGradient id="lbVig" cx="350" cy="380" r="520" gradientUnits="userSpaceOnUse"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#0B0F10" stop-opacity=".85"/></radialGradient>
-<pattern id="lbHatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><line x1="0" y1="0" x2="0" y2="9" stroke="#fff" stroke-opacity=".035" stroke-width="2"/></pattern>
+<radialGradient id="lbGlow" cx="350" cy="130" r="480" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFD991" stop-opacity=".55"/><stop offset=".45" stop-color="#D9A45E" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<linearGradient id="lbCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3A6" stop-opacity=".28"/><stop offset="1" stop-color="#FFE3A6" stop-opacity="0"/></linearGradient>
+<linearGradient id="lbVinyl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B9CCD1" stop-opacity=".16"/><stop offset=".4" stop-color="#EEF5F6" stop-opacity=".26"/><stop offset=".6" stop-color="#B9CCD1" stop-opacity=".08"/><stop offset="1" stop-color="#B9CCD1" stop-opacity=".18"/></linearGradient>
+<radialGradient id="lbVig" cx="350" cy="400" r="560" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#0B0F10" stop-opacity=".8"/></radialGradient>
+<pattern id="lbPaper" width="44" height="44" patternUnits="userSpaceOnUse"><rect width="44" height="44" fill="#24312F"/><rect width="22" height="44" fill="#273533"/><path d="M11 6 l3 4 -3 4 -3 -4Z M33 28 l3 4 -3 4 -3 -4Z" fill="#2E3D3A"/></pattern>
+<filter id="lbWob" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter>
+<filter id="lbGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 .95  0 0 0 0 .85  0 0 0 .09 0"/></filter>
 </defs>
-<rect width="700" height="800" fill="#1C2425"/>
-<rect width="700" height="800" fill="url(#lbHatch)"/>
-<rect x="36" y="40" width="628" height="720" fill="none" stroke="#3B4644" stroke-width="3"/>
-<path d="M36 40 l18 4 M664 758 l-22 -3 M40 400 l-6 30" stroke="#566260" stroke-width="2"/>
+<rect width="700" height="800" fill="url(#lbPaper)"/>
+<rect x="0" y="612" width="700" height="112" fill="#1D2826"/>${ln("M0 612 L700 612",5,"#3A4A46")}${[0,1,2,3,4].map(i=>`<rect x="${22+i*136}" y="632" width="112" height="72" rx="3" fill="none" stroke="#2D3B38" stroke-width="3"/>`).join("")}
+<rect x="0" y="724" width="700" height="76" fill="#3B2E25"/>${ln("M0 724 L700 724",4,"#21180F")}${[0,1,2,3,4,5,6].map(i=>ln(`M${i*118-20} 800 L${i*118+30} 724`,2,"#2A2018")).join("")}
 <rect width="700" height="800" fill="url(#lbGlow)"/>
-<line x1="350" y1="0" x2="350" y2="96" stroke="#0E1212" stroke-width="3"/>
-<path d="M334 96 L366 96 L360 110 L340 110Z" fill="#2B2B28"/><circle cx="350" cy="124" r="15" fill="#FBE8B4"/>
-<rect x="70" y="236" width="560" height="8" rx="4" fill="#6E6A62"/><rect x="74" y="236" width="6" height="520" fill="#4B4944"/><rect x="620" y="236" width="6" height="520" fill="#4B4944"/>
-${[140,245,455,560].map((x,i)=>`<path d="M${x} 244 q0 -18 12 -18" fill="none" stroke="#8C877C" stroke-width="3"/><path d="M${x-44} 282 Q${x} 256 ${x+44} 282 L${x+48} ${560+(i%2)*60} L${x-48} ${560+(i%2)*60}Z" fill="${["#384B52","#4A3F4E","#3E4B3E","#4B4438"][i]}"/><path d="M${x-50} 272 Q${x} 246 ${x+50} 272 L${x+54} ${574+(i%2)*60} L${x-54} ${574+(i%2)*60}Z" fill="url(#lbVinyl)" stroke="#8FA3A8" stroke-opacity=".35"/><rect x="${x-9}" y="${520+(i%2)*60}" width="18" height="24" rx="2" fill="#B8A55E" opacity=".55"/>`).join("")}
-<path d="M350 244 q0 -18 12 -18" fill="none" stroke="#B9B2A2" stroke-width="3"/>
-<path d="M300 290 Q350 250 400 290 L418 330 L424 660 L276 660 L282 330Z" fill="url(#lbCoat)"/>
-<path d="M318 282 Q350 236 382 282 Q372 310 350 314 Q328 310 318 282Z" fill="#C4AC80"/>
-<path d="M350 312 L350 660" stroke="#8C734C" stroke-width="3"/>
-${[380,440,500].map(y=>`<rect x="336" y="${y}" width="28" height="7" rx="3.5" fill="#6B4E2E"/><path d="M350 ${y+3} l-16 0" stroke="#3E2D1A" stroke-width="2"/>`).join("")}
-<path d="M282 330 L250 540 L276 548 L292 380Z" fill="#B99D6E"/><path d="M418 330 L452 540 L426 548 L408 380Z" fill="#B99D6E"/>
-<path d="M300 560 L336 560 M364 560 L400 560" stroke="#8C734C" stroke-width="3"/>
-<path d="M452 540 L470 590" stroke="#C8B99A" stroke-width="2"/>
-<g transform="translate(470 590) rotate(8)"><rect x="-4" y="0" width="52" height="68" rx="3" fill="#F0D57E"/><circle cx="22" cy="10" r="4" fill="#1C2425"/><text x="22" y="38" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="600" fill="#3A2F12">0417</text><path d="M22 46 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1Z" fill="#C8436A"/></g>
-<rect x="36" y="720" width="628" height="40" fill="#141A1B"/>
-${[[160,736,-14,"#D9C98E"],[520,742,22,"#E6B8C0"],[600,730,-6,"#DCE6DC"]].map(([x,y,r,c])=>`<rect x="${x}" y="${y}" width="18" height="24" rx="2" fill="${c}" opacity=".55" transform="rotate(${r} ${x+9} ${y+12})"/>`).join("")}
-<ellipse cx="350" cy="722" rx="120" ry="10" fill="#000" opacity=".4"/>
+<path d="M330 128 L170 760 L530 760 L370 128Z" fill="url(#lbCone)"/>
+<g filter="url(#lbWob)"><rect x="40" y="232" width="9" height="500" fill="#6F6B62" ${ol(2.4)}/><rect x="651" y="232" width="9" height="500" fill="#6F6B62" ${ol(2.4)}/><path d="M28 734 h34 M638 734 h34" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><rect x="34" y="223" width="632" height="10" rx="5" fill="#9C978B" ${ol(2.4)}/>${ln("M44 226 L656 226",2,"#D8D2C2",".7")}</g>
+${back(100,shirt,330,[30,300,-6,"#E8D48E"])}${back(212,dress,348,[-48,318,8,"#E6B8C0"])}${back(490,blazer,304,[44,276,-5,"#DCE6DC"])}${back(602,trousers,326,[-30,302,6,"#E8D48E"])}
+<rect x="0" y="200" width="700" height="520" fill="#141A1B" opacity=".14"/>
+<ellipse cx="350" cy="728" rx="150" ry="11" fill="#000" opacity=".35"/>
+${sweater}
+<g filter="url(#lbWob)">${ln("M350 0 L350 96",3,"#0E1212")}<path d="M318 124 Q322 92 350 90 Q378 92 382 124Z" fill="#3D5049" ${ol(2.6)}/><ellipse cx="350" cy="126" rx="13" ry="8" fill="#FFF3CC"/>${ln("M330 112 Q336 100 348 98",3,"#7E968C",".8")}</g>
+${spark(268,196,1.2,0)}${spark(462,236,.8,1.1)}${spark(218,452,.7,.6)}${spark(520,420,1,1.7)}${spark(300,640,.7,2.2)}${spark(436,170,.6,.3)}
 <rect width="700" height="800" fill="url(#lbVig)"/>
-</svg>`;
+<rect width="700" height="800" filter="url(#lbGrain)"/>
+</svg>`;})();
 const CHARS={
   "봉순":{skin:"#EFC9A8",shade:"#D9AE8C",hair:"#CFCBC3",style:"bun",top:"#5F7F6E",outfit:"apron",apron:"#EFE7D3",wr:true,scale:.8},
   "도윤":{skin:"#F5D3B3",shade:"#E2B997",hair:"#2E2723",style:"kid",top:"#F2C14E",outfit:"tee",scale:.6,blush:true},
