@@ -1,0 +1,48 @@
+{
+  "_주의": "style/avoid를 채우는 것이 이미지 일관성의 90%입니다. IMAGE_RULES.md의 '1. 아트 디렉션'과 반드시 같은 내용을 유지하세요.",
+
+  "_모델": "model=새로 생성할 때, editModel=기존 이미지를 수정할 때. flare는 '빠른 일상용 고품질 생성', sunburst는 '가장 강력한 모델, 정밀 편집용'이라 역할을 나눠 두었습니다. 둘 다 출력 토큰 $30/1M로 단가가 같습니다.",
+  "model": "gpt-image-2.5-flare",
+  "editModel": "gpt-image-2.5-sunburst",
+
+  "_해상도": "gpt-image-2.5는 임의 해상도를 받습니다(16의 배수, 비율 1:3~3:1, 최대 변 3840px, 총 픽셀 655,360~8,294,400). scene/title을 1200x800으로 둔 것은 게임의 viewBox 0 0 1200 800 과 정확히 같아 리샘플링이 전혀 없기 때문입니다. 이 값을 바꾸지 마세요.",
+
+  "style": "",
+
+  "avoid": "any text, letters, words, numbers, signage copy, watermark, signature, logo, UI elements, speech bubbles, borders, frames",
+
+  "presets": {
+    "scene": {
+      "size": "1200x800",
+      "quality": "high",
+      "format": "png",
+      "transparent": false,
+      "dir": "assets/scenes",
+      "direction": "Wide establishing shot of an empty location with no people and no animals. Eye-level camera, horizon near the vertical middle. Keep the central 60% of the frame visually calm and uncluttered so characters and clickable hotspots can be layered on top. Full-bleed composition with detail running to all four edges; nothing important within 80px of any edge."
+    },
+    "character": {
+      "size": "800x1200",
+      "quality": "high",
+      "format": "png",
+      "transparent": true,
+      "dir": "assets/characters",
+      "direction": "Single full-body character standing straight, facing the viewer, neutral relaxed pose, arms at sides. Completely transparent background, no ground, no shadow, no props. The figure is centered horizontally, feet touching the bottom edge of the frame, head with a small margin at the top."
+    },
+    "item": {
+      "size": "1024x1024",
+      "quality": "medium",
+      "format": "png",
+      "transparent": true,
+      "dir": "assets/items",
+      "direction": "One single object, centered, isolated on a fully transparent background. Straight-on three-quarter view, even lighting, no cast shadow, no surface, no background scenery. The object fills about 80% of the frame."
+    },
+    "title": {
+      "size": "1200x800",
+      "quality": "high",
+      "format": "png",
+      "transparent": false,
+      "dir": "assets/titles",
+      "direction": "Single dramatic illustration for a chapter title card. Leave the upper-left third comparatively empty and low-contrast so a title and subtitle can be typeset over it. Render absolutely no text."
+    }
+  }
+}

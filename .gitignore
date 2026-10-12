@@ -1,0 +1,8 @@
+
+# API 키 — 절대 커밋하지 않음
+.env
+.env.*
+!.env.example
+
+# GPT에서 받아온 원본 보관용 (보정 전)
+assets/_inbox/

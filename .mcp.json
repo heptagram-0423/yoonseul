@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "game-image": {
+      "command": "node",
+      "args": ["tools/mcp-image-server.mjs"]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node tools/genimg.mjs:*)",
+      "mcp__game-image__list_image_presets"
+    ]
+  }
+}
