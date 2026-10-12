@@ -308,6 +308,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:0 10px;flex-wrap:w
 .hot .spot{fill:transparent;cursor:pointer}
 .hot .spot:focus-visible{stroke:#FFE58A;stroke-width:4}
 .fx{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+.fx.cut{animation:bgin .5s ease-out}
 .scene.t-night #bg,.scene.t-night #hot,.scene.t-night #cast{filter:brightness(.5) saturate(.7) hue-rotate(-10deg)}
 .scene.t-off #bg,.scene.t-off #hot{filter:brightness(.38) saturate(.55)}
 .scene.t-dusk #bg,.scene.t-dusk #hot,.scene.t-dusk #cast{filter:brightness(.86) sepia(.28) saturate(1.1)}
@@ -513,6 +514,66 @@ ${(typeof S!=="undefined"&&S&&(S.shutterUp||S.peek))?`<rect x="420" y="290" widt
 <g stroke="#A39C90" stroke-width="2">${[0,1,2,3,4,5,6,7,8].map(i=>`<line x1="${i*150}" y1="650" x2="${i*150-60}" y2="800"/>`).join("")}<line x1="0" y1="720" x2="1200" y2="720"/></g>
 <rect x="0" y="642" width="1200" height="10" fill="#8F897E"/>
 </svg>`,
+banchan:()=>{
+const tub=(x,y,food,lid,w)=>{w=w||92;return `<g transform="translate(${x} ${y})"><rect x="0" y="0" width="${w}" height="40" rx="6" fill="#F4F1EA"/><rect x="5" y="8" width="${w-10}" height="27" rx="4" fill="${food}"/><rect x="-3" y="-6" width="${w+6}" height="9" rx="4" fill="${lid}"/></g>`;};
+const tag=(x,y,t)=>`<g transform="translate(${x} ${y}) rotate(-4)"><rect width="56" height="30" rx="3" fill="#FFFDF4" stroke="#C9BFA6"/><text x="28" y="22" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="21" fill="#C23A55">${t}</text></g>`;
+const down=typeof S!=="undefined"&&S&&S.bongDown;
+return `<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="skyBc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCD4DC"/><stop offset="1" stop-color="#E6E0D2"/></linearGradient>
+<linearGradient id="inBc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A4644"/><stop offset="1" stop-color="#55625E"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#skyBc)"/>
+<rect x="0" y="34" width="1200" height="620" fill="#C9BFAF"/>
+<rect x="0" y="34" width="1200" height="8" fill="#B3A894"/>
+<rect x="290" y="54" width="620" height="100" rx="8" fill="#F3EEE2" stroke="#4E8A6C" stroke-width="6"/>
+<text x="600" y="120" text-anchor="middle" font-family="Gowun Batang,serif" font-size="58" font-weight="700" fill="#3D4A45">봉순반찬</text>
+<text x="600" y="145" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="15" letter-spacing="5" fill="#6F7D72">집 밥 반 찬 · since 1994</text>
+<rect x="110" y="250" width="980" height="330" fill="url(#inBc)"/>
+<g fill="#6E5A44"><rect x="140" y="300" width="380" height="8"/><rect x="140" y="380" width="380" height="8"/></g>
+<g>${[0,1,2,3,4,5].map(i=>`<rect x="${152+i*60}" y="${262+(i%2)*6}" width="40" height="38" rx="5" fill="${["#C8463A","#E9C46A","#7FA36A","#B07A4A","#D8D2C2","#C8463A"][i]}" opacity=".85"/>`).join("")}${[0,1,2,3,4].map(i=>`<rect x="${160+i*72}" y="${336}" width="52" height="44" rx="5" fill="${["#E3DCCB","#B9472F","#E3DCCB","#6E9C5E","#E3DCCB"][i]}" opacity=".85"/>`).join("")}</g>
+<rect x="800" y="270" width="260" height="300" rx="8" fill="#DCE3E1"/><rect x="814" y="284" width="232" height="272" rx="4" fill="#9DB3B3"/>
+<g>${[0,1,2].map(r=>[0,1,2,3].map(i=>`<rect x="${826+i*54}" y="${300+r*86}" width="40" height="60" rx="6" fill="${["#C8463A","#E9C46A","#6E9C5E","#B07A4A"][(i+r)%4]}" opacity=".8"/>`).join("")).join("")}</g>
+<rect x="926" y="284" width="6" height="272" fill="#DCE3E1"/>
+<g>${Array.from({length:13},(_,i)=>`<path d="M${80+i*80} 172 L${160+i*80} 172 L${160+i*80} 238 Q${120+i*80} 262 ${80+i*80} 238Z" fill="${i%2?"#F3EEE2":"#4E8A6C"}"/>`).join("")}</g>
+<rect x="70" y="166" width="1060" height="10" rx="4" fill="#3E6E56"/>
+<rect x="40" y="540" width="1120" height="22" rx="4" fill="#8C6E52"/>
+<rect x="56" y="562" width="1088" height="88" fill="#A88A6C"/><g stroke="#8C6E52" stroke-width="3">${[0,1,2,3,4,5,6,7].map(i=>`<line x1="${56+i*136}" y1="562" x2="${56+i*136}" y2="650"/>`).join("")}</g>
+${tub(70,500,"#C8463A","#D9564A")}${tub(176,500,"#6E9C5E","#5E8C6A")}${tub(282,500,"#B07A4A","#8C5E3A")}
+${tub(930,500,"#E9C46A","#C9A43A")}${tub(1036,500,"#C8463A","#D9564A",96)}
+${down?`${tub(808,500,"#C8463A","#D9564A",96)}${tub(812,456,"#6E9C5E","#5E8C6A",88)}`:""}
+${tag(96,566,"3,000")}${tag(300,566,"4,000")}${tag(960,566,"3,500")}${down?tag(822,566,"5,000"):""}
+<rect x="0" y="650" width="1200" height="150" fill="#B8B1A5"/>
+<g stroke="#A39C90" stroke-width="2">${[0,1,2,3,4,5,6,7,8].map(i=>`<line x1="${i*150}" y1="650" x2="${i*150-60}" y2="800"/>`).join("")}<line x1="0" y1="720" x2="1200" y2="720"/></g>
+<rect x="0" y="642" width="1200" height="10" fill="#8F897E"/>
+</svg>`;},
+flowershop:()=>{
+const blooms=["#E68AA0","#F5F0E4","#F2C94C","#E26D7F","#F8E7EE","#E9B44C","#C9A0DC"];
+const bucket=(x,y,s,seed)=>`<g transform="translate(${x} ${y}) scale(${s})">${[-28,-10,8,26,-18,16,0].map((dx,i)=>`<path d="M${dx*.5} 0 L${dx} ${-44-(i%3)*12}" stroke="#4E7A4A" stroke-width="3"/><circle cx="${dx}" cy="${-46-(i%3)*12}" r="13" fill="${blooms[(i+seed)%blooms.length]}"/><circle cx="${dx}" cy="${-46-(i%3)*12}" r="4" fill="#E9C46A"/>`).join("")}<path d="M-36 0 L36 0 L28 52 L-28 52Z" fill="#A9B3B5"/><rect x="-40" y="-6" width="80" height="9" rx="4" fill="#C9D1D3"/></g>`;
+const down=typeof S!=="undefined"&&S&&S.bucketDown;
+return `<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="skyFl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCD4DC"/><stop offset="1" stop-color="#E6E0D2"/></linearGradient>
+<linearGradient id="glFl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A9C2BC"/><stop offset="1" stop-color="#7F9D97"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#skyFl)"/>
+<rect x="0" y="30" width="1200" height="624" fill="#CEC6B6"/>
+<rect x="320" y="46" width="560" height="104" rx="12" fill="#2F4A3E"/>
+<text x="600" y="114" text-anchor="middle" font-family="Gowun Batang,serif" font-size="56" font-weight="700" fill="#F3EBD8">여름꽃집</text>
+<text x="600" y="138" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" letter-spacing="6" fill="#A9C7B4">FLOWER · SINCE 2023</text>
+<g transform="translate(372 98)"><path d="M0 0 C-14 -26 10 -40 22 -30 C26 -14 14 -2 0 0Z" fill="#7FB07A"/><path d="M0 0 L16 -24" stroke="#2F4A3E" stroke-width="2"/></g>
+<rect x="100" y="180" width="1000" height="400" fill="#6E8F6A"/>
+<rect x="114" y="194" width="972" height="372" fill="url(#glFl)"/>
+<g opacity=".75">${Array.from({length:9},(_,i)=>`<circle cx="${170+i*110}" cy="${450-(i%3)*30}" r="${46-(i%2)*10}" fill="${i%2?"#5E8C5A":"#77A36E"}"/>`).join("")}${[0,1,2,3].map(i=>`<line x1="${240+i*240}" y1="194" x2="${240+i*240}" y2="${250+i%2*20}" stroke="#4A4A42" stroke-width="2"/><path d="M${222+i*240} ${250+i%2*20} h36 l-6 24 h-24z" fill="#B07A4A"/><circle cx="${240+i*240}" cy="${246+i%2*20}" r="18" fill="#77A36E"/>`).join("")}</g>
+<path d="M114 194 L330 194 L114 420Z" fill="#fff" opacity=".12"/>
+<rect x="594" y="194" width="12" height="372" fill="#6E8F6A"/>
+<g fill="#8C6E52"><rect x="50" y="520" width="330" height="18" rx="3"/><rect x="80" y="450" width="270" height="16" rx="3"/><rect x="60" y="538" width="12" height="112"/><rect x="358" y="538" width="12" height="112"/><rect x="92" y="466" width="10" height="56"/><rect x="330" y="466" width="10" height="56"/></g>
+<g fill="#8C6E52"><rect x="820" y="520" width="330" height="18" rx="3"/><rect x="850" y="450" width="270" height="16" rx="3"/><rect x="830" y="538" width="12" height="112"/><rect x="1128" y="538" width="12" height="112"/><rect x="862" y="466" width="10" height="56"/><rect x="1100" y="466" width="10" height="56"/></g>
+${bucket(130,398,1,0)}${bucket(215,398,1,2)}${bucket(300,398,1,4)}${bucket(100,468,1.1,1)}${bucket(200,468,1.1,3)}${bucket(300,468,1.1,5)}
+${bucket(900,398,1,6)}${bucket(985,398,1,1)}${bucket(1070,398,1,3)}${bucket(890,468,1.1,5)}${bucket(990,468,1.1,0)}${bucket(1090,468,1.1,2)}
+${down?bucket(800,598,1.15,4):""}
+<g transform="translate(318 520) rotate(-3)"><path d="M0 0 L-16 130 M100 0 L116 130" stroke="#6E5A44" stroke-width="6"/><rect x="-4" y="0" width="108" height="92" rx="4" fill="#2E3532" stroke="#8C6E52" stroke-width="5"/><text x="50" y="34" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="24" fill="#F3EBD8">오늘의 꽃</text><text x="50" y="68" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="28" fill="#F8E7EE">흰 국화</text></g>
+<rect x="0" y="650" width="1200" height="150" fill="#B8B1A5"/>
+<g stroke="#A39C90" stroke-width="2">${[0,1,2,3,4,5,6,7,8].map(i=>`<line x1="${i*150}" y1="650" x2="${i*150-60}" y2="800"/>`).join("")}<line x1="0" y1="720" x2="1200" y2="720"/></g>
+<rect x="0" y="642" width="1200" height="10" fill="#8F897E"/>
+${down?`<path d="M760 660 q30 8 60 2 q20 -4 40 4" stroke="#9FB7C2" stroke-width="4" fill="none" opacity=".7"/>`:""}
+</svg>`;},
 counter:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <linearGradient id="cWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6E1D3"/><stop offset="1" stop-color="#D2CAB7"/></linearGradient>
@@ -567,6 +628,7 @@ ${[0,1,2].map(i=>{const x=30+i*72,h=250+(i%3)*30,c=["#D5E1E8","#EBD7CD","#E5E1CB
 <g transform="translate(330 510)"><rect width="110" height="36" rx="2" fill="#F5EFE0" transform="rotate(-6)"/><rect x="4" y="6" width="70" height="3" fill="#B7AE9C" transform="rotate(-6)"/><rect x="4" y="14" width="90" height="3" fill="#B7AE9C" transform="rotate(-6)"/><rect x="92" y="-22" width="6" height="44" rx="3" fill="#C8436A" transform="rotate(30)"/></g>
 <g transform="translate(880 520)"><ellipse cx="0" cy="26" rx="26" ry="6" fill="#000" opacity=".2"/><path d="M-22 24 Q-22 -4 0 -6 Q22 -4 22 24Z" fill="#D2B064"/><path d="M-12 8 Q-6 -2 4 -2" stroke="#fff" stroke-opacity=".6" stroke-width="4" fill="none"/><rect x="-4" y="-16" width="8" height="10" fill="#9C7F3B"/></g>
 <g transform="translate(980 470)"><rect x="-22" y="40" width="44" height="40" rx="6" fill="#A4674A"/><path d="M0 40 C-40 10 -30 -30 -6 -40 M0 40 C30 0 40 -24 20 -44 M0 40 C0 0 -10 -30 4 -60" stroke="#4F7A4A" stroke-width="9" fill="none" stroke-linecap="round"/></g>
+<g opacity=".45" filter="url(#cSoft)"><path d="M1000 440 q18 -30 0 -60 q-18 -30 0 -60" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round"/></g>
 <rect width="1200" height="800" fill="url(#cVig)"/>
 </svg>`,
 workshop:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -916,7 +978,7 @@ const ITEMS={
 /* =========================================================
    SCRIPT HELPERS
    ========================================================= */
-const N=x=>({t:"narr",x}), M=x=>({t:"mono",x}), Y=(who,x,e)=>({t:"say",who,x,e}), SYS=x=>({t:"sys",x});
+const N=x=>({t:"narr",x}), M=x=>({t:"mono",x}), Y=(who,x,e,as)=>({t:"say",who,x,e,as}), SYS=x=>({t:"sys",x});
 const SC=(title,bg,cast)=>({t:"scene",title,bg,cast:cast||[]});
 const CAST=(...c)=>({t:"cast",cast:c});
 const EMO=(who,e)=>({t:"emo",who,e});
@@ -927,6 +989,37 @@ const CARD=id=>({t:"card",id});
 const MENU=id=>({t:"menu",id});
 const CHOICE=opts=>({t:"choice",opts});
 const GO=loc=>({t:"explore",loc});
+const BGS=k=>({t:"bg",bg:k});
+const REDRAW=k=>[DO(()=>{curBg=null;}),BGS(k)];
+function walkerSVG(who,load,x0,x1){
+  const old=who==="봉순", c=old?Object.assign({},CHARS[who],{top:"#74395A"}):CHARS[who], h=old?0.9:1;
+  const hair=old?`<circle cx="0" cy="-238" r="16" fill="${c.hair}"/><path d="M-32 -198 C-34 -236 34 -236 32 -198 C24 -222 -24 -222 -32 -198Z" fill="${c.hair}"/>`
+                :"";
+  const bangs=old?"":`<path d="M-33 -214 C-26 -246 26 -246 33 -214 L22 -222 L12 -210 L0 -224 L-12 -210 L-22 -222Z" fill="${c.hair}"/>`;
+  const loadArt=load==="bucket"
+    ?`<g transform="translate(0 -112)">${[-20,-7,6,19,-13,13,0].map((dx,i)=>`<path d="M${dx*.5} 0 L${dx} ${-28-(i%3)*8}" stroke="#4E7A4A" stroke-width="3"/><circle cx="${dx}" cy="${-30-(i%3)*8}" r="9" fill="${["#F5F0E4","#E68AA0","#F2C94C","#F5F0E4","#E26D7F","#F8E7EE","#F5F0E4"][i]}"/>`).join("")}<path d="M-26 0 L26 0 L20 38 L-20 38Z" fill="#A9B3B5"/><rect x="-29" y="-5" width="58" height="8" rx="3" fill="#C9D1D3"/></g>`
+    :load==="banchan"
+    ?`<g transform="translate(0 -128)"><rect x="-30" y="0" width="60" height="22" rx="4" fill="#F4F1EA"/><rect x="-26" y="5" width="52" height="14" rx="3" fill="#6E9C5E"/><rect x="-32" y="-4" width="64" height="7" rx="3" fill="#5E8C6A"/><rect x="-32" y="24" width="64" height="24" rx="4" fill="#F4F1EA"/><rect x="-28" y="29" width="56" height="15" rx="3" fill="#C8463A"/><rect x="-34" y="21" width="68" height="7" rx="3" fill="#D9564A"/></g>`:"";
+  const arms=load
+    ?`<path d="M-30 -168 Q-46 -130 -26 -104" stroke="${c.top}" stroke-width="16" fill="none" stroke-linecap="round"/><path d="M30 -168 Q46 -130 26 -104" stroke="${c.top}" stroke-width="16" fill="none" stroke-linecap="round"/><circle cx="-24" cy="-102" r="8" fill="${c.skin}"/><circle cx="24" cy="-102" r="8" fill="${c.skin}"/>`
+    :`<path d="M-30 -168 Q-40 -130 -34 -96" stroke="${c.top}" stroke-width="16" fill="none" stroke-linecap="round"/><path d="M30 -168 Q40 -130 34 -96" stroke="${c.top}" stroke-width="16" fill="none" stroke-linecap="round"/><circle cx="-34" cy="-92" r="8" fill="${c.skin}"/><circle cx="34" cy="-92" r="8" fill="${c.skin}"/>`;
+  const body=`<g transform="scale(${h})">
+<ellipse cx="0" cy="2" rx="40" ry="7" fill="#000" opacity=".18"/>
+${old?"":`<path d="M-36 -206 C-40 -256 40 -256 36 -206 L40 -128 L-40 -128Z" fill="${c.hair}"/>`}
+<rect x="-18" y="-84" width="14" height="84" rx="6" fill="#3A3F44"/><rect x="4" y="-84" width="14" height="84" rx="6" fill="#3A3F44"/>
+<path d="M-24 -6 h20 v8 h-24z M4 -6 h20 l4 8 h-24z" fill="#2B2B2B"/>
+<path d="M-34 -172 Q0 -184 34 -172 L40 -80 L-40 -80Z" fill="${c.top}"/>
+<path d="M-24 -150 L24 -150 L30 -80 L-30 -80Z" fill="${c.apron}"/>
+<rect x="-9" y="-186" width="18" height="18" rx="6" fill="${c.shade}"/>
+<ellipse cx="0" cy="-212" rx="30" ry="34" fill="${c.skin}"/>
+${hair}${bangs}
+<circle cx="-10" cy="-208" r="2.6" fill="#2B2224"/><circle cx="10" cy="-208" r="2.6" fill="#2B2224"/><path d="M-7 -194 q7 4 14 0" stroke="#7A4A3A" stroke-width="2" fill="none"/>
+${arms}${loadArt}</g>`;
+  if(x0===x1) return `<g transform="translate(${x1} 650)">${body}</g>`;
+  return `<g transform="translate(${x0} 650)">${RM?"":`<animateTransform attributeName="transform" type="translate" values="${x0} 650;${x1} 650" dur="1.8s" begin="indefinite" fill="freeze" calcMode="spline" keySplines=".3 0 .4 1"/>`}${RM?`<g transform="translate(${x1-x0} 0)">`:"<g>"}<g>${RM?"":`<animateTransform attributeName="transform" type="translate" values="0 0;0 -6;0 0" dur=".45s" begin="indefinite" repeatCount="4"/>`}${body}</g></g></g>`;
+}
+const WALK=(who,load,x0,x1)=>DO(()=>{ const f=$("fx"); f.innerHTML=walkerSVG(who,load,x0,x1); f.classList.remove("cut"); void f.getBoundingClientRect(); f.classList.add("cut"); f.querySelectorAll("animateTransform").forEach(a=>{try{a.beginElement();}catch(_){}}); });
+const WALKOFF=DO(()=>{ $("fx").innerHTML=""; });
 const SKIP=(big,small)=>({t:"daycard",small:small||"",big,sub:""});
 const resolve=x=>(typeof x==="function"?x():(x||[])).filter(Boolean).slice();
 const DATES={1:"11월 9일 (월)",2:"11월 10일 (화)",3:"11월 11일 (수)"};
@@ -1247,29 +1340,45 @@ const LOCS={
 function bongStreet(){
   if(isClose()) return [N("봉순반찬은 벌써 셔터가 내려가 있다. 셔터에 '내일 뵙겠습니다' 쪽지.")];
   if(S.phase==="d2_invest"||S.phase==="d2_pickup"){
-    return [CAST("봉순"),S.trust>=0?Y("봉순","찾았냐? ……찾으면 부르라니까.","flat"):N("할머니는 등을 돌린 채 반찬만 담는다. 말을 걸 분위기가 아니다."),CAST()];
+    return [BGS("banchan"),CAST("봉순"),S.trust>=0?Y("봉순","찾았냐? ……찾으면 부르라니까.","flat"):N("할머니는 등을 돌린 채 반찬만 담는다. 말을 걸 분위기가 아니다."),CAST()];
   }
-  if(S.day===2) return [CAST("봉순"),Y("봉순","오늘 도윤이가 저고리 찾으러 간다더라. 영감 제사가 모레야.","smile"),CAST()];
+  if(S.day===2) return [BGS("banchan"),CAST("봉순"),Y("봉순","오늘 도윤이가 저고리 찾으러 간다더라. 영감 제사가 모레야.","smile"),CAST()];
   const first=!S.metBong;
-  return [CAST("봉순"),
-    first?N("반찬가게 앞, 봉순 할머니가 반찬통을 내놓고 있다."):null,
-    first?ITEM("p_bongsun",true):null,
-    first?Y("봉순","아이고, 정숙이 조카! 벌써 나왔네.","smile"):Y("봉순","또 왔냐? 가게는 안 보고.","smile"),
+  return [BGS("banchan"),
+    ...(first?[
+      WALK("봉순","banchan",700,700),
+      N("반찬가게 안에서 백발의 할머니 한 분이 반찬통을 두 개 겹쳐 들고 나온다."),
+      DO(()=>{S.bongDown=true;}),...REDRAW("banchan"),WALK("봉순",null,740,740),
+      N("진열대에 반찬통을 탁, 내려놓고 허리를 두드린다."),
+      WALKOFF]:[]),
+    CAST("봉순"),
+    ...(first?[
+      Y("봉순","아이고, 정숙이 조카 아니냐! 벌써 나왔네.","smile","할머니"),
+      Y("서하","아, 안녕하세요. 저를 아세요?"),
+      Y("봉순","알다마다. 장례식 때 상 치르느라 정신없어서 기억 못 하는구나. 옆집 반찬가게 하는 오봉순이다. 정숙이랑은 30년 이웃이고.","smile","할머니"),
+      M("반찬가게 간판의 '봉순'이 할머니 이름이었구나."),ITEM("p_bongsun",true)]
+    :[Y("봉순","또 왔냐? 가게는 안 보고.","smile")]),
     DO(()=>{S.metBong=true;}),
     MENU("bong1"),CAST()];
 }
 function flowerStreet(){
   if(isClose()) return [N("꽃집 불이 꺼져 있다. 유리문에 '내일 뵐게요' 쪽지. 흰 국화 몇 송이만 창가에 남아 있다.")];
-  if(S.phase==="d2_invest") return [CAST("여름"),
+  if(S.phase==="d2_invest") return [BGS("flowershop"),CAST("여름"),
     Y("여름","무슨 일 있어요? 할머니 목소리가 여기까지 들리던데요.","flat"),
     Y("여름","아까 도윤이가 골목 계단에 혼자 앉아 있던데요. 주머니만 계속 만지작거리면서.","flat"),
     ITEM("say_yeoreum"),CAST()];
-  if(S.day===2) return [CAST("여름"),Y("여름","좋은 아침이에요. 어제 첫 손님 받으셨죠? 도윤이가 자랑하고 다니던데요.","smile"),CAST()];
+  if(S.day===2) return [BGS("flowershop"),CAST("여름"),Y("여름","좋은 아침이에요. 어제 첫 손님 받으셨죠? 도윤이가 자랑하고 다니던데요.","smile"),CAST()];
   const first=!S.metFlower;
-  return [CAST("여름"),
-    first?N("꽃집 앞, 긴 소매 차림의 여자가 물통을 옮기고 있다."):null,
-    first?ITEM("p_yeoreum",true):null,
-    first?Y("여름","아, 세탁소 새 사장님이시죠? 옆집 꽃집이에요. 한여름이라고 해요.","smile"):Y("여름","또 오셨네요. 꽃 구경하실래요?","smile"),
+  return [BGS("flowershop"),
+    ...(first?[
+      WALK("여름","bucket",740,740),
+      N("꽃집 문이 열리고, 긴 소매 차림의 여자가 꽃이 가득 든 양동이를 끙끙 안고 나온다. 물이 찰랑인다."),
+      DO(()=>{S.bucketDown=true;}),...REDRAW("flowershop"),WALK("여름",null,900,900),
+      N("양동이를 진열대 앞에 내려놓고, 젖은 손을 앞치마에 닦으며 이쪽을 돌아본다."),
+      WALKOFF]:[]),
+    CAST("여름"),
+    first?Y("여름","아, 세탁소 새 사장님이시죠? 여름꽃집을 운영 중인 한여름이라고 해요.","smile","꽃집 사장"):null,
+    first?ITEM("p_yeoreum",true):Y("여름","또 오셨네요. 꽃 구경하실래요?","smile"),
     DO(()=>{S.metFlower=true;}),
     MENU("flower1"),CAST()];
 }
@@ -1625,6 +1734,7 @@ function addItem(id,quiet){
   else notify(it.verb?"thing":"memo",it.label||"기록",`${nm}${josa(nm,"을","를")} ${it.verb||"기록했다"}`);
 }
 function showBox(kind,name,text){
+  if(mode!=="mini"&&!$("mini").hidden) clearMini();
   $("choices").hidden=true; $("box").hidden=false;
   $("box").className="box "+kind;
   const nm=$("name");
@@ -1660,7 +1770,7 @@ function run(){
       case "narr": mode="line"; drawCast(null); showBox("narr","",s.x); log("",s.x,"narr"); return;
       case "mono": mode="line"; drawCast(null); showBox("mono","",s.x); log("",s.x,"mono"); return;
       case "sys": mode="line"; showBox("sys","",s.x); log("",s.x,"sys"); return;
-      case "say": mode="line"; if(s.e)emo[s.who]=s.e; drawCast(cast.includes(s.who)?s.who:null); showBox("say",s.who,s.x); log(s.who,s.x,"say"); return;
+      case "say": mode="line"; if(s.e)emo[s.who]=s.e; drawCast(cast.includes(s.who)?s.who:null); showBox("say",s.as||s.who,s.x); log(s.as||s.who,s.x,"say"); return;
       case "choice": showChoice(s); return;
       case "menu": showMenu(s.id); return;
       case "doc": { addItem(s.id,false); const it=ITEMS[s.id]; const lines=typeof it.read==="function"?it.read():(it.read||[]); queue=lines.map(l=>({t:"read",name:l[0],x:l[1],style:l[2]})).concat(queue); continue; }
@@ -1683,7 +1793,8 @@ function advance(){
 }
 /* ---------- mini games ---------- */
 let mini=null;
-function endMini(){ const m=$("mini"); m.hidden=true; m.innerHTML=""; if(mini&&mini.raf)cancelAnimationFrame(mini.raf); mini=null; mode="line"; run(); }
+function clearMini(){ const m=$("mini"); m.hidden=true; m.innerHTML=""; if(mini&&mini.raf)cancelAnimationFrame(mini.raf); mini=null; }
+function endMini(){ clearMini(); mode="line"; run(); }
 function startMini(s){
   mode="mini"; $("box").hidden=true; $("choices").hidden=true;
   if(s.kind==="shutter") startShutter(s.dir); else startIron();
@@ -2131,6 +2242,7 @@ function readSave(){ try{ const d=JSON.parse(localStorage.getItem(SAVE_KEY)||"nu
 function freshRuntime(){
   closeDoc(); closeMenuPanel(); $("nbk").hidden=true; $("nbk").innerHTML=""; queue=[]; history=[]; emo={}; cast=[]; curBg=null; curLoc=null; lastLoc="counter"; hintIdx=0; nb=null; newItems=false; mode="line"; fit="slice";
   leaveExplore(); setTint(""); $("choices").hidden=true; $("daycard").hidden=true; $("box").hidden=false;
+  clearMini(); $("fx").innerHTML="";
 }
 function start(){
   freshRuntime(); resetState();
