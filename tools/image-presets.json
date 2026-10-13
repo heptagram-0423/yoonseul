@@ -7,7 +7,7 @@
 
   "_해상도": "gpt-image-2.5는 임의 해상도를 받습니다(16의 배수, 비율 1:3~3:1, 최대 변 3840px, 총 픽셀 655,360~8,294,400). scene/title을 1200x800으로 둔 것은 게임의 viewBox 0 0 1200 800 과 정확히 같아 리샘플링이 전혀 없기 때문입니다. 이 값을 바꾸지 마세요.",
 
-  "style": "",
+  "style": "Japanese TV anime cel-shaded illustration, like a slice-of-life anime or visual novel. Clean hand-drawn line art with thin warm dark-brown outlines (#3A2A26) of varying weight, never pure black. Two-tone cel shading with crisp soft-edged shadow shapes, natural cloth folds and wrinkles drawn with lines, subtle highlight on hair. Warm muted palette: slate teal #2F4A52, cream #EFE8D8, sage green #8FA889, warm wood brown #8C6A43, with a sparing rose accent #C8436A. Soft late-autumn daylight from the upper left. Small Korean seaside town in the 2000s, November. Quiet, nostalgic, gentle and slightly melancholy. Painted background art with real perspective and lived-in detail, not flat geometric shapes. Consistent style across every image in the series.",
 
   "avoid": "any text, letters, words, numbers, signage copy, watermark, signature, logo, UI elements, speech bubbles, borders, frames",
 

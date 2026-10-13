@@ -74,10 +74,18 @@ assets/scenes/front.png 로 세탁소 정면 배경 하나 만들어줘
 
 ---
 
-## 1. 아트 디렉션 ⚠️ 아직 비어 있음
+## 1. 아트 디렉션 — 확정 (2026-10-13)
 
-**이미지를 전면 교체하는 중이므로 이 절은 의도적으로 비어 있다.**
-여기가 비면 장면마다 그림체가 흔들린다. 첫 이미지를 만들기 전에 반드시 채운다.
+**셀 애니메이션풍**으로 정했다. 도형을 쌓은 느낌이 아니라 **선화 + 2단 셀 음영 + 옷 주름**이 보이는 그림.
+인물은 TV 애니메이션의 자연스러운 등신 (성인 약 7등신, 할머니 6.5, 아이 5.5). 다리를 늘린 키다리 체형 금지.
+
+현재 `tools/image-presets.json`의 `style`:
+
+```
+Japanese TV anime cel-shaded illustration, like a slice-of-life anime or visual novel. Clean hand-drawn line art with thin warm dark-brown outlines (#3A2A26) of varying weight, never pure black. Two-tone cel shading with crisp soft-edged shadow shapes, natural cloth folds and wrinkles drawn with lines, subtle highlight on hair. Warm muted palette: slate teal #2F4A52, cream #EFE8D8, sage green #8FA889, warm wood brown #8C6A43, with a sparing rose accent #C8436A. Soft late-autumn daylight from the upper left. Small Korean seaside town in the 2000s, November. Quiet, nostalgic, gentle and slightly melancholy. Painted background art with real perspective and lived-in detail, not flat geometric shapes. Consistent style across every image in the series.
+```
+
+인물 고정 외형은 아래 5절 표와 ChatGPT용 주문서(프롬프트 묶음)에 적어 두었다.
 
 채운 내용을 **그대로** `tools/image-presets.json`의 `"style"` 값에 넣는다.
 영어로 쓰는 쪽이 모델에 더 잘 먹는다.
@@ -229,10 +237,10 @@ assets/
 
 | 인물 | 고정 외형 설명 (채울 것) |
 | --- | --- |
-| 오봉순 | *예: 작은 키, 둥근 등, 흰머리를 뒤로 묶음, 꽃무늬 몸빼바지, 남색 앞치마* |
-| 민도윤 | |
-| 한여름 | |
-| 박상철 | |
+| 오봉순 | 작은 키, 약간 굽은 등, 은회색 생머리를 뒤로 단정히 빗어 낮게 쪽진 머리(곱슬 금지), 자두색 카디건, 크림색 앞치마 |
+| 민도윤 | 확실히 남자아이. 짧은 검은 머리, 볼에 반창고, 겨자색 후드티(모자는 등 뒤), 청바지, 운동화 |
+| 한여름 | 30세 전후, 어깨 길이 검은 머리 낮게 묶음, 손목까지 내린 크림색 긴소매, 세이지색 앞치마 |
+| 박상철 | 60세 전후, 단정한 회색 머리, 회색 코트+정장, 빈 명찰, 정치인 미소 |
 
 5. **장 전체를 한 번에 돌리지 않는다.** 1장 만들고 게임에 끼워 보고 판단한 다음 다음 장으로 간다.
 

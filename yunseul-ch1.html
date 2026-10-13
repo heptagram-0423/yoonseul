@@ -423,6 +423,14 @@ html,body{margin:0;padding:0;height:100%;height:100dvh}
 body{padding-inline:0}
 .app,.app{max-width:none;width:100%;height:100%;padding:0;margin:0}
 .scene{border-radius:0}
+/* v11: panel arrows */
+.pan-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:4;display:flex;align-items:center;gap:6px;min-height:52px;padding:8px 12px;border:none;border-radius:999px;background:rgba(20,26,28,.62);color:#F3EFE4;font-family:var(--f-display);font-size:14px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.28);transition:background .15s}
+.pan-btn:hover{background:rgba(20,26,28,.82)}
+.pan-btn:focus-visible{outline:3px solid #FFE58A;outline-offset:2px}
+.pan-btn b{font-size:18px;line-height:1}
+.pan-btn span:empty{display:none}
+.pan-btn.prev{left:10px}.pan-btn.next{right:10px}
+@media (max-width:560px){.pan-btn span{display:none}.pan-btn{padding:8px 12px}}
 </style>
 </head>
 <body>
@@ -436,6 +444,8 @@ body{padding-inline:0}
     <div class="toast" id="toast"></div>
     <svg class="hot" id="hot" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" hidden></svg>
     <div class="dark" id="dark" hidden></div>
+    <button class="pan-btn prev" id="pan-prev" type="button" aria-label="왼쪽으로 이동" hidden><b aria-hidden="true">◀</b><span></span></button>
+    <button class="pan-btn next" id="pan-next" type="button" aria-label="오른쪽으로 이동" hidden><span></span><b aria-hidden="true">▶</b></button>
     <svg class="fx" id="fx" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
     <div class="box" id="box"><span class="name" id="name" hidden></span><div class="txt" id="txt"></div><span class="more" id="more" hidden>▼</span></div>
     <div class="choices" id="choices" hidden></div>
@@ -496,6 +506,8 @@ function garments(){
   cols.forEach((c,i)=>{const x=565+i*62;s+=`<path d="M${x} 130 q0 -14 10 -14" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M${x-26} 160 L${x-18} 142 L${x+18} 142 L${x+26} 160 L${x+30} ${400+(i%3)*28} L${x-30} ${400+(i%3)*28} Z" fill="${c}" stroke="#B9B4A8" stroke-width="2" opacity=".95"/><path d="M${x-20} 180 L${x+20} 180" stroke="#fff" stroke-opacity=".5" stroke-width="3"/>`;});
   return s;
 }
+/* wide backgrounds: names of each 1200px panel, left to right; home = panel shown in story scenes */
+const BG_PANELS={};
 const BG={
 front:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCD4DC"/><stop offset="1" stop-color="#EDE6D8"/></linearGradient></defs>
@@ -620,7 +632,8 @@ counter:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xm
 ${(()=>{let s="";const cols=["#F4D98A","#F2C7CF","#FBF7EC","#CFE3D6","#F4D98A","#F7D2B8"];for(let r=0;r<4;r++)for(let c=0;c<7;c++){const x=246+c*37+(r%2)*6,y=176+r*48,rot=((r*7+c*5)%11)-5,col=cols[(r*7+c)%6];s+=`<g transform="rotate(${rot} ${x+13} ${y+18})"><rect x="${x+2}" y="${y+3}" width="26" height="36" rx="3" fill="#000" opacity=".15"/><rect x="${x}" y="${y}" width="26" height="36" rx="3" fill="${col}"/><rect x="${x+4}" y="${y+14}" width="18" height="2" fill="#8A7A62" opacity=".5"/><rect x="${x+4}" y="${y+20}" width="12" height="2" fill="#8A7A62" opacity=".5"/><text x="${x+13}" y="${y+31}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="#6B5A40">${String(1000+((r*7+c)*137)%8999).padStart(4,"0")}</text><circle cx="${x+13}" cy="${y+6}" r="3" fill="${["#C8436A","#3E6E8C","#2F7D5B"][(r+c)%3]}"/></g>`;}return s;})()}
 <g transform="translate(560 170)"><rect width="84" height="104" fill="#FBF8EF"/><rect width="84" height="22" fill="#C8436A"/><text x="42" y="16" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#fff">11</text><g fill="#B7AE9C">${Array.from({length:20},(_,i)=>`<rect x="${6+(i%5)*15}" y="${30+Math.floor(i/5)*17}" width="10" height="10"/>`).join("")}</g><rect x="36" y="47" width="10" height="10" fill="#C8436A"/></g>
 <g transform="translate(700 150)"><rect x="-6" y="-8" width="220" height="12" rx="6" fill="#8E8A80"/><rect x="-4" y="-40" width="8" height="36" fill="#8E8A80"/><rect x="202" y="-40" width="8" height="36" fill="#8E8A80"/>
-${[0,1,2].map(i=>{const x=30+i*72,h=250+(i%3)*30,c=["#D5E1E8","#EBD7CD","#E5E1CB","#D7D0E6","#D9E7D2","#EEDAE1"][i];return `<path d="M${x} 4 q0 -16 12 -16" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="${c}"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="url(#cPoly)"/><path d="M${x-36} ${h} L${x+36} ${h}" stroke="#B8B2A5" stroke-width="3"/><rect x="${x-10}" y="${h-40}" width="20" height="26" rx="2" fill="#F4D98A"/><circle cx="${x}" cy="${h-34}" r="2.5" fill="#fff"/>`;}).join("")}</g>
+${(typeof S!=="undefined"&&S&&S.day>=2?[]:[0,1,2,3,4]).map(i=>{const x=22+i*42;return `<path d="M${x} 4 q0 -16 10 -16" fill="none" stroke="#6E6A62" stroke-width="2.5"/><path d="M${x} 4 L${x-20} 24 L${x+20} 24 Z" fill="none" stroke="#8E8A80" stroke-width="2.5" stroke-linejoin="round"/>`;}).join("")}
+${(typeof S!=="undefined"&&S&&S.day>=2?[0,1,2]:[]).map(i=>{const x=30+i*72,h=250+(i%3)*30,c=["#D5E1E8","#EBD7CD","#E5E1CB","#D7D0E6","#D9E7D2","#EEDAE1"][i];return `<path d="M${x} 4 q0 -16 12 -16" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="${c}"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="url(#cPoly)"/><path d="M${x-36} ${h} L${x+36} ${h}" stroke="#B8B2A5" stroke-width="3"/><rect x="${x-10}" y="${h-40}" width="20" height="26" rx="2" fill="#F4D98A"/><circle cx="${x}" cy="${h-34}" r="2.5" fill="#fff"/>`;}).join("")}</g>
 <rect x="916" y="150" width="104" height="318" fill="#3A332C"/><rect x="916" y="150" width="104" height="318" fill="none" stroke="#6D6558" stroke-width="8"/>
 <path d="M920 156 L966 156 L966 318 Q943 330 920 318Z" fill="#35566B"/><path d="M970 156 L1016 156 L1016 318 Q993 330 970 318Z" fill="#35566B"/><path d="M920 156 L1016 156" stroke="#29485A" stroke-width="6"/>
 <text x="943" y="236" text-anchor="middle" font-family="Gowun Batang,serif" font-size="22" fill="#E8E2D2">작</text><text x="993" y="236" text-anchor="middle" font-family="Gowun Batang,serif" font-size="22" fill="#E8E2D2">업</text>
@@ -637,11 +650,9 @@ ${[0,1,2].map(i=>{const x=30+i*72,h=250+(i%3)*30,c=["#D5E1E8","#EBD7CD","#E5E1CB
 <g stroke="#3C2D21" stroke-width="3" opacity=".7">${[1,2,3,4,5].map(i=>`<line x1="${i*200}" y1="574" x2="${i*200}" y2="800"/>`).join("")}</g>
 <g stroke="#8A6A50" stroke-width="2" opacity=".35">${[0,1,2,3,4,5].map(i=>`<rect x="${i*200+20}" y="600" width="160" height="170" fill="none"/>`).join("")}</g>
 <rect x="0" y="574" width="1200" height="14" fill="#000" opacity=".2"/>
-<g transform="translate(150 470)"><rect x="4" y="8" width="130" height="80" rx="8" fill="#000" opacity=".2"/><rect width="130" height="78" rx="8" fill="#43585C"/><rect x="12" y="10" width="64" height="24" rx="3" fill="#A9D1BE"/><text x="44" y="28" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="14" fill="#2F4A3E">${S&&S.signOpen?(S.day===1?"36,000":"12,000"):"0"}</text>${[0,1,2,3,4,5].map(i=>`<rect x="${88+(i%2)*18}" y="${10+Math.floor(i/2)*18}" width="14" height="14" rx="2" fill="#DCD3C0"/>`).join("")}<rect x="12" y="44" width="64" height="24" rx="3" fill="#2F3E41"/></g>
 <g transform="translate(330 510)"><rect width="110" height="36" rx="2" fill="#F5EFE0" transform="rotate(-6)"/><rect x="4" y="6" width="70" height="3" fill="#B7AE9C" transform="rotate(-6)"/><rect x="4" y="14" width="90" height="3" fill="#B7AE9C" transform="rotate(-6)"/><rect x="92" y="-22" width="6" height="44" rx="3" fill="#C8436A" transform="rotate(30)"/></g>
 <g transform="translate(880 520)"><ellipse cx="0" cy="26" rx="26" ry="6" fill="#000" opacity=".2"/><path d="M-22 24 Q-22 -4 0 -6 Q22 -4 22 24Z" fill="#D2B064"/><path d="M-12 8 Q-6 -2 4 -2" stroke="#fff" stroke-opacity=".6" stroke-width="4" fill="none"/><rect x="-4" y="-16" width="8" height="10" fill="#9C7F3B"/></g>
 <g transform="translate(980 470)"><rect x="-22" y="40" width="44" height="40" rx="6" fill="#A4674A"/><path d="M0 40 C-40 10 -30 -30 -6 -40 M0 40 C30 0 40 -24 20 -44 M0 40 C0 0 -10 -30 4 -60" stroke="#4F7A4A" stroke-width="9" fill="none" stroke-linecap="round"/></g>
-<g opacity=".45" filter="url(#cSoft)"><path d="M1000 440 q18 -30 0 -60 q-18 -30 0 -60" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round"/></g>
 <rect width="1200" height="800" fill="url(#cVig)"/>
 </svg>`,
 workshop:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -1261,7 +1272,6 @@ function morningSteps(day){
     SC("2일째 · "+DATES[2],"front"),
     N("아침. 이모 집에서 언덕길을 내려와 셔터 앞에 선다."),
     S.ironOffPrev?null:M("잠깐, 어제 다리미 코드 뽑았나? ……불 켜면 제일 먼저 확인하자."),
-    S.cashPrev?null:M("어제 정산도 안 하고 갔지. 오늘은 잊지 말자."),
     GO("street")
   ];
   return day3Steps();
@@ -1456,10 +1466,6 @@ const LOCS={
       DO(()=>{S.sawDate=true;}),DOC("memo_board"),
       M("번호는 번져서 안 보이고 날짜만 남았네. 06.12.24. 20년 가까이 된 거야.")]},
     {id:"cal",x:556,y:166,w:92,h:112,label:"달력",run:()=>[M("이모 달력은 8월에서 멈춰 있었다. 11월로 넘긴 건 나다."),M("빨간 네모는 내가 쳐 놓은 거다. 첫 월세 내는 날.")]},
-    {id:"reg",x:146,y:466,w:140,h:86,label:"금전등록기",run:()=>isClose()?(S.cash?[M("정산은 끝났다.")]:[
-      N("금전등록기를 연다. 오늘 매출을 장부에 옮겨 적는다."),
-      M(S.day===1?"오늘 매출 36,000원. 첫날치고 나쁘지 않다. 첫 영수증은 액자에 걸어 둘까.":"오늘은 손님이 좀 많았네. 봉순 할머니 저고리는 서비스고."),
-      DO(()=>{S.cash=true;})]):[M(S.phase==="d2_invest"?"12,000원. 한복 저고리 세탁비. 환불해 드려야 하나……":"아직 손님이 없다. 텅 빈 금전등록기.")]},
     {id:"switch",x:186,y:284,w:40,h:56,label:"전등 스위치",run:()=>switchRun()},
     {id:"entrance",x:20,y:110,w:162,h:340,label:"출입문",run:()=>entranceRun()},
     {id:"work",x:912,y:146,w:112,h:326,label:"작업장",go:"workshop"},
@@ -1700,12 +1706,12 @@ function hangerRun(){
       DO(()=>{S.hung=true;S.carry=false;S.phase="d1_close";}),
       SKIP("해 질 녘","그날 오후"),
       N("손님이 몇 명 더 다녀가고, 어느새 창밖이 어둑어둑하다."),
-      M("가게 문 닫을 준비를 하자. 정산하고, 다리미 코드 뽑고, 불 끄고, 셔터.")];
+      M("가게 문 닫을 준비를 하자. 다리미 코드 뽑고, 불 끄고, 셔터.")];
     if(S.carry) return [M(S.washed?"다리기부터 해야지. 구김 있는 채로 걸 순 없어.":"빨래부터 해야지.")];
   }
   if(S.phase==="d2_pickup") return handoverSteps();
   if(coatOnHanger()) return [M("도윤이네 저고리. 내일 찾으러 온다.")];
-  return [M("찾아갈 손님들 옷. 태그 번호 순서대로 걸려 있다. 이모 방식 그대로.")];
+  return [M(S.day>=2?"찾아갈 손님들 옷. 태그 번호 순서대로 걸려 있다. 이모 방식 그대로.":"빈 옷걸이만 걸려 있다. 여기가 다 찰 날이 올까.")];
 }
 function coatRun(){
   if(S.phase==="d1_wash") return [N("저고리를 곱게 개어 든다."),DO(()=>{S.carry=true;}),M("작업장으로 가져가자.")];
@@ -1737,7 +1743,7 @@ function switchRun(){
     return out;
   }
   if(!isClose()) return [M("아직 영업 중이야.")];
-  const left=[]; if(!S.cash)left.push("정산"); if(!S.ironOff)left.push("다리미 코드");
+  const left=[]; if(!S.ironOff)left.push("다리미 코드");
   return [
     left.length?M(`${left.join(", ")}…… 아직 안 한 게 있는데. 뭐, 괜찮겠지.`):null,
     N("딸깍. 형광등이 꺼진다. 가게 안이 파랗게 어두워진다."),
@@ -1996,17 +2002,44 @@ function setBg(k){
   $("fx").innerHTML=k==="storage"?`<polygon points="0,96 30,104 30,800 0,800" fill="#F2CF86" opacity=".55"/><polygon points="30,104 70,140 90,800 30,800" fill="#F2CF86" opacity=".12"/>`:"";
   applyPan();
 }
-/* ---------- portrait pan: narrow screens drag the scene sideways ---------- */
-let panX=null,panOn=false,panTold=false,drag=null,dragged=false;
+/* ---------- pan: wide locations are strips of 1200px panels; arrows/drag slide along ---------- */
+let panX=null,panOn=false,panTold=false,drag=null,dragged=false,panAnim=null;
+function bgPanels(k){ const P=BG_PANELS[k]; return P?P.names.length:1; }
+function bgHome(k){ const P=BG_PANELS[k]; return P?P.home:0; }
+function bgW(k){ return 1200*bgPanels(k); }
 function viewW(){ const r=$("scene").getBoundingClientRect(); return r.height?Math.min(1200,800*r.width/r.height):1200; }
+function canPan(){ return panOn&&bgW(curBg)-viewW()>1; }
 function applyPan(){
-  const vw=viewW(), svgs=[$("hot"),$("fx"),$("bg").querySelector("svg")];
-  if(!panOn||vw>=1199){ svgs.forEach(v=>v&&v.setAttribute("viewBox","0 0 1200 800")); return false; }
-  panX=Math.max(0,Math.min(1200-vw,panX==null?(1200-vw)/2:panX));
+  const vw=viewW(), W=bgW(curBg), svgs=[$("hot"),$("fx"),$("bg").querySelector("svg")];
+  if(!panOn){ const x0=bgHome(curBg)*1200; svgs.forEach(v=>v&&v.setAttribute("viewBox",`${x0} 0 1200 800`)); updateArrows(); return false; }
+  panX=Math.max(0,Math.min(W-vw,panX==null?bgHome(curBg)*1200+(1200-vw)/2:panX));
   svgs.forEach(v=>v&&v.setAttribute("viewBox",`${panX.toFixed(1)} 0 ${vw.toFixed(1)} 800`));
-  return true;
+  updateArrows();
+  return W-vw>1;
 }
-function panTo(cx){ if(!panOn)return; panX=cx-viewW()/2; applyPan(); }
+function slideTo(x){
+  if(!panOn)return; cancelAnimationFrame(panAnim);
+  const vw=viewW(), to=Math.max(0,Math.min(bgW(curBg)-vw,x)), from=panX==null?to:panX;
+  if(RM||Math.abs(to-from)<2){ panX=to; applyPan(); return; }
+  const t0=performance.now(), D=420;
+  const step=t=>{ const k=Math.min(1,(t-t0)/D), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; panX=from+(to-from)*e; applyPan(); if(k<1)panAnim=requestAnimationFrame(step); };
+  panAnim=requestAnimationFrame(step);
+}
+function panTo(cx){ if(!panOn)return; slideTo(cx-viewW()/2); }
+function curPanel(){ return Math.max(0,Math.min(bgPanels(curBg)-1,Math.floor(((panX||0)+viewW()/2)/1200))); }
+function panStep(d){
+  const n=bgPanels(curBg), vw=viewW();
+  if(n>1){ const i=Math.max(0,Math.min(n-1,curPanel()+d)); slideTo(i*1200+(1200-vw)/2); }
+  else slideTo((panX||0)+d*vw*.8);
+  setNear(null);
+}
+function updateArrows(){
+  const L=$("pan-prev"), R=$("pan-next"); if(!L)return;
+  const show=mode==="explore"&&canPan(), vw=viewW(), x=panX||0, W=bgW(curBg), P=BG_PANELS[curBg];
+  L.hidden=!(show&&x>1); R.hidden=!(show&&x<W-vw-1);
+  if(P){ const i=curPanel(); L.querySelector("span").textContent=P.names[Math.max(0,i-1)]||""; R.querySelector("span").textContent=P.names[Math.min(P.names.length-1,i+1)]||""; }
+  else { L.querySelector("span").textContent=""; R.querySelector("span").textContent=""; }
+}
 addEventListener("resize",()=>applyPan());
 function setTint(t){ const sc=$("scene"); sc.classList.remove("t-night","t-off","t-dusk"); if(t)sc.classList.add("t-"+t); }
 function tintFor(loc){
@@ -2316,16 +2349,16 @@ function visibleSpots(L){ return L.spots.filter(s=>!s.show||s.show()); }
 function enterExplore(loc){
   const moved=curLoc!==loc;
   mode="explore"; curLoc=loc; lastLoc=loc; const L=LOCS[loc];
-  if(moved||!panOn)panX=null; panOn=true;
+  if(moved||!panOn)panX=null; panOn=true; cancelAnimationFrame(panAnim);
   $("box").hidden=true; $("choices").hidden=true;
   emo={}; setCast([]);
   setFit("slice"); setBg(L.bg); setTint(tintFor(loc));
   $("scene-name").textContent=L.title;
   if(moved) chip(L.title);
   drawHot(); saveGame("explore");
-  if(applyPan()&&!panTold){ panTold=true; setTimeout(()=>toast("화면을 좌우로 밀어서 둘러볼 수 있어요."),700); }
+  if(applyPan()&&!panTold){ panTold=true; setTimeout(()=>toast("◀ ▶ 화살표나 화면을 밀어서 옆으로 둘러볼 수 있어요."),700); }
 }
-function leaveExplore(){ const h=$("hot"); h.setAttribute("hidden",""); h.innerHTML=""; nearId=null; h.style.cursor=""; $("btn-nb").hidden=true; }
+function leaveExplore(){ $("pan-prev").hidden=true; $("pan-next").hidden=true; const h=$("hot"); h.setAttribute("hidden",""); h.innerHTML=""; nearId=null; h.style.cursor=""; $("btn-nb").hidden=true; }
 function drawHot(){
   const L=LOCS[curLoc], svg=$("hot");
   svg.setAttribute("class","hot");
@@ -2363,7 +2396,9 @@ function runSpot(id){
 }
 $("hot").addEventListener("pointermove",e=>{ if(mode!=="explore")return; setNear(spotAt(svgPoint(e))); });
 $("hot").addEventListener("pointerleave",()=>setNear(null));
-$("hot").addEventListener("pointerdown",e=>{ if(mode!=="explore"||viewW()>=1199)return; drag={x:e.clientX,p:panX,w:$("scene").getBoundingClientRect().width}; dragged=false; });
+$("pan-prev").addEventListener("click",e=>{ e.stopPropagation(); panStep(-1); });
+$("pan-next").addEventListener("click",e=>{ e.stopPropagation(); panStep(1); });
+$("hot").addEventListener("pointerdown",e=>{ if(mode!=="explore"||!canPan())return; cancelAnimationFrame(panAnim); drag={x:e.clientX,p:panX,w:$("scene").getBoundingClientRect().width}; dragged=false; });
 addEventListener("pointermove",e=>{ if(!drag)return; const dx=e.clientX-drag.x; if(Math.abs(dx)>8)dragged=true; if(dragged){ panX=drag.p-dx*viewW()/drag.w; applyPan(); setNear(null); } });
 addEventListener("pointerup",()=>{ drag=null; });
 addEventListener("pointercancel",()=>{ drag=null; });
@@ -2416,7 +2451,6 @@ function objective(){
     return {t:miss[3],loc:miss[1],spot:miss[2]};
   }
   if(isClose()){
-    if(!S.cash) return {t:"금전등록기를 정산하자.",loc:"counter",spot:"reg"};
     if(!S.ironOff) return {t:"작업장 다리미 코드를 뽑자.",loc:"workshop",spot:"iron"};
     if(curLoc!=="street"&&!S.lightsOff) return {t:"출입문 옆 스위치로 불을 끄자."+(S.phase==="d2_close"&&!S.storageSeen?" (창고를 둘러봐도 된다)":""),loc:"counter",spot:"switch"};
     if(curLoc!=="street") return {t:"출입문으로 나가자.",loc:"counter",spot:"entrance"};
@@ -2598,6 +2632,7 @@ document.addEventListener("keydown",e=>{
   if(mode==="mini"&&$("lobby").hidden&&$("sheet-inv").hidden&&$("sheet-log").hidden&&miniKey(e))return;
   if(e.key==="Escape"){ if(!$("sheet-inv").hidden||!$("sheet-log").hidden){ $("sheet-inv").hidden=true; $("sheet-log").hidden=true; return; } if(!$("nbk").hidden&&mode==="note"){ closeNotebook(); return; } closeMenuPanel(); return; }
   if(!$("sheet-inv").hidden||!$("sheet-log").hidden||!$("lobby").hidden||!$("menu-panel").hidden)return;
+  if(mode==="explore"&&(e.key==="ArrowLeft"||e.key==="ArrowRight")&&canPan()){ e.preventDefault(); panStep(e.key==="ArrowLeft"?-1:1); return; }
   if(e.target.closest&&(e.target.closest("button")||e.target.closest(".spot")))return;
   if(e.key==="Enter"||e.key===" "){ e.preventDefault(); advance(); }
 });
