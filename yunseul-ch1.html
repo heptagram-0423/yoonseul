@@ -423,6 +423,15 @@ html,body{margin:0;padding:0;height:100%;height:100dvh}
 body{padding-inline:0}
 .app,.app{max-width:none;width:100%;height:100%;padding:0;margin:0}
 .scene{border-radius:0}
+/* v12: hands-on mini games */
+.mg-tip{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;background:var(--box);color:var(--ink);border-radius:10px;padding:6px 12px;font-size:14px;line-height:1.4;width:100%}
+.mg-steps{display:flex;flex-wrap:wrap;gap:4px}
+.mg-steps b{font-weight:400;font-size:12.5px;padding:1px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.mg-steps b.ok{background:#7FB77E;border-color:#7FB77E;color:#fff}
+.mg-msg{color:var(--ink)}
+#wa-svg,#vn-svg,#sg-svg{width:100%;height:auto;max-height:calc(100dvh - 120px);border-radius:12px;touch-action:none;background:#2a3336}
+.mg-act{cursor:pointer}
+.mg-act:focus-visible{outline:3px solid #FFE58A}
 /* v11: panel arrows */
 .fx .bob{animation:bob .9s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
@@ -643,8 +652,8 @@ counter:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xm
 ${(()=>{let s="";const cols=["#F4D98A","#F2C7CF","#FBF7EC","#CFE3D6","#F4D98A","#F7D2B8"];for(let r=0;r<4;r++)for(let c=0;c<7;c++){const x=246+c*37+(r%2)*6,y=176+r*48,rot=((r*7+c*5)%11)-5,col=cols[(r*7+c)%6];s+=`<g transform="rotate(${rot} ${x+13} ${y+18})"><rect x="${x+2}" y="${y+3}" width="26" height="36" rx="3" fill="#000" opacity=".15"/><rect x="${x}" y="${y}" width="26" height="36" rx="3" fill="${col}"/><rect x="${x+4}" y="${y+14}" width="18" height="2" fill="#8A7A62" opacity=".5"/><rect x="${x+4}" y="${y+20}" width="12" height="2" fill="#8A7A62" opacity=".5"/><text x="${x+13}" y="${y+31}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="6.5" fill="#6B5A40">${String(1000+((r*7+c)*137)%8999).padStart(4,"0")}</text><circle cx="${x+13}" cy="${y+6}" r="3" fill="${["#C8436A","#3E6E8C","#2F7D5B"][(r+c)%3]}"/></g>`;}return s;})()}
 <g transform="translate(560 170)"><rect width="84" height="104" fill="#FBF8EF"/><rect width="84" height="22" fill="#C8436A"/><text x="42" y="16" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#fff">11</text><g fill="#B7AE9C">${Array.from({length:20},(_,i)=>`<rect x="${6+(i%5)*15}" y="${30+Math.floor(i/5)*17}" width="10" height="10"/>`).join("")}</g><rect x="36" y="47" width="10" height="10" fill="#C8436A"/></g>
 <g transform="translate(700 150)"><rect x="-6" y="-8" width="220" height="12" rx="6" fill="#8E8A80"/><rect x="-4" y="-40" width="8" height="36" fill="#8E8A80"/><rect x="202" y="-40" width="8" height="36" fill="#8E8A80"/>
-${(typeof S!=="undefined"&&S&&S.day>=2?[]:[0,1,2,3,4]).map(i=>{const x=22+i*42;return `<path d="M${x} 4 q0 -16 10 -16" fill="none" stroke="#6E6A62" stroke-width="2.5"/><path d="M${x} 4 L${x-20} 24 L${x+20} 24 Z" fill="none" stroke="#8E8A80" stroke-width="2.5" stroke-linejoin="round"/>`;}).join("")}
-${(typeof S!=="undefined"&&S&&S.day>=2?[0,1,2]:[]).map(i=>{const x=30+i*72,h=250+(i%3)*30,c=["#D5E1E8","#EBD7CD","#E5E1CB","#D7D0E6","#D9E7D2","#EEDAE1"][i];return `<path d="M${x} 4 q0 -16 12 -16" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="${c}"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="url(#cPoly)"/><path d="M${x-36} ${h} L${x+36} ${h}" stroke="#B8B2A5" stroke-width="3"/><rect x="${x-10}" y="${h-40}" width="20" height="26" rx="2" fill="#F4D98A"/><circle cx="${x}" cy="${h-34}" r="2.5" fill="#fff"/>`;}).join("")}</g>
+${[0,1,2,3,4].map(i=>{const x=22+i*42;return `<path d="M${x} 4 q0 -16 10 -16" fill="none" stroke="#6E6A62" stroke-width="2.5"/><path d="M${x} 4 L${x-20} 24 L${x+20} 24 Z" fill="none" stroke="#8E8A80" stroke-width="2.5" stroke-linejoin="round"/>`;}).join("")}
+${[].map(i=>{const x=30+i*72,h=250+(i%3)*30,c=["#D5E1E8","#EBD7CD","#E5E1CB","#D7D0E6","#D9E7D2","#EEDAE1"][i];return `<path d="M${x} 4 q0 -16 12 -16" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="${c}"/><path d="M${x-30} 34 Q${x} 16 ${x+30} 34 L${x+36} ${h} L${x-36} ${h} Z" fill="url(#cPoly)"/><path d="M${x-36} ${h} L${x+36} ${h}" stroke="#B8B2A5" stroke-width="3"/><rect x="${x-10}" y="${h-40}" width="20" height="26" rx="2" fill="#F4D98A"/><circle cx="${x}" cy="${h-34}" r="2.5" fill="#fff"/>`;}).join("")}</g>
 <rect x="916" y="150" width="104" height="318" fill="#3A332C"/><rect x="916" y="150" width="104" height="318" fill="none" stroke="#6D6558" stroke-width="8"/>
 <path d="M920 156 L966 156 L966 318 Q943 330 920 318Z" fill="#35566B"/><path d="M970 156 L1016 156 L1016 318 Q993 330 970 318Z" fill="#35566B"/><path d="M920 156 L1016 156" stroke="#29485A" stroke-width="6"/>
 <text x="943" y="236" text-anchor="middle" font-family="Gowun Batang,serif" font-size="22" fill="#E8E2D2">작</text><text x="993" y="236" text-anchor="middle" font-family="Gowun Batang,serif" font-size="22" fill="#E8E2D2">업</text>
@@ -1007,6 +1016,8 @@ function aHead(c,emo,o){
   if(emo==="sad"&&o.tear) f+=`<path d="M34 98 q4 9 0 13 q-4 -4 0 -13Z" fill="#9CD2EE" ${ow(1)}/>`;
   return f+(o.extra||"");
 }
+CHARS["최성훈"]={skin:"#EFCDAE",shade:"#D3A887",hair:"#2A2624",top:"#3E4E66",iris:"#3E3430",H:146,y0:26,cx:150};
+CHARS["수아"]={skin:"#F8DDC2",shade:"#E8BE9A",hair:"#2A2224",top:"#B9BEC4",apron:"#2E3A5C",iris:"#3B2A22",H:139,y0:86,cx:150};
 const head=(c,local)=>`<g transform="translate(${c.cx} ${c.y0}) scale(${c.H*1.12/140})">${local}</g>`;
 const neckSh=(c,x,y)=>`<path d="M${x-14} ${y} Q${x} ${y+16} ${x+14} ${y} L${x+14} ${y+10} Q${x} ${y+26} ${x-14} ${y+10}Z" fill="${c.shade}"/>`;
 const FIG={
@@ -1100,8 +1111,10 @@ ${head(c,aHead(c,emo,{smileEye:"closed",eyeScale:.82,brow:"#A39D93",blushA:.38,e
 ${head(c,aHead(c,emo,{round:true,eyeScale:1.12,brow:"#2A2328",blushA:.45,tear:true,mouth,extra:band})+hair)}`;
   }
 };
+const RESKIN={"최성훈":"박상철","수아":"여름"};
 function figSVG(key,emo,view){
   const F=IMG_FIG[key];
+  if(!F&&RESKIN[key]&&!FIG[key]){ const b=RESKIN[key], o=CHARS[b]; CHARS[b]=Object.assign({},o,{hair:CHARS[key].hair,top:CHARS[key].top,apron:CHARS[key].apron||o.apron}); try{ return figSVG(b,emo,view); } finally{ CHARS[b]=o; } }
   if(F){ const src=F.emo[emo]||F.emo.smile||Object.values(F.emo)[0], bh=Math.round(F.w*(F.bust||1.25));
     return `<svg viewBox="0 0 ${F.w} ${view==="bust"?bh:F.ih}" preserveAspectRatio="xMidYMin meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><image href="${src}" width="${F.w}" height="${F.ih}"/></svg>`; }
   const c=CHARS[key]; emo=emo||(c.back?"flat":"smile");
@@ -1277,7 +1290,29 @@ function dropoffSteps(){
     ]),
     N("도윤이가 문을 박차고 뛰어나간다."),
     CAST(),
-    M("좋아. 첫 빨래다. 저고리를 작업장으로 가져가서 빨아야지.")
+    M("첫 손님이다. 장부 첫 줄이 도윤이네 저고리라니."),
+    SKIP("한 시간 뒤"),
+    N("딸랑. 넥타이를 느슨하게 맨 아저씨가 와이셔츠 두 장을 카운터에 올려놓는다."),
+    CAST("최성훈"),
+    Y("최성훈","여기 다시 문 열었네요? 사장님 바뀌셨나 봐요. 와이셔츠 두 장이요.","smile","손님"),
+    Y("서하","네, 이모 가게를 이어받았어요. 언제 찾으러 오세요?"),
+    Y("최성훈","내일 저녁에요. 모레 출장이라서.","flat","손님"),
+    Y("최성훈","아, 한 장은 단추가 하나 덜렁거려요. 떨어지면 그냥 두세요, 집에 여분 있어요.","smile","손님"),
+    M("와이셔츠 두 장, 단추 하나 덜렁. 최성훈 님. 장부에 적고."),
+    CAST(),
+    N("점심 무렵. 교복 차림의 여학생이 종이가방을 끌어안고 뛰어 들어온다."),
+    CAST("수아"),
+    Y("수아","언니! 이거 내일 아침까지 될까요? 체육대회 때 흙탕물에 넘어져서…… 엄마한테 들키면 저 죽어요.","o","학생"),
+    N("종이가방 안에는 남색 교복 재킷. 소매랑 밑단에 흙이 말라붙었다."),
+    CHOICE([
+      {label:"\"내일 아침 등교 전에 와.\"",then:[Y("수아","진짜요? 언니 완전 은인이에요!","smile","학생")]},
+      {label:"\"흙은 잘 빠지니까 걱정 마.\"",then:[Y("수아","다행이다…… 내일 아침에 올게요!","smile","학생")]}
+    ]),
+    Y("수아","윤수아예요! 2학년 3반!","smile","학생"),
+    CAST(),
+    M("저고리 하나, 와이셔츠 두 장, 교복 재킷 하나. 첫날치고 나쁘지 않다."),
+    DO(()=>{S.washQ=LOAD_ALL.slice(); S.washedSet=[];}),
+    M("빨래 바구니에 모아서 작업장으로 가져가자.")
   ];
 }
 
@@ -1297,7 +1332,14 @@ function morningSteps(day){
 function pickupSteps(){
   return [
     DO(()=>{S.phase="d2_pickup";}),
-    N("팻말을 돌리자마자 딸랑, 도윤이가 뛰어 들어온다."),
+    N("팻말을 돌리자마자 딸랑. 수아가 숨을 헐떡이며 들어온다."),
+    CAST("수아"),
+    Y("수아","언니, 재킷이요! 지각이에요 지각!","o","수아"),
+    N("비닐을 벗긴 재킷을 건네자, 수아가 그 자리에서 걸쳐 입는다."),
+    Y("수아","와, 새거 같아요! 감사합니다!","smile","수아"),
+    DO(()=>{S.suaPicked=true;}),
+    CAST(),
+    N("수아가 뛰어나가자마자 또 딸랑, 이번엔 도윤이가 뛰어 들어온다."),
     CAST("도윤"),
     Y("도윤","누나! 저고리 찾으러 왔어!","smile"),
     M("행거에 걸어 둔 저고리를 건네주자."),
@@ -1477,7 +1519,7 @@ const LOCS={
     {id:"sign",x:648,y:318,w:112,h:58,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()}
   ]},
   counter:{title:"카운터",bg:"counter",spots:[
-    {id:"hanger",x:660,y:120,w:240,h:340,label:"세탁물 행거",art:()=>coatOnHanger()?HANG_COAT:"",run:()=>hangerRun()},
+    {id:"hanger",x:660,y:120,w:240,h:340,label:"세탁물 행거",art:()=>railArt(),run:()=>hangerRun()},
     {id:"board",x:222,y:150,w:300,h:236,label:"코르크 보드",run:()=>S.phase!=="d2_invest"?[M("찾아가지 않은 세탁물 태그가 빽빽하다. 이모는 뭐 하나 버리질 못했다.")]:S.sawDate?[M("06.12.24. 저 번호표만 유난히 오래됐다.")]:[
       M("찾아가지 않은 세탁물 태그가 이렇게 많다니."),
       N("보드 구석, 다른 태그 밑에 반쪽짜리 번호표가 깔려 있다. 누렇게 바래고 물에 번졌다."),
@@ -1489,7 +1531,7 @@ const LOCS={
     {id:"work",x:912,y:146,w:112,h:326,label:"작업장",go:"workshop"},
     {id:"door",x:1030,y:118,w:150,h:350,label:"창고 문",run:()=>storageDoorRun()},
     {id:"book",x:316,y:484,w:140,h:70,label:"접수 장부",run:()=>bookRun()},
-    {id:"coat",x:466,y:496,w:190,h:64,label:"옥색 저고리",show:coatOnCounter,art:()=>JEOGORI,run:()=>coatRun()},
+    {id:"coat",x:466,y:470,w:190,h:96,label:()=>S.phase==="d1_wash"?"빨래 바구니":"옥색 저고리",show:coatOnCounter,art:()=>S.phase==="d1_wash"?BASKET_ART():JEOGORI,run:()=>coatRun()},
     {id:"glass",x:590,y:720,w:42,h:42,label:"바닥 틈",show:()=>S.phase==="d2_invest"&&!S.glass,art:()=>GLASS,run:()=>[
       N("카운터 아래, 바닥 틈에서 무언가 반짝인다. 푸른 유리구슬 하나."),
       M("구슬치기용 구슬이네. 이게 왜 카운터 밑에 있지?"),
@@ -1651,7 +1693,7 @@ function flowerStreet(){
 function shopFront(){
   if(isClose()){
     return [CHOICE([
-      {label:"셔터를 내린다 (오늘 하루를 마친다)",then:()=>[N("유리문 팻말을 '준비중'으로 돌려 놓는다."),DO(()=>{S.signOpen=false;}),M("셔터 아래 손잡이를 잡고 끌어내리자."),{t:"mini",kind:"shutter",dir:"down"}].concat(endDaySteps())},
+      {label:"셔터를 내린다 (오늘 하루를 마친다)",then:()=>[N("셔터를 내리기 전에 유리문 팻말부터 돌려 놓자."),{t:"mini",kind:"sign",to:"closed"},DO(()=>{S.signOpen=false;}),M("셔터 아래 손잡이를 잡고 끌어내리자."),{t:"mini",kind:"shutter",dir:"down"}].concat(endDaySteps())},
       {label:"다시 가게로 들어간다",then:[DO(()=>{S.lightsOff=false;}),N("불을 다시 켠다."),GO("counter")]}
     ])];
   }
@@ -1666,7 +1708,8 @@ function signRun(){
   const open=S.phase==="d1_open"||S.phase==="d2_open";
   if(/_street$/.test(S.phase)||(open&&S.lightsOff)) return [M("안이 아직 깜깜하다. 불부터 켜고 돌리자.")];
   if(open) return [
-    N("가게 밖으로 나와 유리문에 걸린 팻말을 뒤집는다. '준비중'에서 '영업중'으로."),
+    N("가게 밖으로 나와 유리문에 걸린 팻말을 잡는다. '준비중'. 이걸 돌리면 진짜 시작이다."),
+    {t:"mini",kind:"sign",to:"open"},
     DO(()=>{S.signOpen=true;}),...REDRAW("front"),
     M(S.day===1?"좋아. 윤슬세탁소, 다시 영업 시작.":"오늘도 영업 시작."),
     N("가게 안으로 들어가 카운터에 선다."),
@@ -1719,8 +1762,9 @@ function bedRun(){
 function hangerRun(){
   if(S.phase==="d1_wash"){
     if(S.ironed&&S.carry) return [
-      N("저고리를 옷걸이에 걸고 비닐을 씌운다. 노란 태그를 단다."),
-      M("끝! 첫 손님 빨래 완료."),
+      N("다 다린 옷들을 하나씩 옷걸이에 건다. 위에는 비닐 롤, 옆에는 노란 번호표."),
+      {t:"mini",kind:"vinyl"},
+      M("끝! 첫날 빨래 완료. 행거가 조금 찼다."),
       DO(()=>{S.hung=true;S.carry=false;S.phase="d1_close";}),
       SKIP("해 질 녘","그날 오후"),
       N("손님이 몇 명 더 다녀가고, 어느새 창밖이 어둑어둑하다."),
@@ -1728,11 +1772,12 @@ function hangerRun(){
     if(S.carry) return [M(S.washed?"다리기부터 해야지. 구김 있는 채로 걸 순 없어.":"빨래부터 해야지.")];
   }
   if(S.phase==="d2_pickup") return handoverSteps();
-  if(coatOnHanger()) return [M("도윤이네 저고리. 내일 찾으러 온다.")];
-  return [M(S.day>=2?"찾아갈 손님들 옷. 태그 번호 순서대로 걸려 있다. 이모 방식 그대로.":"빈 옷걸이만 걸려 있다. 여기가 다 찰 날이 올까.")];
+  if(coatOnHanger()) return [M(S.day===1?"도윤이네 저고리, 최성훈 님 와이셔츠, 수아 교복 재킷. 다들 내일 찾으러 온다.":"도윤이네 저고리. 와이셔츠는 저녁에 찾으러 온다.")];
+  if(railClothes().length) return [M("최성훈 님 와이셔츠 두 장. 오늘 저녁에 찾으러 온다고 했지.")];
+  return [M("빈 옷걸이만 걸려 있다. 여기가 다 찰 날이 올까.")];
 }
 function coatRun(){
-  if(S.phase==="d1_wash") return [N("저고리를 곱게 개어 든다."),DO(()=>{S.carry=true;}),M("작업장으로 가져가자.")];
+  if(S.phase==="d1_wash") return [N("저고리, 와이셔츠 두 장, 교복 재킷을 빨래 바구니에 담아 든다."),DO(()=>{S.carry=true; if(!S.washQ)S.washQ=LOAD_ALL.slice();}),M("작업장으로 가져가자. 저고리는 따로 살살 빨아야 하나?")];
   if(S.got.has("thread")) return [M("실 끝이 가위로 자른 듯 반듯했지.")];
   return [
     N("앞섶에 단추 다섯 개. 여섯 번째 자리엔 실 두 가닥만 남아 있다."),
@@ -1782,17 +1827,12 @@ function storageDoorRun(){
 function washerRun(){
   if(S.phase!=="d1_wash") return [M(isClose()?"오늘 빨래는 끝. 문을 살짝 열어 말려 둔다.":"이모가 30년 쓴 세탁기. 소리가 요란하다.")];
   if(S.washed) return [M("세탁은 끝났다.")];
-  if(!S.carry) return [M("먼저 카운터에서 저고리를 가져와야지.")];
+  if(!S.carry) return [M("먼저 카운터에서 빨래 바구니를 가져와야지.")];
   return [
-    N("저고리를 세탁망에 넣어 세탁기에 넣는다. 코스를 고른다."),
-    CHOICE([
-      {label:"섬세 코스 · 찬물",then:[M("한복이니까 살살.")]},
-      {label:"표준 코스 · 온수",set:()=>{S.washBad=true;},then:[M("빨리 끝나는 게 좋지 뭐.")]}
-    ]),
-    N("덜컹, 덜컹. 세탁기가 돌아가기 시작한다."),
-    SKIP("한 시간 뒤"),
-    N("삐- 삐-. 세탁이 끝났다. 저고리를 꺼낸다."),
-    ()=>S.washBad?M("……천이 좀 뻣뻣해진 것 같은데. 괜찮겠지?"):M("구김 하나 없이 깨끗하다."),
+    N("빨래 바구니를 세탁기 옆에 내려놓는다. 선반 위에 이모 글씨 메모가 붙어 있다."),
+    {t:"mini",kind:"wash"},
+    SKIP("빨래 끝"),
+    ()=>S.washBad?M("……저고리 천이 좀 뻣뻣해진 것 같은데. 괜찮겠지?"):M("흙탕물 자국도 싹 빠졌고, 저고리도 보들보들하다."),
     DO(()=>{S.washed=true;}),
     M("이제 다리미대에서 다리자.")];
 }
@@ -1804,7 +1844,8 @@ function ironRun(){
     {t:"mini",kind:"iron"},
     ()=>S.ironBad?M("앗…… 동정 끝이 누렇게 눌었다. 티 안 나겠지?"):M("구김 하나 없이 반듯하다. 이모가 하던 대로."),
     DO(()=>{S.ironed=true;}),
-    M("다 됐다. 카운터 행거에 걸어 두자.")];
+    N("와이셔츠랑 교복 재킷은 이모의 낡은 스팀 프레스로 금방 다린다. 이모 손이 하던 순서 그대로."),
+    M("다 됐다. 카운터 행거에 걸고 비닐 씌우자.")];
   if(S.phase==="d1_wash"&&!S.washed) return [M("빨래부터 해야지.")];
   return [M("이모 다리미는 무겁다. 30년 손때가 묻어 손잡이가 반질반질하다.")];
 }
@@ -2002,7 +2043,7 @@ function resetState(){
      glass:false,sawDate:false,mayor:"later",dust:false,light:false,took2006:false,key:false,diary:false,marbleRoute:"",
      shutterUp:false,lightsOff:true,signOpen:false,readNotice:false,cash:false,ironOff:false,cashPrev:true,ironOffPrev:true,
      carry:false,washed:false,ironed:false,hung:false,gave:false,coatBack:false,washBad:false,ironBad:false,askedCount:false,filterSeen:false,
-     peek:false,metBong:false,metFlower:false,seenDoyun:false,storageSeen:false,inHouse:false,wardrobe:false,boxSeen:false,
+     peek:false,washQ:null,washedSet:[],suaPicked:false,choiPicked:false,metBong:false,metFlower:false,seenDoyun:false,storageSeen:false,inHouse:false,wardrobe:false,boxSeen:false,
      got:new Set(),inv:[],itemDay:{},cardDay:{},read:{}};
 }
 
@@ -2172,7 +2213,7 @@ function clearMini(){ const m=$("mini"); m.hidden=true; m.innerHTML=""; if(mini&
 function endMini(){ clearMini(); mode="line"; run(); }
 function startMini(s){
   mode="mini"; $("box").hidden=true; $("choices").hidden=true;
-  if(s.kind==="shutter") startShutter(s.dir); else if(s.kind==="keypad") startKeypad(); else startIron();
+  if(s.kind==="shutter") startShutter(s.dir); else if(s.kind==="keypad") startKeypad(); else if(s.kind==="sign") startSign(s.to); else if(s.kind==="wash") startWash(); else if(s.kind==="vinyl") startVinyl(); else startIron();
 }
 function startShutter(dir){
   S.peek=true; curBg=null; setBg("front"); setCast([]);
@@ -2205,6 +2246,223 @@ function shutterTap(){
   mini.r=mini.dir==="up"?Math.min(1,mini.r+0.075):Math.max(0,mini.r-0.21);
   const sr=$("mini-sr"); if(sr)sr.textContent=Math.round((mini.dir==="up"?mini.r:1-mini.r)*100)+"%";
 }
+/* ---------- day-1 laundry: garments, rail, sign / wash / vinyl mini games ---------- */
+const CLOTHES={
+  jeogori:{n:"옥색 저고리",img:"jeogori",c:"#8FCBB8",d:"#6FA894"},
+  shirt1:{n:"와이셔츠",img:"shirt",c:"#F6F5EF",d:"#D9D7CC"},
+  shirt2:{n:"와이셔츠",img:"shirt",c:"#EEF2F5",d:"#CDD5DB"},
+  blazer:{n:"교복 재킷",img:"blazer",c:"#34436A",d:"#24304E"}
+};
+const LOAD_ALL=["jeogori","shirt1","shirt2","blazer"];
+/* IMG_ITEM[img] = {folded:"assets/items/x.webp", hanger:"assets/items/y.webp"}; missing → drawn garments */
+const IMG_ITEM={};
+const OLx="#3A2A26";
+/* a garment hanging from a hook at (0,0); about 250 tall at s=1 */
+function hungArt(id,s){
+  const C=CLOTHES[id], I=IMG_ITEM[C.img];
+  if(I&&I.hanger) return `<image href="${I.hanger}" x="${-130*s}" y="${-14*s}" width="${260*s}" height="${260*s}"/>`;
+  const hook=`<path d="M0 0 q0 -14 10 -14" fill="none" stroke="#8E8A80" stroke-width="${3*s}"/><path d="M0 0 L${-46*s} ${26*s} L${46*s} ${26*s} Z" fill="none" stroke="#8E8A80" stroke-width="${3*s}" stroke-linejoin="round"/>`;
+  const st=`stroke="${OLx}" stroke-width="${2*s}" stroke-linejoin="round"`;
+  const g=(d)=>d.replace(/(-?\d+(\.\d+)?)/g,m=>(+m*s).toFixed(1));
+  if(C.img==="jeogori") return hook+`<path d="${g("M-44 22 L-98 70 L-84 112 L-40 92 L-36 150 L36 150 L40 92 L84 112 L98 70 L44 22 Q0 12 -44 22Z")}" fill="${C.c}" ${st}/><path d="${g("M-40 92 L-36 150 L-6 150 L-10 96Z")}" fill="${C.d}" opacity=".55"/><path d="${g("M-20 22 L8 120 M20 22 L-2 70")}" fill="none" stroke="#F8F4EA" stroke-width="${7*s}"/><path d="${g("M6 110 q-26 10 -40 36 M6 110 q16 18 18 44")}" fill="none" stroke="#C8436A" stroke-width="${5*s}" stroke-linecap="round"/><path d="${g("M-70 84 q10 6 22 2 M60 86 q10 4 20 -2")}" fill="none" stroke="${C.d}" stroke-width="${1.6*s}"/>`;
+  if(C.img==="shirt") return hook+`<path d="${g("M-40 24 L-74 44 L-88 210 L-66 214 L-56 90 L-50 244 L50 244 L56 90 L66 214 L88 210 L74 44 L40 24 Q0 16 -40 24Z")}" fill="${C.c}" ${st}/><path d="${g("M-20 22 L0 52 L20 22 L10 18 L0 34 L-10 18Z")}" fill="#fff" ${st}/><path d="${g("M0 52 L0 244")}" stroke="${C.d}" stroke-width="${2*s}"/>${[80,120,160,200].map(y=>`<circle cx="${4*s}" cy="${y*s}" r="${2.6*s}" fill="#fff" stroke="${C.d}"/>`).join("")}<path d="${g("M-50 140 q10 30 6 70 M44 120 q-8 40 2 90 M-70 120 q4 30 -2 60")}" fill="none" stroke="${C.d}" stroke-width="${1.6*s}"/>`;
+  return hook+`<path d="${g("M-44 22 L-80 40 L-92 226 L-68 230 L-60 96 L-56 248 L56 248 L60 96 L68 230 L92 226 L80 40 L44 22 Q0 14 -44 22Z")}" fill="${C.c}" ${st}/><path d="${g("M-24 22 L-6 120 L-30 60 Z M24 22 L6 120 L30 60 Z")}" fill="${C.d}" ${st}/><path d="${g("M-6 120 L0 248")}" stroke="${C.d}" stroke-width="${2*s}"/>${[140,180].map(y=>`<circle cx="${8*s}" cy="${y*s}" r="${4*s}" fill="#D9B45A" stroke="${OLx}" stroke-width="${s}"/>`).join("")}<rect x="${-46*s}" y="${100*s}" width="${18*s}" height="${16*s}" rx="${3*s}" fill="#C9B26A" opacity=".8"/><path d="${g("M-80 120 q8 40 0 80 M74 110 q-6 50 4 96")}" fill="none" stroke="#1C2640" stroke-width="${1.6*s}"/>${(mini&&mini.kind==="wash"&&!(S.washedSet||[]).includes(id))?`<path d="${g("M-86 170 q14 -6 20 10 q-8 14 -20 6Z M-30 220 q20 -8 34 6 q-10 16 -34 6Z")}" fill="#7A5A36" opacity=".75"/>`:""}`;
+}
+function vinylArt(s,h){ h=h==null?262:h; return `<path d="M${-14*s} ${-6*s} L${-96*s} ${30*s} L${-100*s} ${h*s} L${100*s} ${h*s} L${96*s} ${30*s} L${14*s} ${-6*s} Z" fill="#fff" fill-opacity=".2" stroke="#fff" stroke-opacity=".7" stroke-width="${1.5*s}"/><path d="M${-70*s} ${50*s} L${-60*s} ${Math.max(60,h-20)*s} M${40*s} ${40*s} L${56*s} ${Math.max(60,h-30)*s}" stroke="#fff" stroke-opacity=".45" stroke-width="${6*s}" stroke-linecap="round"/>`; }
+function tagArt(s,no){ return `<g transform="translate(${10*s} ${2*s}) rotate(8)"><rect width="${30*s}" height="${40*s}" rx="${3*s}" fill="#F4D98A" stroke="#8C6A43" stroke-width="${s}"/><circle cx="${15*s}" cy="${7*s}" r="${2.4*s}" fill="#7B5B38"/><text x="${15*s}" y="${28*s}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="${9*s}" fill="#5A4024">${no}</text></g>`; }
+function foldedArt(id,x,y,s){
+  const C=CLOTHES[id], I=IMG_ITEM[C.img];
+  if(I&&I.folded) return `<image href="${I.folded}" x="${x-60*s}" y="${y-50*s}" width="${120*s}" height="${100*s}"/>`;
+  const dirt=C.img==="blazer"&&!(S.washedSet||[]).includes(id)?`<path d="M${x-40*s} ${y+6*s} q12 -6 22 4 q-8 12 -22 6Z" fill="#7A5A36" opacity=".8"/>`:"";
+  const collar=C.img==="jeogori"?`<path d="M${x-20*s} ${y-26*s} L${x} ${y} L${x+20*s} ${y-26*s}" fill="none" stroke="#F8F4EA" stroke-width="${6*s}"/><path d="M${x} ${y} q-14 8 -22 22 M${x} ${y} q10 10 12 24" stroke="#C8436A" stroke-width="${4*s}" fill="none"/>`
+    :C.img==="shirt"?`<path d="M${x-16*s} ${y-26*s} L${x} ${y-10*s} L${x+16*s} ${y-26*s}" fill="#fff" stroke="${OLx}" stroke-width="${1.5*s}"/><path d="M${x} ${y-10*s} L${x} ${y+24*s}" stroke="${C.d}" stroke-width="${1.5*s}"/>`
+    :`<path d="M${x-18*s} ${y-26*s} L${x-4*s} ${y+10*s} L${x-22*s} ${y-6*s}Z M${x+18*s} ${y-26*s} L${x+4*s} ${y+10*s} L${x+22*s} ${y-6*s}Z" fill="${C.d}"/><circle cx="${x+6*s}" cy="${y+16*s}" r="${3.5*s}" fill="#D9B45A"/>`;
+  return `<g><path d="M${x-56*s} ${y-26*s} Q${x} ${y-34*s} ${x+56*s} ${y-26*s} L${x+60*s} ${y+30*s} Q${x} ${y+38*s} ${x-60*s} ${y+30*s} Z" fill="${C.c}" stroke="${OLx}" stroke-width="${2*s}" stroke-linejoin="round"/><path d="M${x-58*s} ${y+8*s} Q${x} ${y+16*s} ${x+58*s} ${y+8*s}" fill="none" stroke="${C.d}" stroke-width="${2*s}"/>${collar}${dirt}</g>`;
+}
+const TAGNO={jeogori:"1109",shirt1:"1110",shirt2:"1111",blazer:"1112"};
+function railClothes(){
+  if(!S||!S.hung) return [];
+  return LOAD_ALL.filter(id=>!(id==="jeogori"&&(S.gave||coatOnCounter()))&&!(id==="blazer"&&S.suaPicked)&&!(/^shirt/.test(id)&&S.choiPicked));
+}
+function railArt(){ const L=railClothes(); return L.map((id,i)=>`<g transform="translate(${730+i*52} 150) scale(.92)">${hungArt(id,1)}${vinylArt(1)}${tagArt(1,TAGNO[id])}</g>`).join(""); }
+const BASKET_ART=()=>`<g transform="translate(560 528)"><ellipse cx="0" cy="34" rx="92" ry="8" fill="#000" opacity=".2"/>${foldedArt("blazer",-26,-6,.62)}${foldedArt("shirt1",26,-14,.6)}${foldedArt("shirt2",-10,-22,.58)}${foldedArt("jeogori",12,-30,.6)}<path d="M-86 -6 L86 -6 L74 36 L-74 36 Z" fill="#E7A33E" stroke="${OLx}" stroke-width="2"/>${[-60,-36,-12,12,36,60].map(x=>`<rect x="${x-6}" y="4" width="12" height="22" rx="3" fill="#B97A24"/>`).join("")}</g>`;
+
+/* --- sign: drag sideways (or tap) to spin the plaque until the wanted side faces out --- */
+function startSign(to){
+  const m=$("mini"); m.className="mini iron"; m.hidden=false;
+  const bg=IMG_BG["sign-door"]?`<image href="${IMG_BG["sign-door"].src[0]}" x="-200" y="-40" width="1200" height="800" preserveAspectRatio="xMidYMid slice"/>`
+    :`<rect width="800" height="500" fill="#B9CFD3"/><rect x="0" y="0" width="800" height="500" fill="url(#sgGlass)"/><rect x="0" y="0" width="40" height="500" fill="#A9B0B2"/><rect x="760" y="0" width="40" height="500" fill="#A9B0B2"/><rect x="0" y="0" width="800" height="26" fill="#9BA3A5"/><path d="M120 0 L260 500 M540 0 L700 500" stroke="#fff" stroke-opacity=".35" stroke-width="40"/>`;
+  m.innerHTML=`<div class="iron-wrap"><div class="iron-top"><span class="mg-tip" id="mg-tip">팻말을 옆으로 밀어서 돌려요. 눌러도 한 바퀴 돌아요.</span></div>
+    <svg id="sg-svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" role="application" tabindex="0" aria-label="유리문 팻말. 좌우로 끌거나 방향키로 돌리세요.">
+    <defs><linearGradient id="sgGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DCE8EA" stop-opacity=".5"/><stop offset="1" stop-color="#6F8A90" stop-opacity=".35"/></linearGradient></defs>
+    ${bg}<g id="sg-sign"></g><circle cx="400" cy="62" r="14" fill="#E9EEF0" stroke="#7C8A90" stroke-width="3"/><circle cx="400" cy="62" r="4" fill="#7C8A90"/></svg>
+    <span class="mini-sr" aria-live="polite" id="mini-sr"></span></div>`;
+  const svg=m.querySelector("#sg-svg"), tip=m.querySelector("#mg-tip");
+  const from=S.signOpen?"open":"closed";
+  mini={kind:"sign",to,a:0,v:0,last:performance.now(),drag:null,moved:0,done:false,settled:true,wrongShown:false};
+  const face=a=>{ const k=Math.round(a/Math.PI); return (Math.abs(k)%2===0)?from:(from==="open"?"closed":"open"); };
+  const draw=()=>{
+    const c=Math.cos(mini.a), side=c>=0?(from):(from==="open"?"closed":"open"), sx=Math.max(.04,Math.abs(c)), open=side==="open";
+    const tilt=Math.max(-8,Math.min(8,mini.v*1.2));
+    const w=300, h=130, top=150;
+    const board=`<g transform="translate(400 ${top}) scale(${sx.toFixed(3)} 1)"><rect x="${-w/2+6}" y="6" width="${w}" height="${h}" rx="14" fill="#000" opacity=".18"/><rect x="${-w/2}" y="0" width="${w}" height="${h}" rx="14" fill="${open?"#F6EEDC":"#3E5359"}" stroke="${OLx}" stroke-width="4"/><rect x="${-w/2+12}" y="12" width="${w-24}" height="${h-24}" rx="9" fill="none" stroke="${open?"#C8436A":"#9CB4B9"}" stroke-width="3" stroke-dasharray="${open?"0":"8 6"}"/><text x="0" y="${h/2+12}" text-anchor="middle" font-family="Gowun Batang,serif" font-weight="700" font-size="54" fill="${open?"#C8436A":"#EDE6D8"}">${open?"영업중":"준비중"}</text><text x="0" y="${h-18}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" letter-spacing="5" fill="${open?"#8C6A43":"#BFD0D3"}">${open?"OPEN":"CLOSED"}</text>${sx<.2?`<rect x="${-w/2}" y="0" width="${w}" height="${h}" fill="#8C6A43"/>`:""}</g>`;
+    svg.querySelector("#sg-sign").innerHTML=`<g transform="rotate(${tilt.toFixed(2)} 400 62)"><path d="M400 62 L${400-130*sx} ${top+4} M400 62 L${400+130*sx} ${top+4}" stroke="#5E5A52" stroke-width="2.5"/>${board}</g>`;
+  };
+  const toPt=e=>{const c=svg.getScreenCTM(); if(!c)return {x:0}; const p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; return p.matrixTransform(c.inverse());};
+  svg.addEventListener("pointerdown",e=>{ e.stopPropagation(); const p=toPt(e); mini.drag={x:p.x,t:performance.now()}; mini.moved=0; mini.settled=false; try{svg.setPointerCapture(e.pointerId);}catch(_){} });
+  svg.addEventListener("pointermove",e=>{ if(!mini||!mini.drag)return; const p=toPt(e), t=performance.now(), dx=p.x-mini.drag.x, dt=Math.max(.008,(t-mini.drag.t)/1000); mini.a+=dx*.012; mini.v=dx*.012/dt*.6; mini.moved+=Math.abs(dx); mini.drag={x:p.x,t}; });
+  const up=e=>{ if(!mini||!mini.drag)return; if(mini.moved<6) mini.v=(mini.v>=0?1:-1)*5.4; mini.drag=null; };
+  svg.addEventListener("pointerup",up); svg.addEventListener("pointercancel",up);
+  svg.addEventListener("click",e=>e.stopPropagation());
+  setTimeout(()=>svg.focus({preventScroll:true}),50);
+  mini.flick=d=>{ if(mini.done)return; mini.v=d*5.4; mini.settled=false; };
+  const loop=t=>{
+    if(!mini||mini.kind!=="sign")return;
+    const dt=Math.min(.05,(t-mini.last)/1000); mini.last=t;
+    if(!mini.drag&&!mini.settled){
+      mini.a+=mini.v*dt; mini.v*=Math.exp(-1.7*dt);
+      if(Math.abs(mini.v)<1.1){ const tgt=Math.round(mini.a/Math.PI)*Math.PI; mini.v+=(tgt-mini.a)*40*dt; mini.v*=Math.exp(-6*dt);
+        if(Math.abs(mini.v)<.04&&Math.abs(tgt-mini.a)<.01){ mini.a=tgt; mini.v=0; mini.settled=true;
+          if(face(mini.a)===mini.to){ mini.done=true; tip.textContent=mini.to==="open"?"딸깍. '영업중'.":"딸깍. '준비중'."; S.signOpen=mini.to==="open"; $("mini-sr").textContent=tip.textContent; draw(); setTimeout(endMini,700); return; }
+          tip.textContent="아직 반대쪽이에요. 한 번 더 돌려요."; } }
+    }
+    draw(); mini.raf=requestAnimationFrame(loop);
+  };
+  draw(); mini.raf=requestAnimationFrame(loop);
+}
+
+/* --- washer: open door, load clothes, detergent, close, course + temperature, start --- */
+const COURSES=["표준","섬세","울"];
+function startWash(){
+  const m=$("mini"); m.className="mini iron"; m.hidden=false;
+  S.washQ=(S.washQ&&S.washQ.length)?S.washQ:LOAD_ALL.filter(id=>!(S.washedSet||[]).includes(id));
+  mini={kind:"wash",door:false,drum:[],soap:"",course:0,temp:"cold",spin:0,running:false,done:false,msg:"",last:performance.now()};
+  m.innerHTML=`<div class="iron-wrap"><div class="iron-top"><span class="mg-tip" id="mg-tip"></span></div>
+    <svg id="wa-svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" aria-label="세탁기"></svg>
+    <span class="mini-sr" aria-live="polite" id="mini-sr"></span></div>`;
+  const svg=m.querySelector("#wa-svg"), tip=m.querySelector("#mg-tip");
+  const btn=(act,inner,label)=>`<g class="mg-act" data-act="${act}" role="button" tabindex="0" aria-label="${label}">${inner}</g>`;
+  const say=t=>{ mini.msg=t; };
+  const steps=()=>{ const s=[[mini.door||mini.drum.length,"문 열기"],[mini.drum.length>0,"빨래 넣기"],[!!mini.soap,"세제"],[mini.drum.length>0&&!mini.door,"문 닫기"],[mini.running,"시작"]];
+    return s.map(([ok,t])=>`<b class="${ok?"ok":""}">${ok?"✓ ":""}${t}</b>`).join(""); };
+  const draw=()=>{
+    const bgImg=IMG_BG["washer-closeup"]?`<image href="${IMG_BG["washer-closeup"].src[0]}" x="-200" y="-150" width="1200" height="800"/>`:"";
+    const left=S.washQ.filter(id=>!mini.drum.includes(id));
+    const dc=[540,330], R=100, rot=mini.spin;
+    const inDrum=mini.drum.map((id,i)=>{ const a=rot+i*1.6, r=48; return `<g transform="translate(${(dc[0]+Math.cos(a)*r*.6).toFixed(1)} ${(dc[1]+Math.sin(a)*r*.5+20).toFixed(1)}) rotate(${(a*57).toFixed(0)})"><ellipse rx="34" ry="20" fill="${CLOTHES[id].c}" stroke="${OLx}" stroke-width="2"/></g>`; }).join("");
+    const bubbles=mini.running?[0,1,2,3,4,5].map(i=>`<circle cx="${dc[0]-60+((i*37+rot*30)%120)}" cy="${dc[1]+40-((i*23+rot*50)%90)}" r="${5+i%3*3}" fill="#fff" opacity=".6"/>`).join(""):"";
+    const doorC=mini.door
+      ?`<ellipse cx="${dc[0]-R-46}" cy="${dc[1]}" rx="34" ry="${R+8}" fill="#D9DEE0" stroke="${OLx}" stroke-width="3"/><ellipse cx="${dc[0]-R-46}" cy="${dc[1]}" rx="22" ry="${R-10}" fill="#9FB4BC" opacity=".7"/>`
+      :`<circle cx="${dc[0]}" cy="${dc[1]}" r="${R}" fill="#9FC3CF" opacity=".55" stroke="#E4E9EB" stroke-width="16"/><circle cx="${dc[0]}" cy="${dc[1]}" r="${R+8}" fill="none" stroke="${OLx}" stroke-width="3"/><path d="M${dc[0]-60} ${dc[1]-50} q30 -26 70 -22" stroke="#fff" stroke-opacity=".7" stroke-width="8" fill="none" stroke-linecap="round"/>`;
+    svg.innerHTML=`${bgImg||`<rect width="800" height="500" fill="#DCE4E3"/><g stroke="#C8D2D1" stroke-width="2">${Array.from({length:9},(_,i)=>`<line x1="${i*100}" y1="0" x2="${i*100}" y2="400"/>`).join("")}${Array.from({length:5},(_,i)=>`<line x1="0" y1="${i*80}" x2="800" y2="${i*80}"/>`).join("")}</g><rect y="400" width="800" height="100" fill="#A9B3B1"/>`}
+      <rect x="20" y="64" width="250" height="12" rx="3" fill="#8C6A43" stroke="${OLx}" stroke-width="2"/>
+      ${btn("soap-n",`<path d="M46 64 L46 22 Q46 12 58 12 L74 12 L74 4 L92 4 L92 12 Q104 12 104 24 L104 64 Z" fill="#4C7FB8" stroke="${OLx}" stroke-width="2.5"/><rect x="54" y="30" width="42" height="22" rx="3" fill="#EAF2FA"/><text x="75" y="46" text-anchor="middle" font-family="Gowun Batang,serif" font-size="13" fill="#2F4A6A">일반</text>`,"일반 세제")}
+      ${btn("soap-d",`<path d="M128 64 L128 26 Q128 16 140 14 L146 4 L158 4 L164 14 Q176 16 176 26 L176 64 Z" fill="#E8A3B5" stroke="${OLx}" stroke-width="2.5"/><rect x="134" y="30" width="36" height="22" rx="3" fill="#FFF3F6"/><text x="152" y="46" text-anchor="middle" font-family="Gowun Batang,serif" font-size="13" fill="#8A3A52">중성</text>`,"중성 세제 (섬세용)")}
+      <g transform="rotate(-4 228 40)"><rect x="196" y="8" width="70" height="52" fill="#FBF6E8" stroke="#B7AE9C"/><text x="231" y="28" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="16" fill="#2F5596">한복·실크</text><text x="231" y="48" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="16" fill="#C8436A">섬세·찬물!</text></g>
+      <g transform="translate(150 410)"><path d="M-120 0 L120 0 L104 70 L-104 70 Z" fill="#E7A33E" stroke="${OLx}" stroke-width="3"/>${[-84,-56,-28,0,28,56,84].map(x=>`<rect x="${x-7}" y="12" width="14" height="44" rx="4" fill="#B97A24"/>`).join("")}</g>
+      ${left.map((id,i)=>btn("put-"+id,foldedArt(id,70+i*58,380-(i%2)*26,.82),CLOTHES[id].n+" 넣기")).join("")}
+      <rect x="380" y="60" width="330" height="420" rx="18" fill="#F3F4F0" stroke="${OLx}" stroke-width="3"/>
+      <rect x="380" y="60" width="330" height="110" rx="18" fill="#E6E8E3" stroke="${OLx}" stroke-width="3"/>
+      ${btn("drawer",`<rect x="398" y="84" width="74" height="40" rx="5" fill="${mini.soap?(mini.soap==="n"?"#4C7FB8":"#E8A3B5"):"#D4D8D3"}" stroke="${OLx}" stroke-width="2"/><rect x="420" y="98" width="30" height="6" rx="3" fill="#9AA0A0"/>`,"세제 칸")}
+      ${btn("dial",`<circle cx="540" cy="122" r="26" fill="#D0D4D0" stroke="${OLx}" stroke-width="3"/><line x1="540" y1="122" x2="${540+Math.cos(-Math.PI/2+(mini.course-1)*0.9)*20}" y2="${122+Math.sin(-Math.PI/2+(mini.course-1)*0.9)*20}" stroke="#C8436A" stroke-width="5" stroke-linecap="round"/>`,"코스 다이얼: "+COURSES[mini.course])}
+      ${COURSES.map((c,i)=>`<text x="${540+Math.cos(-Math.PI/2+(i-1)*0.9)*40}" y="${122+Math.sin(-Math.PI/2+(i-1)*0.9)*40+5}" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" font-weight="${i===mini.course?700:400}" fill="${i===mini.course?"#C8436A":"#55605E"}">${c}</text>`).join("")}
+      ${btn("cold",`<rect x="598" y="78" width="54" height="26" rx="13" fill="${mini.temp==="cold"?"#5C8FB0":"#DADDD8"}" stroke="${OLx}" stroke-width="2"/><text x="625" y="96" text-anchor="middle" font-family="Gowun Batang,serif" font-size="13" fill="${mini.temp==="cold"?"#fff":"#444"}">찬물</text>`,"찬물")}
+      ${btn("warm",`<rect x="598" y="112" width="54" height="26" rx="13" fill="${mini.temp==="warm"?"#C8634A":"#DADDD8"}" stroke="${OLx}" stroke-width="2"/><text x="625" y="130" text-anchor="middle" font-family="Gowun Batang,serif" font-size="13" fill="${mini.temp==="warm"?"#fff":"#444"}">온수</text>`,"온수")}
+      ${btn("start",`<circle cx="682" cy="108" r="20" fill="${mini.running?"#7FB77E":"#C8436A"}" stroke="${OLx}" stroke-width="3"/><path d="M676 98 L692 108 L676 118Z" fill="#fff"/>`,"시작")}
+      <circle cx="${dc[0]}" cy="${dc[1]}" r="${R+22}" fill="#E1E4E0" stroke="${OLx}" stroke-width="3"/>
+      <circle cx="${dc[0]}" cy="${dc[1]}" r="${R}" fill="#3B4A50"/>
+      <g opacity=".35">${[0,1,2,3,4,5].map(i=>`<circle cx="${dc[0]+Math.cos(rot+i)*70}" cy="${dc[1]+Math.sin(rot+i)*70}" r="5" fill="#9AA9AE"/>`).join("")}</g>
+      ${inDrum}${bubbles}${btn("door",doorC,mini.door?"세탁기 문 닫기":"세탁기 문 열기")}
+      ${mini.running?`<rect x="400" y="456" width="290" height="10" rx="5" fill="#C9CEC9"/><rect x="400" y="456" width="${(290*Math.min(1,mini.prog||0)).toFixed(0)}" height="10" rx="5" fill="#7FB77E"/>`:""}`;
+    tip.innerHTML=`<span class="mg-steps">${steps()}</span><span class="mg-msg">${esc(mini.msg||"")}</span>`;
+  };
+  const act=a=>{
+    if(!mini||mini.kind!=="wash"||mini.running||mini.done)return;
+    if(a==="door"){ mini.door=!mini.door; say(mini.door?"문을 열었다. 바구니의 빨래를 눌러서 넣자.":"문을 닫았다. 코스랑 온도를 고르고 시작."); }
+    else if(a.startsWith("put-")){ if(!mini.door){ say("문부터 열어야지."); } else { mini.drum.push(a.slice(4)); say(CLOTHES[a.slice(4)].n+" 넣었다."); } }
+    else if(a==="soap-n"||a==="soap-d"){ mini.soap=a==="soap-n"?"n":"d"; say((a==="soap-n"?"일반":"중성")+" 세제를 한 컵 붓는다."); }
+    else if(a==="drawer"){ say(mini.soap?"세제 칸에 세제가 들어 있다.":"위 선반의 세제 병을 눌러서 붓자."); }
+    else if(a==="dial"){ mini.course=(mini.course+1)%COURSES.length; say("코스: "+COURSES[mini.course]); }
+    else if(a==="cold"||a==="warm"){ mini.temp=a; say(a==="cold"?"찬물.":"온수."); }
+    else if(a==="start"){
+      if(!mini.drum.length) return say("빨래를 넣어야지."), draw();
+      if(mini.door) return say("문이 열려 있다. 닫아야 돌아가지."), draw();
+      if(!mini.soap) return say("세제를 안 넣었다."), draw();
+      mini.running=true; mini.prog=0; say("덜컹, 덜컹. 돌아간다.");
+      if(mini.drum.includes("jeogori")&&(COURSES[mini.course]!=="섬세"||mini.temp!=="cold")) S.washBad=true;
+    }
+    draw();
+  };
+  svg.addEventListener("click",e=>{ e.stopPropagation(); const g=e.target.closest("[data-act]"); if(g)act(g.dataset.act); });
+  mini.key=e=>{ const g=e.target.closest&&e.target.closest("[data-act]"); if(g&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); act(g.dataset.act); const f=svg.querySelector(`[data-act="${g.dataset.act}"]`)||svg.querySelector("[data-act]"); if(f)f.focus({preventScroll:true}); return true; } return false; };
+  say(S.washQ.length<LOAD_ALL.length?"남은 빨래도 돌리자.":"세탁기 문을 눌러서 열자.");
+  draw(); setTimeout(()=>{ const f=svg.querySelector('[data-act="door"]'); if(f)f.focus({preventScroll:true}); },50);
+  const loop=t=>{
+    if(!mini||mini.kind!=="wash")return;
+    const dt=Math.min(.05,(t-mini.last)/1000); mini.last=t;
+    if(mini.running){
+      mini.spin+=dt*(2+mini.prog*10); mini.prog+=dt/(RM?.3:3.2);
+      if(mini.prog>=1){
+        mini.running=false; S.washedSet=(S.washedSet||[]).concat(mini.drum); S.washQ=S.washQ.filter(id=>!mini.drum.includes(id));
+        mini.drum=[]; mini.soap=""; mini.door=false;
+        if(!S.washQ.length){ mini.done=true; say("삐- 삐-. 빨래 끝!"); draw(); $("mini-sr").textContent="세탁 완료"; setTimeout(endMini,900); return; }
+        say("삐- 삐-. 이번 빨래 끝. 남은 빨래도 돌리자.");
+      }
+      draw();
+    }
+    mini.raf=requestAnimationFrame(loop);
+  };
+  mini.raf=requestAnimationFrame(loop);
+}
+
+/* --- vinyl: pull the cover down over each hung garment, then staple the tag --- */
+function startVinyl(){
+  const m=$("mini"); m.className="mini iron"; m.hidden=false;
+  mini={kind:"vinyl",i:0,p:0,stage:"pull",drag:null,slide:0,done:false,last:performance.now()};
+  m.innerHTML=`<div class="iron-wrap"><div class="iron-top"><span class="mg-tip" id="mg-tip"></span></div>
+    <svg id="vn-svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" role="application" tabindex="0" aria-label="비닐 씌우기. 아래로 끌거나 아래 방향키를 누르세요. 태그는 엔터."></svg>
+    <span class="mini-sr" aria-live="polite" id="mini-sr"></span></div>`;
+  const svg=m.querySelector("#vn-svg"), tip=m.querySelector("#mg-tip");
+  const order=LOAD_ALL, S1=1.25, hookY=96, fullH=262;
+  const draw=()=>{
+    const id=order[mini.i], x=400+mini.slide*520;
+    const vh=Math.max(0,Math.min(1,mini.p))*fullH;
+    tip.innerHTML=`<span class="mg-steps"><b>${mini.i+1} / ${order.length}</b> <b>${CLOTHES[id].n}</b></span><span class="mg-msg">${mini.stage==="pull"?"위의 비닐을 잡고 아래로 쭉 내려요.":mini.stage==="tag"?"노란 번호표를 눌러 옷걸이에 달아요.":"좋아."}</span>`;
+    svg.innerHTML=`<rect width="800" height="500" fill="#E6E1D3"/><rect y="390" width="800" height="110" fill="#8C6746"/><rect y="384" width="800" height="10" fill="#B48B63"/>
+      <rect x="250" y="34" width="300" height="34" rx="17" fill="#C9C6BC" stroke="${OLx}" stroke-width="3"/><rect x="262" y="40" width="276" height="22" rx="11" fill="#F4F6F6" opacity=".9"/>
+      <rect x="380" y="68" width="40" height="22" fill="#8E8A80"/>
+      <g transform="translate(${x} ${hookY})">${hungArt(id,S1)}${vh>0?vinylArt(S1,Math.max(0,vh-6)):""}${mini.stage==="done"||mini.stage==="slide"?tagArt(S1,TAGNO[id]):""}</g>
+      ${mini.stage==="pull"?`<g class="mg-act" data-act="pull"><rect x="${300}" y="${hookY-26+vh*S1}" width="200" height="22" rx="8" fill="#fff" fill-opacity=".55" stroke="#9BA3A5" stroke-width="2"/><path d="M400 ${hookY+10+vh*S1} l-12 -10 h24 Z" fill="#C8436A"/></g>`:""}
+      ${mini.stage==="tag"?`<g class="mg-act" data-act="tag" role="button" tabindex="0" aria-label="번호표 달기" transform="translate(560 220)"><rect width="56" height="74" rx="6" fill="#F4D98A" stroke="#8C6A43" stroke-width="2"/><circle cx="28" cy="12" r="4.5" fill="#7B5B38"/><text x="28" y="50" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" fill="#5A4024">${TAGNO[id]}</text><circle cx="28" cy="37" r="44" fill="none" stroke="#FFE58A" stroke-width="4" opacity=".8"/></g>`:""}`;
+  };
+  const toPt=e=>{const c=svg.getScreenCTM(); if(!c)return {y:0}; const p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; return p.matrixTransform(c.inverse());};
+  const advanceG=()=>{ mini.stage="slide"; mini.slide=0; };
+  mini.pull=d=>{ if(mini.stage!=="pull")return; mini.p=Math.min(1,mini.p+d); if(mini.p>=1){ mini.stage="tag"; $("mini-sr").textContent="비닐 완료. 번호표를 다세요."; } draw(); };
+  mini.tag=()=>{ if(mini.stage!=="tag")return; advanceG(); draw(); };
+  svg.addEventListener("pointerdown",e=>{ e.stopPropagation(); const g=e.target.closest("[data-act]"); if(g&&g.dataset.act==="tag"){ mini.tag(); return; } if(mini.stage!=="pull")return; mini.drag={y:toPt(e).y}; try{svg.setPointerCapture(e.pointerId);}catch(_){} });
+  svg.addEventListener("pointermove",e=>{ if(!mini||!mini.drag)return; const y=toPt(e).y, dy=y-mini.drag.y; mini.drag.y=y; if(dy>0)mini.pull(dy/(fullH*S1)); });
+  const up=()=>{ if(mini)mini.drag=null; };
+  svg.addEventListener("pointerup",up); svg.addEventListener("pointercancel",up);
+  svg.addEventListener("click",e=>e.stopPropagation());
+  setTimeout(()=>svg.focus({preventScroll:true}),50);
+  draw();
+  const loop=t=>{
+    if(!mini||mini.kind!=="vinyl")return;
+    const dt=Math.min(.05,(t-mini.last)/1000); mini.last=t;
+    if(mini.stage==="slide"){
+      mini.slide+=dt*(RM?6:1.8);
+      if(mini.slide>=1){
+        mini.i++; mini.p=0; mini.slide=0;
+        if(mini.i>=order.length){ mini.done=true; mini.i=order.length-1; mini.stage="done"; $("mini-sr").textContent="모두 걸었다"; setTimeout(endMini,300); return; }
+        mini.stage="pull";
+      }
+      draw();
+    }
+    mini.raf=requestAnimationFrame(loop);
+  };
+  mini.raf=requestAnimationFrame(loop);
+}
+
 const DOOR_CODE="1996";
 function startKeypad(){
   const m=$("mini"); m.className="mini keypad"; m.hidden=false;
@@ -2295,6 +2553,9 @@ function miniKey(e){
     return false;
   }
   if(mini.kind==="shutter"){ if(e.type==="keydown"&&(e.key===" "||e.key==="Enter")){ e.preventDefault(); if(!e.repeat)shutterTap(); return true; } return false; }
+  if(mini.kind==="sign"){ if(e.type==="keydown"&&["ArrowLeft","ArrowRight"," ","Enter"].includes(e.key)){ e.preventDefault(); if(!e.repeat)mini.flick(e.key==="ArrowLeft"?-1:1); return true; } return false; }
+  if(mini.kind==="wash"){ return e.type==="keydown"&&mini.key?mini.key(e):false; }
+  if(mini.kind==="vinyl"){ if(e.type!=="keydown")return false; if(e.key==="ArrowDown"||e.key===" "){ e.preventDefault(); mini.pull(.12); return true; } if(e.key==="Enter"){ e.preventDefault(); mini.tag(); return true; } return false; }
   const step=22, k=e.key;
   if(e.type==="keydown"){
     if(k==="ArrowLeft")mini.pos.x=Math.max(40,mini.pos.x-step); else if(k==="ArrowRight")mini.pos.x=Math.min(760,mini.pos.x+step);
@@ -2456,10 +2717,10 @@ function objective(){
   }
   if(/_street$/.test(p)) return S.shutterUp?{t:"가게 안으로 들어가자.",loc:"street",spot:"shop"}:{t:"셔터부터 올리자.",loc:"street",spot:"shop"};
   if(p==="d1_wash"){
-    if(!S.carry&&!S.washed) return {t:"카운터의 저고리를 들고 작업장으로 가자.",loc:"counter",spot:"coat"};
-    if(!S.washed) return {t:"작업장 세탁기에 저고리를 넣자.",loc:"workshop",spot:"m1"};
+    if(!S.carry&&!S.washed) return {t:"카운터의 빨래 바구니를 들고 작업장으로 가자.",loc:"counter",spot:"coat"};
+    if(!S.washed) return {t:"작업장 세탁기에 빨래를 돌리자.",loc:"workshop",spot:"m1"};
     if(!S.ironed) return {t:"작업장 다리미대에서 저고리를 다리자.",loc:"workshop",spot:"iron"};
-    return {t:"다 된 저고리를 카운터 행거에 걸자.",loc:"counter",spot:"hanger"};
+    return {t:"다 된 옷들을 카운터 행거에 걸고 비닐을 씌우자.",loc:"counter",spot:"hanger"};
   }
   if(p==="d2_pickup") return {t:"행거에 걸린 저고리를 도윤이에게 건네자.",loc:"counter",spot:"hanger"};
   if(p==="d2_invest"){
