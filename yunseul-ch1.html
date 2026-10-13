@@ -424,6 +424,8 @@ body{padding-inline:0}
 .app,.app{max-width:none;width:100%;height:100%;padding:0;margin:0}
 .scene{border-radius:0}
 /* v11: panel arrows */
+.fx .bob{animation:bob .9s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .pan-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:4;display:flex;align-items:center;gap:6px;min-height:52px;padding:8px 12px;border:none;border-radius:999px;background:rgba(20,26,28,.62);color:#F3EFE4;font-family:var(--f-display);font-size:14px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.28);transition:background .15s}
 .pan-btn:hover{background:rgba(20,26,28,.82)}
 .pan-btn:focus-visible{outline:3px solid #FFE58A;outline-offset:2px}
@@ -508,6 +510,15 @@ function garments(){
 }
 /* wide backgrounds: names of each 1200px panel, left to right; home = panel shown in story scenes */
 const BG_PANELS={};
+/* image art in assets/. Anything missing here falls back to the drawn SVG below.
+   IMG_BG[key] = {src:[panel files, left to right] or ()=>[...], names?:[panel names], home?:index, over?:()=>svg overlay}
+   IMG_FIG[name] = {w,ih: image size, h: height relative to a full-height adult, bust?: crop ratio, emo:{smile,...}, carry?:{banchan,...}} */
+const IMG_BG={};
+const IMG_FIG={};
+function imgBg(k){
+  const d=IMG_BG[k], src=typeof d.src==="function"?d.src():d.src, W=1200*src.length;
+  return `<svg viewBox="0 0 ${W} 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${src.map((f,i)=>`<image href="${f}" x="${i*1200}" y="0" width="1200" height="800" preserveAspectRatio="none"/>`).join("")}${d.over?d.over():""}</svg>`;
+}
 const BG={
 front:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCD4DC"/><stop offset="1" stop-color="#EDE6D8"/></linearGradient></defs>
@@ -850,6 +861,7 @@ ${[0,1,2,3,4,5,6].map(i=>`<rect x="${420+i*42}" y="${560+(i%2)*6}" width="34" he
 </svg>`
 };
 
+Object.keys(IMG_BG).forEach(k=>{ BG[k]=()=>imgBg(k); const d=IMG_BG[k], n=(typeof d.src==="function"?d.src():d.src).length; if(n>1)BG_PANELS[k]={names:d.names||[],home:d.home||0}; });
 const LOBBY_ART=(()=>{
 const INK="#2A221D";
 const ol=(w=1.5)=>`stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
@@ -1089,6 +1101,9 @@ ${head(c,aHead(c,emo,{round:true,eyeScale:1.12,brow:"#2A2328",blushA:.45,tear:tr
   }
 };
 function figSVG(key,emo,view){
+  const F=IMG_FIG[key];
+  if(F){ const src=F.emo[emo]||F.emo.smile||Object.values(F.emo)[0], bh=Math.round(F.w*(F.bust||1.25));
+    return `<svg viewBox="0 0 ${F.w} ${view==="bust"?bh:F.ih}" preserveAspectRatio="xMidYMin meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><image href="${src}" width="${F.w}" height="${F.ih}"/></svg>`; }
   const c=CHARS[key]; emo=emo||(c.back?"flat":"smile");
   const vb=view==="bust"?`${c.cx-92} ${c.y0-34} 184 ${Math.round(c.H*1.95+34)}`:"0 0 300 760";
   return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${FIG[key](emo)}</svg>`;
@@ -1185,6 +1200,9 @@ const GO=loc=>({t:"explore",loc});
 const BGS=k=>({t:"bg",bg:k});
 const REDRAW=k=>[DO(()=>{curBg=null;}),BGS(k)];
 function walkerSVG(who,load,x0,x1){
+  const F=IMG_FIG[who];
+  if(F){ const src=(load&&F.carry&&F.carry[load])||F.emo.smile, H=800*.98*F.h, Wd=H*F.w/F.ih, cx=bgHome(curBg)*1200+600;
+    return `<g transform="translate(${cx} 800)"><g${RM?"":` class="bob"`}><image href="${src}" x="${(-Wd/2).toFixed(1)}" y="${(-H).toFixed(1)}" width="${Wd.toFixed(1)}" height="${H.toFixed(1)}"/></g></g>`; }
   const old=who==="봉순", c=old?Object.assign({},CHARS[who],{top:"#74395A"}):CHARS[who], h=old?0.9:1;
   const hair=old?`<circle cx="0" cy="-238" r="16" fill="${c.hair}"/><path d="M-32 -198 C-34 -236 34 -236 32 -198 C24 -222 -24 -222 -32 -198Z" fill="${c.hair}"/>`
                 :"";
@@ -2057,7 +2075,7 @@ function drawCast(speaker,prev){
   const add=(k,left,isBack)=>{
     const d=document.createElement("div"); d.className="fig"+(isBack?" back":"");
     if(prev&&!prev.includes(k))d.classList.add("enter");
-    const c=CHARS[k]; d.style.left=left+"%"; d.style.height=(isBack?84:98)+"%"; d.style.zIndex=isBack?1:2;
+    const c=CHARS[k], F=IMG_FIG[k]; d.style.left=left+"%"; d.style.height=((isBack?84:98)*(F?F.h:1))+"%"; d.style.zIndex=isBack?1:2;
     if(speaker&&!isBack){ if(k===speaker)d.classList.add("talk"); else d.classList.add("dim"); }
     d.innerHTML=figSVG(k,emo[k]); box.appendChild(d);
   };
