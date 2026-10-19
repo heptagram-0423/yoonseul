@@ -333,6 +333,14 @@ header{display:flex;align-items:center;gap:10px;padding-block:0 10px;flex-wrap:w
 .dc-small{font-family:var(--f-mono);font-size:12px;letter-spacing:.2em;color:#8E9A98}
 .dc-big{font-family:var(--f-display);font-size:56px;font-weight:700;letter-spacing:.06em}
 .dc-sub{font-family:var(--f-display);font-size:18px;color:#C9C1AC}
+.daycard.ending{cursor:default;padding:24px;text-align:center}
+.daycard.ending .dc-small{color:#E8789A}
+.daycard.ending .dc-big{font-size:clamp(32px,7vw,52px)}
+.daycard.ending .dc-sub{font-size:16px;max-width:30em;text-wrap:balance}
+.dc-acts{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px}
+.dc-btn{font:inherit;font-size:15px;min-height:44px;padding:8px 18px;border-radius:999px;border:1px solid #6E7A78;background:transparent;color:#EFE8D6;cursor:pointer}
+.dc-btn.primary{background:#EFE8D6;color:#0E1314;border-color:#EFE8D6}
+.dc-btn:focus-visible{outline:3px solid #E8789A;outline-offset:2px}
 .dc-tap{margin-top:28px;font-size:12.5px;color:#6E7A78;animation:blink 1.4s steps(2) infinite}
 details.day{border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
 details.day summary{cursor:pointer;display:flex;justify-content:space-between;gap:10px;padding:10px 14px;font-family:var(--f-display);font-weight:700;font-size:15px;list-style:none}
@@ -1693,7 +1701,7 @@ function flowerStreet(){
 function shopFront(){
   if(isClose()){
     return [CHOICE([
-      {label:"셔터를 내린다 (오늘 하루를 마친다)",then:()=>[N("셔터를 내리기 전에 유리문 팻말부터 돌려 놓자."),{t:"mini",kind:"sign",to:"closed"},DO(()=>{S.signOpen=false;}),M("셔터 아래 손잡이를 잡고 끌어내리자."),{t:"mini",kind:"shutter",dir:"down"}].concat(endDaySteps())},
+      {label:"셔터를 내린다 (오늘 하루를 마친다)",then:()=>[N("셔터를 내리기 전에 유리문 팻말부터 돌려 놓자."),{t:"mini",kind:"sign",to:"closed"},DO(()=>{S.signOpen=false;}),M("셔터 아래 손잡이를 잡고 끌어내리자."),{t:"mini",kind:"shutter",dir:"down"},{t:"lazy",fn:()=>(S.ironHot||(S.day===1&&S.ironed))&&!S.ironOff?fireEndingSteps():endDaySteps()}]},
       {label:"다시 가게로 들어간다",then:[DO(()=>{S.lightsOff=false;}),N("불을 다시 켠다."),GO("counter")]}
     ])];
   }
@@ -1837,13 +1845,13 @@ function washerRun(){
     M("이제 다리미대에서 다리자.")];
 }
 function ironRun(){
-  if(isClose()) return S.ironOff?[M("코드는 뽑았다.")]:[N("다리미 전원 코드를 뽑는다. 이모가 늘 코드를 두 번씩 확인하던 게 생각난다."),DO(()=>{S.ironOff=true;})];
+  if(isClose()) return S.ironOff?[M("코드는 뽑았다.")]:[N("다리미 전원 코드를 뽑는다. 이모가 늘 코드를 두 번씩 확인하던 게 생각난다."),DO(()=>{S.ironOff=true;S.ironHot=false;})];
   if(S.phase==="d1_wash"&&S.washed&&!S.ironed) return [
     N("다리미대에 저고리를 편다. 구김이 여기저기 잡혀 있다."),
     M("동정은 약하니까 조심. 이모는 늘 낮은 온도로 천천히 다렸지."),
     {t:"mini",kind:"iron"},
     ()=>S.ironBad?M("앗…… 동정 끝이 누렇게 눌었다. 티 안 나겠지?"):M("구김 하나 없이 반듯하다. 이모가 하던 대로."),
-    DO(()=>{S.ironed=true;}),
+    DO(()=>{S.ironed=true;S.ironHot=true;}),
     N("와이셔츠랑 교복 재킷은 이모의 낡은 스팀 프레스로 금방 다린다. 이모 손이 하던 순서 그대로."),
     M("다 됐다. 카운터 행거에 걸고 비닐 씌우자.")];
   if(S.phase==="d1_wash"&&!S.washed) return [M("빨래부터 해야지.")];
@@ -1979,6 +1987,46 @@ function endDaySteps(){
     d===2?N("골목 어귀에 검은 승용차 한 대가 시동을 켠 채 서 있다. 서하가 지나가자 천천히 출발한다."):null,
     d===2?M("……이 시간에 누가 여기 차를 세워 두지."):null,
     GO("homeroad")];
+}
+/* ending: left the shop with the iron still plugged in after ironing */
+const FIRE_FX=`<defs><radialGradient id="fireGlow" cx="50%" cy="62%" r="60%"><stop offset="0" stop-color="#FF8A3D" stop-opacity=".55"/><stop offset=".55" stop-color="#C8432A" stop-opacity=".28"/><stop offset="1" stop-color="#2A0E08" stop-opacity=".5"/></radialGradient></defs>
+<rect width="1200" height="800" fill="url(#fireGlow)"/>
+<g fill="#2B2422" opacity=".72"><ellipse cx="610" cy="210" rx="260" ry="90"/><ellipse cx="470" cy="120" rx="200" ry="80"/><ellipse cx="760" cy="90" rx="230" ry="85"/><ellipse cx="600" cy="20" rx="320" ry="70"/></g>
+<g fill="#FF9A3C" opacity=".85"><path d="M430 650 q20-90 50-120 q-6 60 30 80 q10-70 60-110 q-10 80 40 100 q20-60 60-90 q-8 70 40 90 q30-50 70-70 q-20 80 30 120 z"/></g>
+<g fill="#FFD27A" opacity=".8"><path d="M470 650 q14-50 34-70 q0 40 24 50 q10-44 40-66 q-6 50 26 60 q16-36 40-54 q-4 46 28 56 q20-30 44-40 q-12 46 20 64 z"/></g>`;
+function fireEndingSteps(){
+  return [N("쿵. 자물쇠를 채운다."),
+    SC("집으로 가는 길","homeroad"),
+    N("언덕길을 반쯤 올랐을 때, 등 뒤에서 사이렌 소리가 울리기 시작한다."),
+    N("돌아보니 상가 골목 쪽 하늘이 붉다."),
+    M("……설마."),
+    SC("윤슬세탁소 앞","front"),
+    DO(()=>{ setTint("night"); $("fx").innerHTML=FIRE_FX; }),
+    N("내려 둔 셔터 틈으로 검은 연기가 쏟아져 나온다. 소방차 두 대가 골목을 막고 서 있다."),
+    CAST("봉순"),
+    Y("봉순","서하야! 너 괜찮냐? 안에 사람은 없지?","o"),
+    N("서하는 대답을 못 한다. 다리가 풀려 길바닥에 주저앉는다."),
+    CAST(),
+    N("불은 새벽이 되어서야 꺼졌다. 소방관이 녹아내린 다리미를 들고 나온다. 불은 작업장 다리미대에서 시작됐다."),
+    M("코드…… 안 뽑았어."),
+    N("30년 동안 한 번도 불을 낸 적 없는 가게였다. 행거의 옷도, 접수 장부도, '손대지 말 것' 창고도 모두 재가 됐다."),
+    M("이모가 늘 '불 조심'을 입에 달고 살았는데."),
+    DO(()=>{ $("fx").innerHTML=""; setTint(""); }),
+    {t:"ending",tag:"ENDING",title:"꺼지지 않은 다리미",sub:"다림질을 마친 뒤 다리미 코드를 뽑지 않고 가게를 나섰다.",retry:"셔터 내리기 전으로 돌아가기"}];
+}
+function showEnding(s){
+  mode="ending"; $("box").hidden=true; $("choices").hidden=true; $("more").hidden=true;
+  log("",`엔딩 · ${s.title}`,"sys");
+  const d=$("daycard"); d.classList.add("ending");
+  d.innerHTML=`<span class="dc-small">${esc(s.tag)}</span><span class="dc-big">${esc(s.title)}</span><span class="dc-sub">${esc(s.sub)}</span>
+  <div class="dc-acts"><button type="button" class="dc-btn primary" data-end="retry">${esc(s.retry)}</button><button type="button" class="dc-btn" data-end="new">처음부터 다시 하기</button></div>`;
+  d.hidden=false;
+  d.querySelectorAll("[data-end]").forEach(b=>b.addEventListener("click",e=>{
+    e.stopPropagation(); d.hidden=true; d.classList.remove("ending");
+    if(b.dataset.end==="retry") continueGame();
+    else { try{localStorage.removeItem(SAVE_KEY);}catch(err){} start(); }
+  }));
+  d.querySelector(".dc-btn").focus({preventScroll:true});
 }
 function bedSteps(){
   const d=S.day;
@@ -2197,6 +2245,7 @@ function run(){
         { const nm=cardOf(s.id).nm; notify("card",s.id==="glass"?"숨은 단서":"단서",`「${nm}」${josa(nm,"을","를")} 얻었다`); } continue;
       case "explore": enterExplore(s.loc); return;
       case "daycard": showDaycard(s); return;
+      case "ending": showEnding(s); return;
       case "stop": mode="stop"; $("more").hidden=true; return;
     }
   }
