@@ -289,6 +289,22 @@ header{display:flex;align-items:center;gap:10px;padding-block:0 10px;flex-wrap:w
 .kp-key:active{background:#2F5A73;color:#fff}
 .kp-key:focus-visible{outline:2px solid #6FD0FF;outline-offset:2px}
 .kp-msg{min-height:2.8em;font-size:13px;text-align:center;color:#C9D3DA;line-height:1.45}
+.mini.keypad{flex-wrap:wrap;gap:16px;overflow:auto}
+.kp-phone-btn{font:inherit;font-size:13.5px;min-height:40px;border-radius:999px;border:1px solid #4A5560;background:transparent;color:#DCE6EC;cursor:pointer}
+.kp-phone-btn:focus-visible,.ph button:focus-visible{outline:2px solid #6FD0FF;outline-offset:2px}
+.ph{width:min(260px,86vw);background:#F6F3EC;color:#23272B;border:8px solid #15191D;border-radius:28px;padding:10px 12px 14px;box-shadow:0 12px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:8px}
+.ph[hidden]{display:none}
+.ph-bar{display:flex;justify-content:space-between;font-size:11px;color:#6B7076;font-variant-numeric:tabular-nums}
+.ph-head{display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.ph-close{font:inherit;border:0;background:transparent;font-size:16px;width:32px;height:32px;cursor:pointer;color:#555}
+.ph-week,.ph-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.ph-week span{font-size:11px;color:#8A8F95}.ph-week span:first-child{color:#C8436A}
+.ph-day{font:inherit;font-size:13px;height:30px;border:0;border-radius:8px;background:transparent;color:#23272B;cursor:pointer;position:relative;font-variant-numeric:tabular-nums}
+.ph-day:nth-child(7n+1){color:#C8436A}
+.ph-day.ev::after{content:"";position:absolute;left:50%;bottom:3px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#2F7FA8}
+.ph-day.today{background:#2F4A52;color:#fff}
+.ph-day.sel{outline:2px solid #2F7FA8}
+.ph-ev{min-height:2.6em;font-size:13px;line-height:1.4;background:#E9E4D8;border-radius:10px;padding:8px 10px}
 .iron-wrap{width:min(760px,100%);display:flex;flex-direction:column;gap:8px}
 .iron-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .temp{display:flex;gap:4px;background:var(--box);border-radius:999px;padding:4px}
@@ -1729,9 +1745,11 @@ function signRun(){
 }
 function doorRun(){
   return [
-    M(S.day===1?"비밀번호는 이모가 쓰던 그대로다. 가게 간판에 적힌, 가게를 연 해.":"어제 누른 그 번호. 가게를 연 해."),
+    M(S.day===1?"현관 비밀번호는 이모 생일. 이모가 도어록을 바꾸면서 그렇게 정해 뒀다.":"이모 생일. 이제 핸드폰 안 보고도 누를 수 있다."),
+    S.day===1?M("……일주일째인데 아직도 날짜가 헷갈린다. 핸드폰 달력에 저장해 뒀지."):null,
     {t:"mini",kind:"keypad"},
     N("띠리리릭. 잠금이 풀린다. 현관에 신발을 벗는다."),
+    S.day===1?M("어제가 이모 생일이었구나. ……미역국이라도 끓여 놓을 걸 그랬다."):null,
     M(S.day===1?"……다녀왔습니다.":"다녀왔습니다. 오늘은 조금 덜 어색하다."),
     DO(()=>{S.inHouse=true;}),
     {t:"goto",loc:"living"}];
@@ -2512,14 +2530,35 @@ function startVinyl(){
   mini.raf=requestAnimationFrame(loop);
 }
 
-const DOOR_CODE="1996";
+const DOOR_CODE="1108";
 function startKeypad(){
   const m=$("mini"); m.className="mini keypad"; m.hidden=false;
   const keys=["1","2","3","4","5","6","7","8","9","*","0","#"];
-  m.innerHTML=`<div class="kp" role="group" aria-label="현관 도어록"><div class="kp-top">DOOR LOCK</div><div class="kp-led" id="kp-led" aria-live="polite"></div><div class="kp-grid">${keys.map(k=>`<button type="button" class="kp-key${k==="*"||k==="#"?" fn":""}" data-k="${k}">${k==="*"?"지움":k==="#"?"확인":k}</button>`).join("")}</div><div class="kp-msg" id="kp-msg">번호 네 자리를 누르세요.</div></div>`;
+  m.innerHTML=`<div class="kp" role="group" aria-label="현관 도어록"><div class="kp-top">DOOR LOCK</div><div class="kp-led" id="kp-led" aria-live="polite"></div><div class="kp-grid">${keys.map(k=>`<button type="button" class="kp-key${k==="*"||k==="#"?" fn":""}" data-k="${k}">${k==="*"?"지움":k==="#"?"확인":k}</button>`).join("")}</div><div class="kp-msg" id="kp-msg">번호 네 자리를 누르세요.</div><button type="button" class="kp-phone-btn" id="kp-phone-btn">핸드폰 꺼내 보기</button></div>${phoneHTML()}`;
   mini={kind:"keypad",code:"",fails:0,done:false,lock:false};
   m.querySelectorAll("[data-k]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();kpPress(b.dataset.k);}));
+  phoneWire(m);
   kpDraw(); setTimeout(()=>{const f=m.querySelector('[data-k="1"]'); if(f)f.focus({preventScroll:true});},50);
+}
+/* phone calendar shown beside the door lock: 이모 생일 = 11/8 (Nov 2026 starts on a Sunday) */
+const PHONE_EVENTS={8:"이모 생일 🎂 (매년)",9:"윤슬세탁소 다시 여는 날",13:"첫 월세 내는 날"};
+function phoneHTML(){
+  const today=S.day===2?10:9, cells=[];
+  for(let d=1;d<=30;d++) cells.push(`<button type="button" class="ph-day${d===today?" today":""}${PHONE_EVENTS[d]?" ev":""}" data-d="${d}" aria-label="11월 ${d}일${PHONE_EVENTS[d]?", 일정 있음":""}">${d}</button>`);
+  return `<div class="ph" id="ph" hidden role="group" aria-label="서하의 핸드폰 달력"><div class="ph-bar"><span>${esc(DATES[S.day]||"")}</span><span>21:14</span></div>
+  <div class="ph-head"><b>2026년 11월</b><button type="button" class="ph-close" id="ph-close" aria-label="핸드폰 넣기">✕</button></div>
+  <div class="ph-week">${["일","월","화","수","목","금","토"].map(w=>`<span>${w}</span>`).join("")}</div>
+  <div class="ph-grid">${cells.join("")}</div>
+  <div class="ph-ev" id="ph-ev" aria-live="polite">날짜를 누르면 일정이 보여요.</div></div>`;
+}
+function phoneWire(m){
+  const ph=m.querySelector("#ph"), btn=m.querySelector("#kp-phone-btn"), ev=m.querySelector("#ph-ev");
+  btn.addEventListener("click",e=>{e.stopPropagation(); ph.hidden=!ph.hidden; btn.textContent=ph.hidden?"핸드폰 꺼내 보기":"핸드폰 넣기"; if(!ph.hidden){const t=ph.querySelector(".today"); if(t)t.focus({preventScroll:true});}});
+  m.querySelector("#ph-close").addEventListener("click",e=>{e.stopPropagation(); ph.hidden=true; btn.textContent="핸드폰 꺼내 보기"; btn.focus({preventScroll:true});});
+  ph.querySelectorAll("[data-d]").forEach(b=>b.addEventListener("click",e=>{ e.stopPropagation();
+    ph.querySelectorAll(".ph-day").forEach(x=>x.classList.remove("sel")); b.classList.add("sel");
+    const d=+b.dataset.d, wd=["일","월","화","수","목","금","토"][(d-1)%7];
+    ev.textContent=`11월 ${d}일 (${wd}) · ${PHONE_EVENTS[d]||"일정 없음"}`; }));
 }
 function kpDraw(st){ const l=$("kp-led"); if(!l||!mini)return; l.className="kp-led"+(st?" "+st:""); l.textContent=st==="ok"?"OPEN":st==="bad"?"ERROR":(mini.code?"●".repeat(mini.code.length):"- - - -"); }
 function kpPress(k){
@@ -2533,7 +2572,7 @@ function kpCheck(){
   const msg=$("kp-msg");
   if(mini.code===DOOR_CODE){ mini.done=true; kpDraw("ok"); msg.textContent="띠리리릭. 문이 열렸습니다."; setTimeout(endMini,800); return; }
   mini.fails++; mini.lock=true; kpDraw("bad");
-  msg.textContent="삐빅. 비밀번호가 틀렸습니다."+(mini.fails>=2?" 가게 간판에 'SINCE ____'라고 적혀 있었지.":"");
+  msg.textContent="삐빅. 비밀번호가 틀렸습니다."+(mini.fails>=2?" 핸드폰 달력에서 '이모 생일'을 찾아보자. 월 두 자리, 일 두 자리.":"");
   setTimeout(()=>{ if(!mini||mini.kind!=="keypad")return; mini.lock=false; mini.code=""; kpDraw(); },900);
 }
 const WRINKLES=[[190,195],[240,212],[285,190],[560,196],[605,214],[640,198],[330,250],[350,290],[380,305],[430,280],[460,300],[480,250],[420,205],[330,200],[470,195],[400,320]];
