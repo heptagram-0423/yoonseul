@@ -968,7 +968,32 @@ ${[0,1,2,3,4,5,6].map(i=>`<rect x="${420+i*42}" y="${560+(i%2)*6}" width="34" he
 </svg>`
 };
 
-Object.keys(IMG_BG).forEach(k=>{ BG[k]=()=>imgBg(k); const d=IMG_BG[k], n=(typeof d.src==="function"?d.src():d.src).length; if(n>1)BG_PANELS[k]={names:d.names||[],home:d.home||0}; });
+const SCN=n=>`assets/scenes/${n}.webp`;
+const HAND="Nanum Pen Script,cursive";
+Object.assign(IMG_BG,{
+  front:{src:()=>[SCN(S&&S.bongDown?"banchan-down":"banchan"),SCN(S&&(S.shutterUp||S.peek)?"front-shop-open":"front-shop"),SCN("front-flower")],names:["봉순반찬","윤슬세탁소","여름꽃집"],home:1,
+    over:()=>`<text x="1975" y="172" text-anchor="middle" font-family="Gowun Batang,serif" font-size="64" font-weight="700" fill="#2F4A52" opacity=".9">윤슬세탁소</text><text x="1975" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" letter-spacing="6" fill="#5A6E72" opacity=".85">DRY CLEANING · SINCE 1996</text>`
+      +(S&&(S.shutterUp||S.peek)?`<rect x="2084" y="352" width="60" height="32" rx="3" fill="${S.signOpen?"#C8436A":"#5E6A6E"}" stroke="#3A3F44" stroke-width="1.5"/><text x="2114" y="373" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" fill="#fff">${S.signOpen?"영업중":"준비중"}</text>`:"")
+      +`<text x="3015" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
+  banchan:{src:()=>[SCN(S&&S.bongDown?"banchan-down":"banchan")]},
+  flowershop:{src:()=>[SCN(S&&S.bucketDown?"flowershop-down":"flowershop")]},
+  counter:{src:[SCN("counter-entrance"),SCN("counter"),SCN("counter-back")],names:["출입문","카운터","작업장 · 창고"],home:1,
+    over:()=>`<g transform="rotate(-2 3417 255)"><text x="3417" y="244" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">손대지</text><text x="3417" y="272" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">말 것</text></g><rect x="955" y="292" width="13" height="13" fill="none" stroke="#C8436A" stroke-width="2.5"/>`},
+  workshop:{src:[SCN("workshop")],over:()=>`<text x="624" y="437" text-anchor="middle" font-family="${HAND}" font-size="19" fill="#B03A48">사용</text><text x="624" y="458" text-anchor="middle" font-family="${HAND}" font-size="19" fill="#B03A48">금지</text>`},
+  alley:{src:[SCN("alley")]},
+  homeroad:{src:[SCN("homeroad-harbor"),SCN("homeroad-stairs")],names:["항구 길","돌계단"],home:0},
+  housefront:{src:[SCN("housefront")]},
+  living:{src:[SCN("living-a"),SCN("living-b")],names:["현관 · 주방","방문들"],home:0},
+  kitchen:{src:[SCN("kitchen")]},
+  bath:{src:[SCN("bath")]},
+  home:{src:[SCN("myroom")]},
+  auntroom:{src:()=>[SCN(S&&S.wardrobe?"auntroom-open":"auntroom")]},
+  storage:{src:[SCN("storage")]},
+  fire:{src:[SCN("fire")]},
+  "sign-door":{src:[SCN("sign-door")]},
+  "washer-closeup":{src:[SCN("washer-closeup")]}
+});
+Object.keys(IMG_BG).forEach(k=>{ BG[k]=()=>imgBg(k); const d=IMG_BG[k], n=d.names?d.names.length:(Array.isArray(d.src)?d.src.length:1); if(n>1)BG_PANELS[k]={names:d.names||[],home:d.home||0}; });
 const LOBBY_ART=(()=>{
 const INK="#2A221D";
 const ol=(w=1.5)=>`stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
@@ -1675,55 +1700,55 @@ const coatOnHanger=()=>S.hung&&!S.gave;
    ========================================================= */
 const LOCS={
   street:{title:"가게 앞",bg:"front",spots:[
-    {id:"bong",x:0,y:180,w:310,h:470,label:"봉순반찬",run:()=>bongStreet()},
-    {id:"flower",x:890,y:130,w:310,h:520,label:"여름꽃집",run:()=>flowerStreet()},
-    {id:"alleyIn",x:310,y:170,w:54,h:480,label:"골목 입구",go:"alley"},
-    {id:"notice",x:814,y:288,w:64,h:88,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
+    {id:"bong",x:0,y:360,w:1200,h:300,label:"봉순반찬",run:()=>bongStreet()},
+    {id:"flower",x:2620,y:130,w:680,h:470,label:"여름꽃집",run:()=>flowerStreet()},
+    {id:"alleyIn",x:1395,y:360,w:140,h:260,label:"골목 입구",go:"alley"},
+    {id:"notice",x:2200,y:290,w:60,h:76,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
       N("셔터 옆 벽에 시청 안내문이 붙어 있다. 테이프 자국이 새것이다."),
       DO(()=>{S.readNotice=true;}),DOC("memo_notice"),
       M("창고…… 이모 물건들, 언젠간 정리해야겠지."),
       M("근데 이건 언제 붙였지? 어제까진 없었는데.")]},
-    {id:"shop",x:410,y:262,w:400,h:388,label:"세탁소",run:()=>shopFront()},
-    {id:"mailbox",x:880,y:292,w:44,h:64,label:"꽃집 우편함",show:()=>S.day>=3,art:()=>MAILBOX_ART,run:()=>[M(S.got.has("env")?"월요일마다 봉투가 꽂히는 우편함. 지금은 비어 있다.":"꽃집 우편함. 입구가 좁아서 봉투 한 장 겨우 들어가겠다.")]},
-    {id:"sign",x:648,y:318,w:112,h:58,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()}
+    {id:"shop",x:1730,y:220,w:465,h:375,label:"세탁소",run:()=>shopFront()},
+    {id:"mailbox",x:2554,y:292,w:50,h:66,label:"꽃집 우편함",show:()=>S.day>=3,art:()=>MAILBOX_ART,run:()=>[M(S.got.has("env")?"월요일마다 봉투가 꽂히는 우편함. 지금은 비어 있다.":"꽃집 우편함. 입구가 좁아서 봉투 한 장 겨우 들어가겠다.")]},
+    {id:"sign",x:2080,y:340,w:76,h:56,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()}
   ]},
   counter:{title:"카운터",bg:"counter",spots:[
-    {id:"hanger",x:660,y:120,w:240,h:340,label:"세탁물 행거",art:()=>railArt(),run:()=>hangerRun()},
-    {id:"board",x:222,y:150,w:300,h:236,label:"코르크 보드",run:()=>S.phase!=="d2_invest"?[M("찾아가지 않은 세탁물 태그가 빽빽하다. 이모는 뭐 하나 버리질 못했다.")]:S.sawDate?[M("06.12.24. 저 번호표만 유난히 오래됐다.")]:[
+    {id:"hanger",x:1920,y:190,w:450,h:300,label:"세탁물 행거",art:()=>railArt(),run:()=>hangerRun()},
+    {id:"board",x:440,y:105,w:420,h:295,label:"코르크 보드",run:()=>S.phase!=="d2_invest"?[M("찾아가지 않은 세탁물 태그가 빽빽하다. 이모는 뭐 하나 버리질 못했다.")]:S.sawDate?[M("06.12.24. 저 번호표만 유난히 오래됐다.")]:[
       M("찾아가지 않은 세탁물 태그가 이렇게 많다니."),
       N("보드 구석, 다른 태그 밑에 반쪽짜리 번호표가 깔려 있다. 누렇게 바래고 물에 번졌다."),
       DO(()=>{S.sawDate=true;}),DOC("memo_board"),
       M("번호는 번져서 안 보이고 날짜만 남았네. 06.12.24. 20년 가까이 된 거야.")]},
-    {id:"cal",x:556,y:166,w:92,h:112,label:"달력",run:()=>[M("이모 달력은 8월에서 멈춰 있었다. 11월로 넘긴 건 나다."),M("빨간 네모는 내가 쳐 놓은 거다. 첫 월세 내는 날.")]},
-    {id:"switch",x:186,y:284,w:40,h:56,label:"전등 스위치",run:()=>switchRun()},
-    {id:"entrance",x:20,y:110,w:162,h:340,label:"출입문",run:()=>entranceRun()},
-    {id:"work",x:912,y:146,w:112,h:326,label:"작업장",go:"workshop"},
-    {id:"door",x:1030,y:118,w:150,h:350,label:"창고 문",run:()=>storageDoorRun()},
-    {id:"book",x:316,y:484,w:140,h:70,label:"접수 장부",run:()=>bookRun()},
-    {id:"coat",x:466,y:470,w:190,h:96,label:()=>S.phase==="d1_wash"?"빨래 바구니":"옥색 저고리",show:coatOnCounter,art:()=>S.phase==="d1_wash"?BASKET_ART():JEOGORI,run:()=>coatRun()},
-    {id:"glass",x:590,y:720,w:42,h:42,label:"바닥 틈",show:()=>S.phase==="d2_invest"&&!S.glass,art:()=>GLASS,run:()=>[
+    {id:"cal",x:880,y:80,w:165,h:280,label:"달력",run:()=>[M("이모 달력은 8월에서 멈춰 있었다. 11월로 넘긴 건 나다."),M("빨간 네모는 내가 쳐 놓은 거다. 첫 월세 내는 날.")]},
+    {id:"switch",x:358,y:294,w:46,h:56,label:"전등 스위치",run:()=>switchRun()},
+    {id:"entrance",x:40,y:40,w:300,h:640,label:"출입문",run:()=>entranceRun()},
+    {id:"work",x:2515,y:90,w:280,h:550,label:"작업장",go:"workshop"},
+    {id:"door",x:3285,y:80,w:260,h:560,label:"창고 문",run:()=>storageDoorRun()},
+    {id:"book",x:1255,y:412,w:240,h:64,label:"접수 장부",run:()=>bookRun()},
+    {id:"coat",x:1810,y:380,w:210,h:110,label:()=>S.phase==="d1_wash"?"빨래 바구니":"옥색 저고리",show:coatOnCounter,art:()=>S.phase==="d1_wash"?`<g transform="translate(1360 -88)">${BASKET_ART()}</g>`:`<g transform="translate(1350 -80)">${JEOGORI}</g>`,run:()=>coatRun()},
+    {id:"glass",x:1819,y:739,w:42,h:42,label:"바닥 틈",show:()=>S.phase==="d2_invest"&&!S.glass,art:()=>`<g transform="translate(1229 19)">${GLASS}</g>`,run:()=>[
       N("카운터 아래, 바닥 틈에서 무언가 반짝인다. 푸른 유리구슬 하나."),
       M("구슬치기용 구슬이네. 이게 왜 카운터 밑에 있지?"),
       CARD("glass")]}
   ]},
   workshop:{title:"작업장",bg:"workshop",spots:[
-    {id:"back",x:0,y:232,w:112,h:398,label:"가게로",go:"counter"},
-    {id:"shelf",x:100,y:48,w:560,h:98,label:"세제 선반",run:()=>[M("세제 병마다 이모 손글씨 라벨. '한복·실크는 섬세 코스, 찬물로', '자개단추는 알코올 금지'."),S.washBad?M("……찬물이었구나. 이미 늦었다."):null]},
-    {id:"iron",x:816,y:330,w:350,h:140,label:"다리미대",run:()=>ironRun()},
-    {id:"m1",x:130,y:300,w:290,h:285,label:"왼쪽 세탁기",run:()=>washerRun()},
-    {id:"m2",x:460,y:300,w:290,h:330,label:"오른쪽 세탁기",run:()=>[M("이쪽은 고장 나서 '사용 금지' 스티커가 붙어 있다. 이모 글씨다.")]},
-    {id:"filter",x:214,y:588,w:102,h:40,label:"세탁기 필터",run:()=>filterRun()}
+    {id:"back",x:0,y:0,w:115,h:640,label:"가게로",go:"counter"},
+    {id:"shelf",x:200,y:80,w:560,h:125,label:"세제 선반",run:()=>[M("세제 병마다 이모 손글씨 라벨. '한복·실크는 섬세 코스, 찬물로', '자개단추는 알코올 금지'."),S.washBad?M("……찬물이었구나. 이미 늦었다."):null]},
+    {id:"iron",x:735,y:290,w:380,h:200,label:"다리미대",run:()=>ironRun()},
+    {id:"m1",x:198,y:278,w:265,h:345,label:"왼쪽 세탁기",run:()=>washerRun()},
+    {id:"m2",x:466,y:278,w:265,h:345,label:"오른쪽 세탁기",run:()=>[M("이쪽은 고장 나서 '사용 금지' 스티커가 붙어 있다. 이모 글씨다.")]},
+    {id:"filter",x:205,y:545,w:50,h:45,label:"세탁기 필터",run:()=>filterRun()}
   ]},
   alley:{title:"골목",bg:"alley",spots:[
-    {id:"out",x:1026,y:470,w:170,h:230,label:"가게 앞으로",go:"street"},
-    {id:"patrol",x:984,y:292,w:70,h:74,label:"순찰함",show:()=>S.day>=3,art:()=>PATROL_ART,run:()=>patrolRun()},
-    {id:"road",x:600,y:200,w:140,h:140,label:"큰길 쪽",show:()=>S.day>=3,art:()=>ROADSIGN_ART,run:()=>S.day>=4&&/_invest$/.test(S.phase)?[{t:"goto",loc:"bigroad"}]:[M(S.day>=4?"오늘은 큰길까지 갈 일은 없다.":"골목 끝으로 나가면 큰길, 그 건너가 파출소다. 오늘은 가게를 오래 비울 수 없다."),S.day===3&&S.phase==="d3_invest"?M(!S.got.has("env")?"오늘은 우선 꽃집에 가서 봉투부터 보자.":!S.got.has("time")?"오늘은 우선 봉순 할머니께 월요일 새벽 일을 여쭤보자."+(S.trust<0&&!S.apol?" 지난번 일부터 사과드리고.":""):""):null]},
-    {id:"pole",x:996,y:40,w:46,h:250,label:"전봇대",run:()=>[N("전봇대에 전단지가 덕지덕지 붙어 있다. 그중 한 장만 새것이다."),N("'윤슬 2차 재개발 주민설명회 · 12월 20일 · 윤슬시청 대강당'"),M("재개발…… 이 골목도 들어가나?")]},
-    {id:"window",x:116,y:256,w:148,h:128,label:"창문",run:()=>[M(isClose()?"봉순반찬 뒷창. 불이 꺼져 있다.":"봉순반찬 뒷창. 된장 끓는 냄새가 새어 나온다.")]},
-    {id:"backdoor",x:556,y:356,w:98,h:206,label:"골목 끝 문",run:()=>[M("골목 끝 창고 문. 녹슨 자물쇠가 걸려 있다.")]},
-    {id:"pots",x:776,y:526,w:250,h:190,label:"화분",run:()=>[M("봉순 할머니네 고추 모종. 흙이 아직 촉촉하다.")]},
+    {id:"out",x:1110,y:300,w:90,h:500,label:"가게 앞으로",go:"street"},
+    {id:"patrol",x:1014,y:374,w:70,h:76,label:"순찰함",show:()=>S.day>=3,art:()=>PATROL_ART,run:()=>patrolRun()},
+    {id:"road",x:396,y:150,w:132,h:280,label:"큰길 쪽",show:()=>S.day>=3,art:()=>ROADSIGN_ART,run:()=>S.day>=4&&/_invest$/.test(S.phase)?[{t:"goto",loc:"bigroad"}]:[M(S.day>=4?"오늘은 큰길까지 갈 일은 없다.":"골목 끝으로 나가면 큰길, 그 건너가 파출소다. 오늘은 가게를 오래 비울 수 없다."),S.day===3&&S.phase==="d3_invest"?M(!S.got.has("env")?"오늘은 우선 꽃집에 가서 봉투부터 보자.":!S.got.has("time")?"오늘은 우선 봉순 할머니께 월요일 새벽 일을 여쭤보자."+(S.trust<0&&!S.apol?" 지난번 일부터 사과드리고.":""):""):null]},
+    {id:"pole",x:995,y:0,w:115,h:370,label:"전봇대",run:()=>[N("전봇대에 전단지가 덕지덕지 붙어 있다. 그중 한 장만 새것이다."),N("'윤슬 2차 재개발 주민설명회 · 12월 20일 · 윤슬시청 대강당'"),M("재개발…… 이 골목도 들어가나?")]},
+    {id:"window",x:150,y:0,w:120,h:235,label:"창문",run:()=>[M(isClose()?"봉순반찬 뒷창. 불이 꺼져 있다.":"봉순반찬 뒷창. 된장 끓는 냄새가 새어 나온다.")]},
+    {id:"backdoor",x:518,y:125,w:155,h:300,label:"골목 끝 문",run:()=>[M("골목 끝 창고 문. 녹슨 자물쇠가 걸려 있다.")]},
+    {id:"pots",x:770,y:320,w:220,h:340,label:"화분",run:()=>[M("봉순 할머니네 고추 모종. 흙이 아직 촉촉하다.")]},
     {id:"doyun4",x:150,y:350,w:290,h:445,label:"도윤이",show:()=>S.phase==="d4_invest"&&!(S.hurt||S.doyunLeft)&&!S.doyunRan,art:()=>figSVG("도윤",S.doyunTalk4?"flat":"smile","bust").replace("<svg ",'<svg x="150" y="350" width="290" height="445" '),cast:["도윤"],run:()=>doyun4Run()},
-    {id:"stairs",x:40,y:620,w:420,h:176,label:"계단",show:()=>!(S.phase==="d2_invest"&&!S.doyunGone)&&!(S.phase==="d4_invest"&&!(S.hurt||S.doyunLeft)&&!S.doyunRan),run:()=>[M(S.doyunGone?"도윤이가 앉아 있던 계단. 구슬 하나가 굴러다닌다.":"오래된 돌계단. 도윤이가 자주 앉아 논다고 했다.")]},
+    {id:"stairs",x:0,y:380,w:400,h:420,label:"계단",show:()=>!(S.phase==="d2_invest"&&!S.doyunGone)&&!(S.phase==="d4_invest"&&!(S.hurt||S.doyunLeft)&&!S.doyunRan),run:()=>[M(S.doyunGone?"도윤이가 앉아 있던 계단. 구슬 하나가 굴러다닌다.":"오래된 돌계단. 도윤이가 자주 앉아 논다고 했다.")]},
     {id:"doyun",x:150,y:350,w:290,h:445,label:"도윤이",show:()=>S.phase==="d2_invest"&&!S.doyunGone,art:()=>figSVG("도윤",S.got.has("marble")?"smile":"flat","bust").replace("<svg ",'<svg x="150" y="350" width="290" height="445" '),cast:["도윤"],run:()=>S.got.has("marble")?[
       Y("도윤","누나, 할머니한테 진짜 말할 거야?","sad"),Y("서하","같이 말하자. 누나가 옆에 있을게."),Y("도윤","……응.","flat")]:[
       S.seenDoyun?null:N("계단에 쪼그려 앉은 도윤이. 주머니에서 구슬 부딪히는 소리가 난다."),
@@ -1731,63 +1756,63 @@ const LOCS={
       MENU("doyun")]}
   ]},
   homeroad:{title:"집으로 가는 길",bg:"homeroad",spots:[
-    {id:"stairs",x:380,y:380,w:270,h:320,label:"돌계단",run:()=>[N("언덕 위로 이어지는 낡은 돌계단. 이모는 이 계단 아래에서 발견됐다."),M("비 오는 밤에 미끄러졌다고 했다. 30년을 오르내린 계단에서."),S.inv.includes("memo_police")?M("……비 오는 날엔 절대 이 계단으로 안 다니던 사람이."):null]},
-    {id:"lamp",x:680,y:196,w:70,h:470,label:"가로등",run:()=>[M("계단 옆 가로등. 그날 밤엔 고장 나서 꺼져 있었다고 했다."),M("다음 날 아침 구청에서 바로 고쳤다나. ……지금은 이렇게 멀쩡하다.")]},
-    {id:"light",x:960,y:200,w:140,h:190,label:"등대",run:()=>[M("윤슬항 등대. 이모는 저 불빛을 보면서 퇴근했다고 했다.")]},
-    {id:"home",x:1048,y:470,w:150,h:230,label:"집으로",go:"housefront"}
+    {id:"stairs",x:1520,y:240,w:370,h:480,label:"돌계단",run:()=>[N("언덕 위로 이어지는 낡은 돌계단. 이모는 이 계단 아래에서 발견됐다."),M("비 오는 밤에 미끄러졌다고 했다. 30년을 오르내린 계단에서."),S.inv.includes("memo_police")?M("……비 오는 날엔 절대 이 계단으로 안 다니던 사람이."):null]},
+    {id:"lamp",x:1900,y:30,w:130,h:660,label:"가로등",run:()=>[M("계단 옆 가로등. 그날 밤엔 고장 나서 꺼져 있었다고 했다."),M("다음 날 아침 구청에서 바로 고쳤다나. ……지금은 이렇게 멀쩡하다.")]},
+    {id:"light",x:925,y:260,w:60,h:100,label:"등대",run:()=>[M("윤슬항 등대. 이모는 저 불빛을 보면서 퇴근했다고 했다.")]},
+    {id:"home",x:2080,y:420,w:300,h:320,label:"집으로",go:"housefront"}
   ]},
   housefront:{title:"이모 집 앞",bg:"housefront",spots:[
-    {id:"door",x:556,y:400,w:170,h:250,label:"현관 도어록",run:()=>doorRun()},
-    {id:"sensor",x:596,y:360,w:48,h:34,label:"센서등",run:()=>[M("현관 센서등. 이모가 언제 이런 걸 달았지?"),M("나사가 아직 반짝인다. 오래된 집에 이것만 새것이다.")]},
-    {id:"mail",x:764,y:556,w:80,h:68,label:"우편함",run:()=>[M("우편함에 고지서 몇 장. 전부 이모 이름 앞으로 온 것들이다."),M("이모 앞으로 오는 우편은 언제쯤 끊길까.")]},
-    {id:"pots",x:448,y:556,w:100,h:90,label:"화분",run:()=>[M("이모가 키우던 제라늄. 다 말라 버렸다."),M("물 주는 걸 또 잊었다. 내일은 꼭.")]},
-    {id:"window",x:290,y:310,w:180,h:144,label:"이모 방 창문",run:()=>[M("이모 방 창문. 커튼이 꼭 닫혀 있다."),M(S.day===1?"장례 치르고 나서 한 번도 못 들어가 봤다.":"오늘은…… 들어가 봐야지.")]},
-    {id:"road",x:0,y:560,w:150,h:240,label:"언덕길",run:()=>[M("이 시간에 다시 나가긴 싫다. 들어가자.")]}
+    {id:"door",x:655,y:300,w:155,h:270,label:"현관 도어록",run:()=>doorRun()},
+    {id:"sensor",x:705,y:266,w:56,h:34,label:"센서등",run:()=>[M("현관 센서등. 이모가 언제 이런 걸 달았지?"),M("나사가 아직 반짝인다. 오래된 집에 이것만 새것이다.")]},
+    {id:"mail",x:840,y:365,w:60,h:65,label:"우편함",run:()=>[M("우편함에 고지서 몇 장. 전부 이모 이름 앞으로 온 것들이다."),M("이모 앞으로 오는 우편은 언제쯤 끊길까.")]},
+    {id:"pots",x:360,y:440,w:220,h:130,label:"화분",run:()=>[M("이모가 키우던 제라늄. 다 말라 버렸다."),M("물 주는 걸 또 잊었다. 내일은 꼭.")]},
+    {id:"window",x:412,y:305,w:185,h:148,label:"이모 방 창문",run:()=>[M("이모 방 창문. 커튼이 꼭 닫혀 있다."),M(S.day===1?"장례 치르고 나서 한 번도 못 들어가 봤다.":"오늘은…… 들어가 봐야지.")]},
+    {id:"road",x:0,y:600,w:250,h:200,label:"언덕길",run:()=>[M("이 시간에 다시 나가긴 싫다. 들어가자.")]}
   ]},
   living:{title:"거실",bg:"living",spots:[
-    {id:"entry",x:24,y:196,w:128,h:444,label:"현관",run:()=>[M("오늘은 더 나갈 일 없다.")]},
-    {id:"kitchen",x:178,y:220,w:152,h:420,label:"주방",go:"kitchen"},
-    {id:"photo",x:440,y:238,w:140,h:116,label:"액자",run:()=>[N("이모와 어린 서하가 세탁소 앞에서 찍은 사진. 간판이 아직 새것이다."),M("이 사진 찍을 때 나는 아홉 살이었나. 이모 손이 내 어깨에 얹혀 있다.")]},
-    {id:"envelope",x:470,y:604,w:124,h:44,label:"서류 봉투",run:()=>S.inv.includes("memo_police")?[DOC("memo_police")]:[
+    {id:"entry",x:60,y:115,w:170,h:410,label:"현관",run:()=>[M("오늘은 더 나갈 일 없다.")]},
+    {id:"kitchen",x:305,y:55,w:250,h:465,label:"주방",go:"kitchen"},
+    {id:"photo",x:1235,y:330,w:70,h:65,label:"액자",run:()=>[N("이모와 어린 서하가 세탁소 앞에서 찍은 사진. 간판이 아직 새것이다."),M("이 사진 찍을 때 나는 아홉 살이었나. 이모 손이 내 어깨에 얹혀 있다.")]},
+    {id:"envelope",x:710,y:550,w:150,h:50,label:"서류 봉투",run:()=>S.inv.includes("memo_police")?[DOC("memo_police")]:[
       N("탁자 위에 경찰서 봉투가 놓여 있다. 장례 끝나고 받은 뒤로 다시 열어 본 적이 없다."),
       DOC("memo_police"),
       M("비 오는 밤, 계단에서 미끄러졌다고 했다."),
       M("……이모는 비 오는 날엔 절대 계단으로 안 다녔는데. 빙 돌아서 찻길로 다녔는데.")]},
-    {id:"sofa",x:340,y:470,w:120,h:150,label:"소파",run:()=>[M("이모가 낮잠 자던 소파. 쿠션에서 아직 이모 냄새가 난다.")]},
-    {id:"auntDoor",x:720,y:206,w:124,h:434,label:"이모 방",run:()=>auntDoorRun()},
-    {id:"myDoor",x:870,y:206,w:124,h:434,label:"내 방",go:"myroom"},
-    {id:"bathDoor",x:1024,y:226,w:124,h:414,label:"화장실",go:"bath"}
+    {id:"sofa",x:510,y:340,w:520,h:200,label:"소파",run:()=>[M("이모가 낮잠 자던 소파. 쿠션에서 아직 이모 냄새가 난다.")]},
+    {id:"auntDoor",x:1380,y:85,w:175,h:405,label:"이모 방",run:()=>auntDoorRun()},
+    {id:"myDoor",x:1810,y:70,w:200,h:430,label:"내 방",go:"myroom"},
+    {id:"bathDoor",x:2125,y:55,w:215,h:460,label:"화장실",go:"bath"}
   ]},
   kitchen:{title:"주방",bg:"kitchen",spots:[
-    {id:"back",x:0,y:190,w:106,h:450,label:"거실로",go:"living"},
-    {id:"fridge",x:900,y:168,w:172,h:472,label:"냉장고",run:()=>S.inv.includes("memo_lock")?[DOC("memo_lock")]:[
+    {id:"back",x:0,y:0,w:150,h:640,label:"거실로",go:"living"},
+    {id:"fridge",x:975,y:110,w:175,h:640,label:"냉장고",run:()=>S.inv.includes("memo_lock")?[DOC("memo_lock")]:[
       N("냉장고 문에 자석으로 붙여 둔 종이들. 반찬가게 전단지, 가스 검침표, 그리고 영수증 한 장."),
       DOC("memo_lock"),
       M("8월 2일. 돌아가시기 열이틀 전에, 멀쩡한 자물쇠를 도어록으로 바꿨다고?"),
       M("센서등, 창문 걸쇠까지. 열쇠 한 번 잃어버린 적 없는 사람이.")]},
-    {id:"sink",x:380,y:136,w:180,h:320,label:"싱크대",run:()=>[M("싱크대 위 창문으로 등대 불빛이 지나간다. 이모는 여기 서서 설거지를 했겠지.")]},
-    {id:"stove",x:610,y:380,w:170,h:60,label:"가스레인지",run:()=>[M("빨간 주전자. 이모는 보리차를 하루도 안 거르고 끓였다."),M("밸브는 잠겨 있다. ……두 번 확인했다. 이모처럼.")]},
-    {id:"table",x:140,y:550,w:330,h:160,label:"식탁",run:()=>[M("의자 두 개짜리 식탁. 이모 머그컵 바닥에 보리차 자국이 말라붙어 있다."),M(S.day===1?"아직 못 씻었다. 씻으면 진짜 끝나는 것 같아서.":"오늘은 씻어 둘까. ……내일.")]}
+    {id:"sink",x:340,y:110,w:360,h:300,label:"싱크대",run:()=>[M("싱크대 위 창문으로 등대 불빛이 지나간다. 이모는 여기 서서 설거지를 했겠지.")]},
+    {id:"stove",x:720,y:320,w:200,h:120,label:"가스레인지",run:()=>[M("빨간 주전자. 이모는 보리차를 하루도 안 거르고 끓였다."),M("밸브는 잠겨 있다. ……두 번 확인했다. 이모처럼.")]},
+    {id:"table",x:0,y:500,w:420,h:260,label:"식탁",run:()=>[M("의자 두 개짜리 식탁. 이모 머그컵 바닥에 보리차 자국이 말라붙어 있다."),M(S.day===1?"아직 못 씻었다. 씻으면 진짜 끝나는 것 같아서.":"오늘은 씻어 둘까. ……내일.")]}
   ]},
   bath:{title:"화장실",bg:"bath",spots:[
-    {id:"back",x:0,y:190,w:122,h:450,label:"거실로",go:"living"},
-    {id:"mirror",x:436,y:150,w:210,h:190,label:"거울",run:()=>[M("거울 속 얼굴이 피곤해 보인다. 세탁소 일, 생각보다 몸이 힘들다.")]},
-    {id:"cup",x:592,y:286,w:40,h:66,label:"칫솔 컵",run:()=>[M("칫솔 두 개. 하나는 이모 거."),M("……아직 못 버렸다.")]},
-    {id:"tub",x:752,y:290,w:420,h:350,label:"욕조",run:()=>[M("욕조 위 빨래 건조대. 이모는 집에서도 속옷이랑 수건은 손빨래를 했다.")]}
+    {id:"back",x:0,y:0,w:200,h:780,label:"거실로",go:"living"},
+    {id:"mirror",x:475,y:70,w:220,h:210,label:"거울",run:()=>[M("거울 속 얼굴이 피곤해 보인다. 세탁소 일, 생각보다 몸이 힘들다.")]},
+    {id:"cup",x:640,y:220,w:50,h:75,label:"칫솔 컵",run:()=>[M("칫솔 두 개. 하나는 이모 거."),M("……아직 못 버렸다.")]},
+    {id:"tub",x:790,y:430,w:410,h:370,label:"욕조",run:()=>[M("욕조 위 빨래 건조대. 이모는 집에서도 속옷이랑 수건은 손빨래를 했다.")]}
   ]},
   myroom:{title:"내 방",bg:"home",spots:[
-    {id:"door",x:470,y:160,w:130,h:340,label:"거실로",art:()=>`<g><rect x="470" y="160" width="130" height="340" fill="#3A2E28"/><rect x="478" y="168" width="114" height="332" fill="#5A4636"/><rect x="492" y="186" width="86" height="130" fill="none" stroke="#46362A" stroke-width="3"/><circle cx="578" cy="340" r="5" fill="#C9A24A"/></g>`,go:"living"},
-    {id:"window",x:740,y:130,w:380,h:330,label:"창문",run:()=>[M("창밖으로 윤슬항 등대. 이모 집에서는 등대가 이렇게 가깝게 보인다.")]},
-    {id:"desk",x:680,y:500,w:470,h:96,label:"책상",run:()=>(S.inv.includes("letter")||S.inv.includes("bizcard")||S.key)?[MENU("night")]:[M("아직 다 풀지도 못한 짐 상자들. 내일 하자.")]},
-    {id:"bed",x:40,y:470,w:420,h:220,label:"침대",run:()=>bedRun()}
+    {id:"door",x:325,y:38,w:195,h:505,label:"거실로",go:"living"},
+    {id:"window",x:840,y:0,w:310,h:320,label:"창문",run:()=>[M("창밖으로 윤슬항 등대. 이모 집에서는 등대가 이렇게 가깝게 보인다.")]},
+    {id:"desk",x:660,y:290,w:420,h:200,label:"책상",run:()=>(S.inv.includes("letter")||S.inv.includes("bizcard")||S.key)?[MENU("night")]:[M("아직 다 풀지도 못한 짐 상자들. 내일 하자.")]},
+    {id:"bed",x:0,y:450,w:560,h:350,label:"침대",run:()=>bedRun()}
   ]},
   auntroom:{title:"이모 방",bg:"auntroom",spots:[
-    {id:"back",x:1064,y:190,w:126,h:450,label:"거실로",go:"living"},
-    {id:"wardrobe",x:60,y:132,w:364,h:510,label:"옷장",run:()=>wardrobeRun()},
-    {id:"box",x:160,y:490,w:170,h:90,label:"나무 상자",show:()=>S.wardrobe,run:()=>boxRun()},
-    {id:"window",x:462,y:160,w:196,h:228,label:"창문",run:()=>[M("창문 걸쇠가 두 개다. 하나는 낡았고, 하나는 새것. 새 걸쇠 나사가 반짝인다."),S.inv.includes("memo_lock")?M("영수증에 있던 '창문 보조 걸쇠'. 도어록, 센서등, 걸쇠. 이모는 그해 여름 뭘 그렇게 막으려고 했을까."):M("이모가 언제 이런 걸 달았지.")]},
-    {id:"dresser",x:462,y:400,w:196,h:240,label:"서랍장",run:()=>[N("서랍장 위에 돋보기안경과 작은 액자."),M("액자 속 젊은 이모 옆에 누군가 서 있는데, 그 부분만 사진이 접혀 있다."),M("……펴 보지는 말자. 이모가 접어 둔 거니까.")]},
-    {id:"bed",x:700,y:420,w:340,h:200,label:"침대",run:()=>[M("반듯하게 개어 둔 이불. 이모는 그날 아침에도 이불을 개고 나갔다.")]}
+    {id:"back",x:1100,y:0,w:100,h:800,label:"거실로",go:"living"},
+    {id:"wardrobe",x:20,y:0,w:305,h:650,label:"옷장",run:()=>wardrobeRun()},
+    {id:"box",x:110,y:480,w:135,h:90,label:"나무 상자",show:()=>S.wardrobe,run:()=>boxRun()},
+    {id:"window",x:330,y:30,w:430,h:340,label:"창문",run:()=>[M("창문 걸쇠가 두 개다. 하나는 낡았고, 하나는 새것. 새 걸쇠 나사가 반짝인다."),S.inv.includes("memo_lock")?M("영수증에 있던 '창문 보조 걸쇠'. 도어록, 센서등, 걸쇠. 이모는 그해 여름 뭘 그렇게 막으려고 했을까."):M("이모가 언제 이런 걸 달았지.")]},
+    {id:"dresser",x:370,y:320,w:360,h:220,label:"서랍장",run:()=>[N("서랍장 위에 돋보기안경과 작은 액자."),M("액자 속 젊은 이모 옆에 누군가 서 있는데, 그 부분만 사진이 접혀 있다."),M("……펴 보지는 말자. 이모가 접어 둔 거니까.")]},
+    {id:"bed",x:745,y:310,w:350,h:470,label:"침대",run:()=>[M("반듯하게 개어 둔 이불. 이모는 그날 아침에도 이불을 개고 나갔다.")]}
   ]},
   bigroad:{title:"큰길",bg:"bigroad",spots:[
     {id:"back",x:30,y:690,w:150,h:110,label:"골목으로",go:"alley"},
@@ -1803,23 +1828,23 @@ const LOCS={
     {id:"booth",x:1036,y:430,w:148,h:220,label:"경비실",run:()=>[N("공사장 경비실. 창문에 커튼이 쳐져 있고, 문에 '야간 경비 22:00~06:00' 쪽지."),M("밤에만 지키는 곳이구나. 지금은 아무도 없다."),S.metKim?M("새벽에 본 그 노인이 여기서 일하는 걸까."):null]}
   ]},
   storage:{title:"창고",bg:"storage",spots:[
-    {id:"shelfL",x:40,y:80,w:340,h:520,label:"왼쪽 선반",run:()=>[M("비닐에 싸인 옷 상자들. 태그는 전부 몇 년씩 된 것들이고, 전부 '폐기' 도장이 찍혀 있다.")]},
-    {id:"shelfM",x:420,y:80,w:340,h:460,label:"가운데 선반",run:()=>[M("상자마다 번호가 적혀 있는데, 세탁물 태그 번호랑 맞지 않는다. 이모만 아는 방식이 있었나 봐.")]},
-    {id:"shelfR",x:820,y:80,w:340,h:520,label:"오른쪽 선반",run:()=>[M("이쪽도 오래된 옷 상자들. 위 칸일수록 더 오래된 것 같다.")]},
-    {id:"exit",x:0,y:96,w:72,h:704,label:"창고 문",go:"counter"},
-    {id:"dust",x:1016,y:220,w:68,h:106,label:"선반의 빈 칸",run:()=>S.dust?[M("먼지 없는 빈 칸. 뭐가 있었던 걸까.")]:[
+    {id:"shelfL",x:130,y:0,w:180,h:700,label:"왼쪽 선반",run:()=>[M("비닐에 싸인 옷 상자들. 태그는 전부 몇 년씩 된 것들이고, 전부 '폐기' 도장이 찍혀 있다.")]},
+    {id:"shelfM",x:390,y:30,w:480,h:330,label:"가운데 선반",run:()=>[M("상자마다 번호가 적혀 있는데, 세탁물 태그 번호랑 맞지 않는다. 이모만 아는 방식이 있었나 봐.")]},
+    {id:"shelfR",x:880,y:0,w:320,h:800,label:"오른쪽 선반",run:()=>[M("이쪽도 오래된 옷 상자들. 위 칸일수록 더 오래된 것 같다.")]},
+    {id:"exit",x:0,y:0,w:130,h:800,label:"창고 문",go:"counter"},
+    {id:"dust",x:1040,y:180,w:80,h:180,label:"선반의 빈 칸",run:()=>S.dust?[M("먼지 없는 빈 칸. 뭐가 있었던 걸까.")]:[
       N("선반 한 칸이 통째로 비어 있다. 번호표도 없다."),
       M("……이상하다. 다른 칸은 전부 먼지투성인데, 여기만 깨끗해."),
       M("누가 최근에 여기서 뭘 꺼내 간 거지?"),
       DO(()=>{S.dust=true;}),ITEM("memo_dust")]},
-    {id:"ledgers",x:414,y:552,w:306,h:92,label:"연도별 장부",run:()=>[
+    {id:"ledgers",x:595,y:365,w:100,h:70,label:"연도별 장부",run:()=>[
       (S.sawDate&&!S.took2006)?M("보드에서 본 반쪽 번호표. 날짜가 06.12.24였지."):null,
       MENU("ledgers")]},
-    {id:"cord",x:570,y:120,w:60,h:92,label:"전구 줄",run:()=>S.light?[M("전구가 지지직거린다. 오래는 못 버티겠다.")]:[
+    {id:"cord",x:560,y:20,w:60,h:100,label:"전구 줄",run:()=>S.light?[M("전구가 지지직거린다. 오래는 못 버티겠다.")]:[
       DO(()=>{S.light=true;updateDark();}),
       N("줄을 당기자 딸깍, 백열전구가 켜진다. 창고 안이 누렇게 밝아진다."),
       M("진작 켤걸.")]},
-    {id:"drawer",x:526,y:668,w:148,h:48,label:"책상 서랍",run:()=>S.diary?[M("서랍은 이제 비어 있다.")]:S.key?[
+    {id:"drawer",x:605,y:440,w:120,h:45,label:"책상 서랍",run:()=>S.diary?[M("서랍은 이제 비어 있다.")]:S.key?[
       N("열쇠가 딸깍 돌아간다. 서랍 안에는 낡은 수첩 한 권."),
       N("첫 장만 열리고, 나머지는 끈으로 단단히 묶여 있다."),
       DO(()=>{S.diary=true;}),DOC("diary1"),
@@ -2196,8 +2221,8 @@ function fireEndingSteps(){
     N("언덕길을 반쯤 올랐을 때, 등 뒤에서 사이렌 소리가 울리기 시작한다."),
     N("돌아보니 상가 골목 쪽 하늘이 붉다."),
     M("……설마."),
-    SC("윤슬세탁소 앞","front"),
-    DO(()=>{ setTint("night"); $("fx").innerHTML=FIRE_FX; }),
+    SC("윤슬세탁소 앞",IMG_BG.fire?"fire":"front"),
+    DO(()=>{ if(!IMG_BG.fire){ setTint("night"); $("fx").innerHTML=FIRE_FX; } }),
     N("내려 둔 셔터 틈으로 검은 연기가 쏟아져 나온다. 소방차 두 대가 골목을 막고 서 있다."),
     CAST("봉순"),
     Y("봉순","서하야! 너 괜찮냐? 안에 사람은 없지?","o"),
@@ -2679,9 +2704,9 @@ function ch2EndTeaser(){
     SYS("3장 「한밤의 침입자」는 준비 중입니다. 메뉴(≡)의 '로비'에서 처음부터 다시 하거나, 나중에 '계속하기'로 이 장면부터 볼 수 있어요."),
     {t:"stop"}];
 }
-const PATROL_ART=`<g><rect x="990" y="298" width="58" height="64" rx="4" fill="#8A9298" stroke="#4E565C" stroke-width="2"/><rect x="996" y="306" width="46" height="14" fill="#2C4A7A"/><text x="1019" y="317" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="9" fill="#fff">순찰함</text><rect x="1000" y="330" width="38" height="5" rx="2" fill="#4E565C"/><circle cx="1019" cy="350" r="3" fill="#C9B26A"/></g>`;
-const ROADSIGN_ART=`<g transform="translate(610 236)"><rect x="56" y="44" width="8" height="70" fill="#6F6A62"/><path d="M0 0 L110 0 L128 24 L110 48 L0 48Z" fill="#2F4A52"/><text x="56" y="31" text-anchor="middle" font-family="Gowun Batang,serif" font-size="18" fill="#F3EBD8">큰길 · 파출소</text></g>`;
-const MAILBOX_ART=`<g><rect x="884" y="300" width="36" height="50" rx="4" fill="#3E6E56" stroke="#2A4A3A" stroke-width="2"/><rect x="890" y="310" width="24" height="5" rx="2" fill="#1E2E26"/><text x="902" y="338" text-anchor="middle" font-family="Gowun Batang,serif" font-size="11" fill="#F3EBD8">우편</text></g>`;
+const PATROL_ART=`<g transform="translate(30 82)"><rect x="990" y="298" width="58" height="64" rx="4" fill="#8A9298" stroke="#4E565C" stroke-width="2"/><rect x="996" y="306" width="46" height="14" fill="#2C4A7A"/><text x="1019" y="317" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="9" fill="#fff">순찰함</text><rect x="1000" y="330" width="38" height="5" rx="2" fill="#4E565C"/><circle cx="1019" cy="350" r="3" fill="#C9B26A"/></g>`;
+const ROADSIGN_ART=`<g transform="translate(400 222)"><rect x="56" y="44" width="8" height="70" fill="#6F6A62"/><path d="M0 0 L110 0 L128 24 L110 48 L0 48Z" fill="#2F4A52"/><text x="56" y="31" text-anchor="middle" font-family="Gowun Batang,serif" font-size="18" fill="#F3EBD8">큰길 · 파출소</text></g>`;
+const MAILBOX_ART=`<g transform="translate(1672 0)"><rect x="884" y="300" width="36" height="50" rx="4" fill="#3E6E56" stroke="#2A4A3A" stroke-width="2"/><rect x="890" y="310" width="24" height="5" rx="2" fill="#1E2E26"/><text x="902" y="338" text-anchor="middle" font-family="Gowun Batang,serif" font-size="11" fill="#F3EBD8">우편</text></g>`;
 
 /* =========================================================
    ENGINE
@@ -2873,13 +2898,15 @@ function startMini(s){
   if(s.kind==="shutter") startShutter(s.dir); else if(s.kind==="keypad") startKeypad(); else if(s.kind==="sign") startSign(s.to); else if(s.kind==="wash") startWash(); else if(s.kind==="vinyl") startVinyl(); else startIron();
 }
 function startShutter(dir){
-  S.peek=true; curBg=null; setBg("front"); setCast([]);
+  S.peek=true; panOn=false; curBg=null; setBg("front"); setCast([]);
+  const SH=IMG_BG.front?{x:535,y:228,w:455,h:358,img:SCN("front-shop")}:{x:410,y:292,w:400,h:358};
   const m=$("mini"); m.className="mini shutter"; m.hidden=false;
-  m.innerHTML=`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid ${fit}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="shclip"><rect x="410" y="292" width="400" height="358"/></clipPath></defs><g id="shg" clip-path="url(#shclip)"></g><rect x="410" y="262" width="400" height="32" rx="4" fill="#7E8686"/><rect x="410" y="288" width="400" height="6" fill="#5E6666"/></svg><span class="mini-sr" aria-live="polite" id="mini-sr"></span>`;
+  m.innerHTML=`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid ${fit}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="shclip"><rect x="${SH.x}" y="${SH.y}" width="${SH.w}" height="${SH.h}"/></clipPath><clipPath id="shsrc"><rect x="${SH.x}" y="${SH.y-4}" width="${SH.w}" height="${SH.h+4}"/></clipPath></defs><g id="shg" clip-path="url(#shclip)"></g>${SH.img?"":`<rect x="410" y="262" width="400" height="32" rx="4" fill="#7E8686"/><rect x="410" y="288" width="400" height="6" fill="#5E6666"/>`}</svg><span class="mini-sr" aria-live="polite" id="mini-sr"></span>`;
   const g=m.querySelector("#shg");
   mini={kind:"shutter",dir,r:dir==="up"?0:1,shake:0,last:performance.now(),done:false,taps:0};
   const draw=()=>{
     const r=mini.r, bottom=292+358*(1-r), off=Math.sin(mini.shake*20)*mini.shake*4;
+    if(SH.img){ g.innerHTML=`<g transform="translate(0 ${(-SH.h*r+off).toFixed(1)})"><image href="${SH.img}" width="1200" height="800" clip-path="url(#shsrc)"/></g>`; return; }
     let h=""; for(let y=bottom-14;y>=292-14;y-=14) h+=`<rect x="410" y="${y+off}" width="400" height="12" fill="${Math.round((bottom-y)/14)%2?"#A3ABAA":"#B0B8B7"}"/>`;
     if(r<0.995) h+=`<rect x="410" y="${bottom-8+off}" width="400" height="10" fill="#6E7676"/><rect x="580" y="${bottom-20+off}" width="60" height="12" rx="5" fill="#4E5656"/>`;
     g.innerHTML=h;
@@ -2941,18 +2968,18 @@ function railClothes(){
   if(!S||!S.hung) return [];
   return LOAD_ALL.filter(id=>!(id==="jeogori"&&(S.gave||coatOnCounter()))&&!(id==="blazer"&&S.suaPicked)&&!(/^shirt/.test(id)&&S.choiPicked));
 }
-function railArt(){ const L=railClothes(); return L.map((id,i)=>`<g transform="translate(${730+i*52} 150) scale(.92)">${hungArt(id,1)}${vinylArt(1)}${tagArt(1,TAGNO[id])}</g>`).join(""); }
+function railArt(){ const L=railClothes(); return L.map((id,i)=>`<g transform="translate(${1990+i*70} 205) scale(.82)">${hungArt(id,1)}${vinylArt(1)}${tagArt(1,TAGNO[id])}</g>`).join(""); }
 const BASKET_ART=()=>`<g transform="translate(560 528)"><ellipse cx="0" cy="34" rx="92" ry="8" fill="#000" opacity=".2"/>${foldedArt("blazer",-26,-6,.62)}${foldedArt("shirt1",26,-14,.6)}${foldedArt("shirt2",-10,-22,.58)}${foldedArt("jeogori",12,-30,.6)}<path d="M-86 -6 L86 -6 L74 36 L-74 36 Z" fill="#E7A33E" stroke="${OLx}" stroke-width="2"/>${[-60,-36,-12,12,36,60].map(x=>`<rect x="${x-6}" y="4" width="12" height="22" rx="3" fill="#B97A24"/>`).join("")}</g>`;
 
 /* --- sign: drag sideways (or tap) to spin the plaque until the wanted side faces out --- */
 function startSign(to){
   const m=$("mini"); m.className="mini iron"; m.hidden=false;
-  const bg=IMG_BG["sign-door"]?`<image href="${IMG_BG["sign-door"].src[0]}" x="-200" y="-40" width="1200" height="800" preserveAspectRatio="xMidYMid slice"/>`
+  const bg=IMG_BG["sign-door"]?`<image href="${IMG_BG["sign-door"].src[0]}" x="-200" y="-113" width="1200" height="800" preserveAspectRatio="xMidYMid slice"/>`
     :`<rect width="800" height="500" fill="#B9CFD3"/><rect x="0" y="0" width="800" height="500" fill="url(#sgGlass)"/><rect x="0" y="0" width="40" height="500" fill="#A9B0B2"/><rect x="760" y="0" width="40" height="500" fill="#A9B0B2"/><rect x="0" y="0" width="800" height="26" fill="#9BA3A5"/><path d="M120 0 L260 500 M540 0 L700 500" stroke="#fff" stroke-opacity=".35" stroke-width="40"/>`;
   m.innerHTML=`<div class="iron-wrap"><div class="iron-top"><span class="mg-tip" id="mg-tip">팻말을 옆으로 밀어서 돌려요. 눌러도 한 바퀴 돌아요.</span></div>
     <svg id="sg-svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" role="application" tabindex="0" aria-label="유리문 팻말. 좌우로 끌거나 방향키로 돌리세요.">
     <defs><linearGradient id="sgGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DCE8EA" stop-opacity=".5"/><stop offset="1" stop-color="#6F8A90" stop-opacity=".35"/></linearGradient></defs>
-    ${bg}<g id="sg-sign"></g><circle cx="400" cy="62" r="14" fill="#E9EEF0" stroke="#7C8A90" stroke-width="3"/><circle cx="400" cy="62" r="4" fill="#7C8A90"/></svg>
+    ${bg}<g id="sg-sign"></g>${IMG_BG["sign-door"]?"":`<circle cx="400" cy="62" r="14" fill="#E9EEF0" stroke="#7C8A90" stroke-width="3"/><circle cx="400" cy="62" r="4" fill="#7C8A90"/>`}</svg>
     <span class="mini-sr" aria-live="polite" id="mini-sr"></span></div>`;
   const svg=m.querySelector("#sg-svg"), tip=m.querySelector("#mg-tip");
   const from=S.signOpen?"open":"closed";
@@ -3003,7 +3030,7 @@ function startWash(){
   const steps=()=>{ const s=[[mini.door||mini.drum.length,"문 열기"],[mini.drum.length>0,"빨래 넣기"],[!!mini.soap,"세제"],[mini.drum.length>0&&!mini.door,"문 닫기"],[mini.running,"시작"]];
     return s.map(([ok,t])=>`<b class="${ok?"ok":""}">${ok?"✓ ":""}${t}</b>`).join(""); };
   const draw=()=>{
-    const bgImg=IMG_BG["washer-closeup"]?`<image href="${IMG_BG["washer-closeup"].src[0]}" x="-200" y="-150" width="1200" height="800"/>`:"";
+    const bgImg=IMG_BG["washer-closeup"]?`<rect width="800" height="500" fill="#E6DCC8"/><image href="${IMG_BG["washer-closeup"].src[0]}" x="-152" y="0" width="960" height="640"/>`:"";
     const left=S.washQ.filter(id=>!mini.drum.includes(id));
     const dc=[540,330], R=100, rot=mini.spin;
     const inDrum=mini.drum.map((id,i)=>{ const a=rot+i*1.6, r=48; return `<g transform="translate(${(dc[0]+Math.cos(a)*r*.6).toFixed(1)} ${(dc[1]+Math.sin(a)*r*.5+20).toFixed(1)}) rotate(${(a*57).toFixed(0)})"><ellipse rx="34" ry="20" fill="${CLOTHES[id].c}" stroke="${OLx}" stroke-width="2"/></g>`; }).join("");
@@ -3018,8 +3045,8 @@ function startWash(){
       <g transform="rotate(-4 228 40)"><rect x="196" y="8" width="70" height="52" fill="#FBF6E8" stroke="#B7AE9C"/><text x="231" y="28" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="16" fill="#2F5596">한복·실크</text><text x="231" y="48" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="16" fill="#C8436A">섬세·찬물!</text></g>
       <g transform="translate(150 410)"><path d="M-120 0 L120 0 L104 70 L-104 70 Z" fill="#E7A33E" stroke="${OLx}" stroke-width="3"/>${[-84,-56,-28,0,28,56,84].map(x=>`<rect x="${x-7}" y="12" width="14" height="44" rx="4" fill="#B97A24"/>`).join("")}</g>
       ${left.map((id,i)=>btn("put-"+id,foldedArt(id,70+i*58,380-(i%2)*26,.82),CLOTHES[id].n+" 넣기")).join("")}
-      <rect x="380" y="60" width="330" height="420" rx="18" fill="#F3F4F0" stroke="${OLx}" stroke-width="3"/>
-      <rect x="380" y="60" width="330" height="110" rx="18" fill="#E6E8E3" stroke="${OLx}" stroke-width="3"/>
+      ${bgImg?"":`<rect x="380" y="60" width="330" height="420" rx="18" fill="#F3F4F0" stroke="${OLx}" stroke-width="3"/>
+      <rect x="380" y="60" width="330" height="110" rx="18" fill="#E6E8E3" stroke="${OLx}" stroke-width="3"/>`}
       ${btn("drawer",`<rect x="398" y="84" width="74" height="40" rx="5" fill="${mini.soap?(mini.soap==="n"?"#4C7FB8":"#E8A3B5"):"#D4D8D3"}" stroke="${OLx}" stroke-width="2"/><rect x="420" y="98" width="30" height="6" rx="3" fill="#9AA0A0"/>`,"세제 칸")}
       ${btn("dial",`<circle cx="540" cy="122" r="26" fill="#D0D4D0" stroke="${OLx}" stroke-width="3"/><line x1="540" y1="122" x2="${540+Math.cos(-Math.PI/2+(mini.course-1)*0.9)*20}" y2="${122+Math.sin(-Math.PI/2+(mini.course-1)*0.9)*20}" stroke="#C8436A" stroke-width="5" stroke-linecap="round"/>`,"코스 다이얼: "+COURSES[mini.course])}
       ${COURSES.map((c,i)=>`<text x="${540+Math.cos(-Math.PI/2+(i-1)*0.9)*40}" y="${122+Math.sin(-Math.PI/2+(i-1)*0.9)*40+5}" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" font-weight="${i===mini.course?700:400}" fill="${i===mini.course?"#C8436A":"#55605E"}">${c}</text>`).join("")}
