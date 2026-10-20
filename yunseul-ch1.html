@@ -971,10 +971,10 @@ ${[0,1,2,3,4,5,6].map(i=>`<rect x="${420+i*42}" y="${560+(i%2)*6}" width="34" he
 const SCN=n=>`assets/scenes/${n}.webp`;
 const HAND="Nanum Pen Script,cursive";
 Object.assign(IMG_BG,{
-  front:{src:()=>[SCN(S&&(S.shutterUp||S.peek)?"front-shop-open":"front-shop"),SCN("front-flower")],names:["윤슬세탁소","여름꽃집"],home:0,
-    over:()=>`<rect x="12" y="210" width="128" height="40" rx="4" fill="#F3EEE2" stroke="#4E8A6C" stroke-width="3"/><text x="76" y="238" text-anchor="middle" font-family="Gowun Batang,serif" font-size="22" font-weight="700" fill="#3D4A45">봉순반찬</text><text x="775" y="172" text-anchor="middle" font-family="Gowun Batang,serif" font-size="64" font-weight="700" fill="#2F4A52" opacity=".9">윤슬세탁소</text><text x="775" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" letter-spacing="6" fill="#5A6E72" opacity=".85">DRY CLEANING · SINCE 1996</text>`
-      +(S&&(S.shutterUp||S.peek)?`<rect x="884" y="352" width="60" height="32" rx="3" fill="${S.signOpen?"#C8436A":"#5E6A6E"}" stroke="#3A3F44" stroke-width="1.5"/><text x="914" y="373" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" fill="#fff">${S.signOpen?"영업중":"준비중"}</text>`:"")
-      +`<text x="1815" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
+  front:{src:()=>[SCN("front-banchan"),SCN(S&&(S.shutterUp||S.peek)?"front-shop-open":"front-shop"),SCN("front-flower")],names:["봉순반찬","윤슬세탁소","여름꽃집"],home:1,
+    over:()=>`<text x="375" y="96" text-anchor="middle" font-family="Gowun Batang,serif" font-size="44" font-weight="700" fill="#2F5A44" opacity=".9">봉순반찬</text><text x="1975" y="172" text-anchor="middle" font-family="Gowun Batang,serif" font-size="64" font-weight="700" fill="#2F4A52" opacity=".9">윤슬세탁소</text><text x="1975" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" letter-spacing="6" fill="#5A6E72" opacity=".85">DRY CLEANING · SINCE 1996</text>`
+      +(S&&(S.shutterUp||S.peek)?`<rect x="2084" y="352" width="60" height="32" rx="3" fill="${S.signOpen?"#C8436A":"#5E6A6E"}" stroke="#3A3F44" stroke-width="1.5"/><text x="2114" y="373" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" fill="#fff">${S.signOpen?"영업중":"준비중"}</text>`:"")
+      +`<text x="3015" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
   banchan:{src:()=>[SCN(S&&S.bongDown?"banchan-down":"banchan")]},
   flowershop:{src:()=>[SCN(S&&S.bucketDown?"flowershop-down":"flowershop")]},
   counter:{src:[SCN("counter-entrance"),SCN("counter"),SCN("counter-back")],names:["출입문","카운터","작업장 · 창고"],home:1,
@@ -1700,17 +1700,17 @@ const coatOnHanger=()=>S.hung&&!S.gave;
    ========================================================= */
 const LOCS={
   street:{title:"가게 앞",bg:"front",spots:[
-    {id:"bong",x:0,y:60,w:175,h:540,label:"봉순반찬",run:()=>bongStreet()},
-    {id:"flower",x:1420,y:130,w:680,h:470,label:"여름꽃집",run:()=>flowerStreet()},
-    {id:"alleyIn",x:195,y:360,w:140,h:260,label:"골목 입구",go:"alley"},
-    {id:"notice",x:1000,y:290,w:60,h:76,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
+    {id:"bong",x:0,y:60,w:740,h:540,label:"봉순반찬",run:()=>bongStreet()},
+    {id:"flower",x:2620,y:130,w:680,h:470,label:"여름꽃집",run:()=>flowerStreet()},
+    {id:"alleyIn",x:1395,y:360,w:140,h:260,label:"골목 입구",go:"alley"},
+    {id:"notice",x:2200,y:290,w:60,h:76,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
       N("셔터 옆 벽에 시청 안내문이 붙어 있다. 테이프 자국이 새것이다."),
       DO(()=>{S.readNotice=true;}),DOC("memo_notice"),
       M("창고…… 이모 물건들, 언젠간 정리해야겠지."),
       M("근데 이건 언제 붙였지? 어제까진 없었는데.")]},
-    {id:"shop",x:530,y:220,w:465,h:375,label:"세탁소",run:()=>shopFront()},
-    {id:"mailbox",x:1354,y:292,w:50,h:66,label:"꽃집 우편함",show:()=>S.day>=3,art:()=>MAILBOX_ART,run:()=>[M(S.got.has("env")?"월요일마다 봉투가 꽂히는 우편함. 지금은 비어 있다.":"꽃집 우편함. 입구가 좁아서 봉투 한 장 겨우 들어가겠다.")]},
-    {id:"sign",x:880,y:340,w:76,h:56,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()}
+    {id:"shop",x:1730,y:220,w:465,h:375,label:"세탁소",run:()=>shopFront()},
+    {id:"mailbox",x:2554,y:292,w:50,h:66,label:"꽃집 우편함",show:()=>S.day>=3,art:()=>MAILBOX_ART,run:()=>[M(S.got.has("env")?"월요일마다 봉투가 꽂히는 우편함. 지금은 비어 있다.":"꽃집 우편함. 입구가 좁아서 봉투 한 장 겨우 들어가겠다.")]},
+    {id:"sign",x:2080,y:340,w:76,h:56,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()}
   ]},
   counter:{title:"카운터",bg:"counter",spots:[
     {id:"hanger",x:1920,y:190,w:450,h:300,label:"세탁물 행거",art:()=>railArt(),run:()=>hangerRun()},
@@ -2706,7 +2706,7 @@ function ch2EndTeaser(){
 }
 const PATROL_ART=`<g transform="translate(30 82)"><rect x="990" y="298" width="58" height="64" rx="4" fill="#8A9298" stroke="#4E565C" stroke-width="2"/><rect x="996" y="306" width="46" height="14" fill="#2C4A7A"/><text x="1019" y="317" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="9" fill="#fff">순찰함</text><rect x="1000" y="330" width="38" height="5" rx="2" fill="#4E565C"/><circle cx="1019" cy="350" r="3" fill="#C9B26A"/></g>`;
 const ROADSIGN_ART=`<g transform="translate(400 222)"><rect x="56" y="44" width="8" height="70" fill="#6F6A62"/><path d="M0 0 L110 0 L128 24 L110 48 L0 48Z" fill="#2F4A52"/><text x="56" y="31" text-anchor="middle" font-family="Gowun Batang,serif" font-size="18" fill="#F3EBD8">큰길 · 파출소</text></g>`;
-const MAILBOX_ART=`<g transform="translate(472 0)"><rect x="884" y="300" width="36" height="50" rx="4" fill="#3E6E56" stroke="#2A4A3A" stroke-width="2"/><rect x="890" y="310" width="24" height="5" rx="2" fill="#1E2E26"/><text x="902" y="338" text-anchor="middle" font-family="Gowun Batang,serif" font-size="11" fill="#F3EBD8">우편</text></g>`;
+const MAILBOX_ART=`<g transform="translate(1672 0)"><rect x="884" y="300" width="36" height="50" rx="4" fill="#3E6E56" stroke="#2A4A3A" stroke-width="2"/><rect x="890" y="310" width="24" height="5" rx="2" fill="#1E2E26"/><text x="902" y="338" text-anchor="middle" font-family="Gowun Batang,serif" font-size="11" fill="#F3EBD8">우편</text></g>`;
 
 /* =========================================================
    ENGINE
