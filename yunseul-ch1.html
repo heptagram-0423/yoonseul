@@ -2675,7 +2675,7 @@ function ch2EndTeaser(){
     DO(()=>setTint("night")),
     N("그날 밤, 새벽 두 시."),
     N("윤슬세탁소 뒤편, 작업장 쪽문의 자물쇠가 아주 조용히 돌아간다."),
-    SYS("3장 「한밤의 침입자」는 준비 중입니다. 메뉴(≡)의 '로비'에서 처음부터 다시 하거나, 나중에 '이어서'로 이 장면부터 볼 수 있어요."),
+    SYS("3장 「한밤의 침입자」는 준비 중입니다. 메뉴(≡)의 '로비'에서 처음부터 다시 하거나, 나중에 '계속하기'로 이 장면부터 볼 수 있어요."),
     {t:"stop"}];
 }
 const PATROL_ART=`<g><rect x="990" y="298" width="58" height="64" rx="4" fill="#8A9298" stroke="#4E565C" stroke-width="2"/><rect x="996" y="306" width="46" height="14" fill="#2C4A7A"/><text x="1019" y="317" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="9" fill="#fff">순찰함</text><rect x="1000" y="330" width="38" height="5" rx="2" fill="#4E565C"/><circle cx="1019" cy="350" r="3" fill="#C9B26A"/></g>`;
@@ -3724,8 +3724,7 @@ function drawLobby(view){
   } else if(view==="settings"){
     m.innerHTML=`<p class="lb-note">글자 나오는 속도</p><div class="lb-speed">${[["slow","느리게"],["normal","보통"],["fast","빠르게"],["instant","바로"]].map(([k,l])=>`<button type="button" class="lb-chip" data-speed="${k}" aria-pressed="${speed===k}">${l}</button>`).join("")}</div><p class="lb-note small">진행 상황은 이 브라우저에만 저장됩니다. 장소를 옮기거나 하루가 바뀔 때 자동 저장돼요.</p><button class="lb-item" type="button" data-act="back">돌아가기</button>`;
   } else {
-    const where=save?`${save.S.day||1}일째 · ${save.cp==="day"?"아침":(LOCNAME[save.loc]||"조사")}`:"";
-    const cont=running?`<button class="lb-item" type="button" data-act="resume">계속하기</button>`:`<button class="lb-item" type="button" data-act="continue"${save?"":" disabled"}>이어서${save?`<span class="lb-sub">${esc(where)}</span>`:""}</button>`;
+    const cont=running?`<button class="lb-item" type="button" data-act="resume">계속하기</button>`:`<button class="lb-item" type="button" data-act="continue"${save?"":" disabled"}>계속하기</button>`;
     m.innerHTML=`<button class="lb-item" type="button" data-act="new">처음부터</button>${cont}<button class="lb-item" type="button" data-act="settings">게임 설정</button>`;
   }
   m.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>{
