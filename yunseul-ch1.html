@@ -474,12 +474,16 @@ body{padding-inline:0}
 .memo-btn.nudge{animation:nbpulse 1.4s ease-in-out 3}
 .memo-bub{position:absolute;left:80px;bottom:26px;z-index:9;background:#FBF7EC;color:#24365A;font-family:var(--f-hand);font-size:21px;line-height:1.2;padding:6px 14px;border-radius:12px 12px 12px 2px;box-shadow:0 4px 12px rgba(0,0,0,.25);pointer-events:none;animation:notein .3s ease-out;transition:opacity .4s}
 .memo-bub.out{opacity:0}
-.memo-in{background:#FBF7EC;color:#24365A;border-radius:10px;width:100%;max-width:520px;display:flex;flex-direction:column;gap:10px;padding:16px 18px 14px;box-shadow:0 20px 50px rgba(0,0,0,.45);font-family:var(--f-hand)}
+.memo-in{background:#FBF7EC;color:#24365A;border-radius:10px;width:100%;max-width:780px;display:flex;flex-direction:column;gap:10px;padding:16px 18px 14px;box-shadow:0 20px 50px rgba(0,0,0,.45);font-family:var(--f-hand)}
 .memo-in h2{margin:0;font-family:var(--f-hand);font-weight:400;font-size:30px;line-height:1}
 .memo-ctx{font-size:19px;color:#6B6A66}
-.memo-ta{font:inherit;font-family:var(--f-hand);font-size:24px;line-height:34px;color:#24365A;width:100%;min-height:204px;resize:vertical;border:none;outline:none;padding:0 4px 0 46px;box-sizing:border-box;background-color:transparent;background-image:linear-gradient(90deg,transparent 36px,#E9A3B0 36px,#E9A3B0 38px,transparent 38px),repeating-linear-gradient(to bottom,transparent 0 33px,#CFDCE8 33px 34px);background-attachment:local}
+.memo-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.memo-pg{font-size:20px;color:#6B6A66}
+.memo-sp{flex:1}
+.memo-acts button:disabled{opacity:.35;cursor:default}
+.memo-ta{font:inherit;font-family:var(--f-hand);font-size:24px;line-height:34px;color:#24365A;width:100%;height:min(476px,calc(100dvh - 210px));min-height:170px;resize:none;overflow:hidden;border:none;outline:none;padding:0 4px 0 46px;box-sizing:border-box;background-color:transparent;background-image:linear-gradient(90deg,transparent 36px,#E9A3B0 36px,#E9A3B0 38px,transparent 38px),repeating-linear-gradient(to bottom,transparent 0 33px,#CFDCE8 33px 34px);background-attachment:local}
 .memo-ta:focus-visible{box-shadow:0 0 0 2px #24365A33;border-radius:4px}
-.memo-acts{display:flex;justify-content:flex-end;gap:8px}
+.memo-acts{display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap}
 .memo-acts button{font-family:var(--f-hand);font-size:22px;min-height:40px;padding:2px 16px;border-radius:999px;border:1.5px solid #24365A;background:transparent;color:#24365A;cursor:pointer}
 .memo-acts button.primary{background:#24365A;color:#FBF7EC}
 .memo-acts button:focus-visible{outline:2px dashed #C23A55;outline-offset:2px}
@@ -546,10 +550,10 @@ body{padding-inline:0}
 </div>
 <div class="sheet" id="sheet-memo" hidden>
   <div class="memo-in" role="dialog" aria-modal="true" aria-labelledby="memo-h">
-    <h2 id="memo-h">메모</h2>
+    <div class="memo-top"><h2 id="memo-h">메모</h2><span class="memo-pg" id="memo-pg"></span></div>
     <div class="memo-ctx" id="memo-ctx"></div>
-    <textarea class="memo-ta" id="memo-ta" aria-label="메모 내용" placeholder="방금 들은 말, 이상했던 점, 떠오른 생각……"></textarea>
-    <div class="memo-acts"><button type="button" id="memo-cancel">닫기</button><button type="button" class="primary" id="memo-save">적어 두기</button></div>
+    <textarea class="memo-ta" id="memo-ta" aria-label="메모 내용" placeholder="방금 들은 말, 이상했던 점, 떠오른 생각…… 한 장이 꽉 차면 다음 장으로 넘어가요."></textarea>
+    <div class="memo-acts"><button type="button" id="memo-prev">◀ 앞 장</button><button type="button" id="memo-next">다음 장 ▶</button><span class="memo-sp"></span><button type="button" class="primary" id="memo-cancel">닫기</button></div>
   </div>
 </div>
 <div class="sheet" id="sheet-log" hidden>
@@ -3636,7 +3640,7 @@ function viewItem(id){
   back.addEventListener("click",drawInv); body.appendChild(back); body.scrollTop=0;
 }
 function drawRecords(body){
-  const nw=document.createElement("button"); nw.type="button"; nw.className="btn rec-new"; nw.textContent="✎ 새 메모 쓰기";
+  const nw=document.createElement("button"); nw.type="button"; nw.className="btn rec-new"; nw.textContent="✎ 메모장 펼치기";
   nw.addEventListener("click",()=>{ $("sheet-inv").hidden=true; openMemo(); });
   body.appendChild(nw);
   body.insertAdjacentHTML("beforeend",`<h3 class="rec-h">기록한 말</h3>`);
@@ -3644,11 +3648,12 @@ function drawRecords(body){
   S.quotes.slice().reverse().forEach(id=>{ const q=QUOTES[id]; if(!q)return;
     body.insertAdjacentHTML("beforeend",`<div class="quote"><span class="q-who">${esc((S.quoteDay[id]||1)+"일째 · "+q.who)}</span><span class="q-x">"${esc(q.x)}"</span><span class="q-n">${esc(q.note)}</span></div>`); });
   body.insertAdjacentHTML("beforeend",`<h3 class="rec-h">내 메모</h3>`);
-  if(!S.memos.length) body.insertAdjacentHTML("beforeend",`<p class="empty">아직 직접 쓴 메모가 없다. 대화가 끝나면 왼쪽 아래 연필을 눌러 적어 둘 수 있다.</p>`);
+  if(!S.memos.length) body.insertAdjacentHTML("beforeend",`<p class="empty">아직 직접 쓴 메모가 없다. 왼쪽 아래 연필을 눌러 적어 둘 수 있다.</p>`);
   S.memos.map((m,i)=>[m,i]).reverse().forEach(([m,i])=>{
     const d=document.createElement("div"); d.className="mymemo";
-    d.innerHTML=`<div class="m-ctx"><span>${esc(m.ctx)}</span><button type="button" class="m-del" aria-label="이 메모 지우기">지우기</button></div><div class="m-x">${esc(m.text)}</div>`;
-    d.querySelector(".m-del").addEventListener("click",()=>{ S.memos.splice(i,1); saveGame(mode==="explore"?"explore":"day"); drawInv(); });
+    d.innerHTML=`<div class="m-ctx"><span>${esc((i+1)+"쪽 · "+m.ctx)}</span><span><button type="button" class="m-del m-open">펼치기</button><button type="button" class="m-del" data-del aria-label="이 장 지우기">지우기</button></span></div><div class="m-x">${esc(m.text)}</div>`;
+    d.querySelector(".m-open").addEventListener("click",()=>{ $("sheet-inv").hidden=true; openMemo(i); });
+    d.querySelector("[data-del]").addEventListener("click",()=>{ S.memos.splice(i,1); saveGame(mode==="explore"?"explore":"day"); drawInv(); });
     body.appendChild(d); });
 }
 function addQuote(id){
@@ -3667,20 +3672,49 @@ function memoNudge(who){
   $("scene").appendChild(bub); memoCtx=who.join(", ");
   setTimeout(()=>{bub.classList.add("out");setTimeout(()=>bub.remove(),400);},4200);
 }
-function openMemo(){
-  if(!S)return;
+/* the memo pad is a notebook: S.memos holds its pages ({day,ctx,text,at}); writing stays on the page,
+   and text that runs past the last line spills onto a new page inserted after it */
+let memoPg=0,memoDirty=false;
+function memoPageCtx(){
   const place=mode==="explore"&&curLoc?LOCNAME[curLoc]:$("scene-name").textContent;
-  const ctx=`${DATES[S.day]||S.day+"일째"} · ${place||""}${memoCtx?" · "+memoCtx:""}`;
-  $("memo-ctx").textContent=ctx; $("memo-ctx").dataset.ctx=ctx;
-  $("memo-ta").value=""; $("sheet-memo").hidden=false; $("memo-ta").focus();
+  return `${DATES[S.day]||S.day+"일째"} · ${place||""}${memoCtx?" · "+memoCtx:""}`;
 }
-function closeMemo(){ $("sheet-memo").hidden=true; }
-$("memo-cancel").addEventListener("click",closeMemo);
-$("memo-save").addEventListener("click",()=>{
-  const t=$("memo-ta").value.trim();
-  if(t){ S.memos.push({day:S.day,ctx:$("memo-ctx").dataset.ctx||"",text:t,at:Date.now()}); newItems=true; updateCount(); notify("memo","메모","수첩에 적어 뒀다"); saveGame(mode==="explore"?"explore":"day"); memoCtx=""; }
-  closeMemo();
+function newMemoPage(at){ S.memos.splice(at,0,{day:S.day,ctx:memoPageCtx(),text:"",at:Date.now()}); return at; }
+function showMemoPage(i,caret){
+  memoPg=i; const m=S.memos[i], ta=$("memo-ta");
+  $("memo-ctx").textContent=m.ctx; $("memo-pg").textContent=`${i+1} / ${S.memos.length}쪽`;
+  ta.value=m.text; $("memo-prev").disabled=i===0;
+  $("memo-next").textContent=i<S.memos.length-1?"다음 장 ▶":"새 장 ▶"; $("memo-next").disabled=i===S.memos.length-1&&!m.text.trim();
+  ta.focus(); const c=caret==null?ta.value.length:caret; ta.setSelectionRange(c,c);
+}
+function openMemo(i){
+  if(!S)return;
+  $("sheet-memo").hidden=false; memoDirty=false;
+  if(i==null){ i=S.memos.length-1; if(i<0||(memoCtx&&S.memos[i].text.trim()))i=newMemoPage(S.memos.length); }
+  showMemoPage(i);
+}
+function memoFits(ta){ return ta.scrollHeight<=ta.clientHeight+2; }
+$("memo-ta").addEventListener("input",()=>{
+  const ta=$("memo-ta"); memoDirty=true;
+  if(!memoFits(ta)){
+    const full=ta.value, caret=ta.selectionStart; let n=full.length;
+    while(n>0){ n--; ta.value=full.slice(0,n); if(memoFits(ta))break; }
+    const brk=Math.max(full.lastIndexOf("\n",n),full.lastIndexOf(" ",n));
+    if(brk>n-20&&brk>0)n=brk+1;
+    S.memos[memoPg].text=full.slice(0,n);
+    const nx=newMemoPage(memoPg+1); S.memos[nx].text=full.slice(n);
+    showMemoPage(nx,Math.max(0,caret-n));
+  } else { S.memos[memoPg].text=ta.value; $("memo-next").disabled=memoPg===S.memos.length-1&&!ta.value.trim(); }
 });
+$("memo-prev").addEventListener("click",()=>{ if(memoPg>0)showMemoPage(memoPg-1); });
+$("memo-next").addEventListener("click",()=>{ showMemoPage(memoPg<S.memos.length-1?memoPg+1:newMemoPage(S.memos.length),0); });
+function closeMemo(){
+  if($("sheet-memo").hidden)return;
+  $("sheet-memo").hidden=true; S.memos=S.memos.filter(m=>m.text.trim());
+  if(memoDirty){ newItems=true; updateCount(); notify("memo","메모","수첩에 적어 뒀다"); memoCtx=""; }
+  saveGame(mode==="explore"?"explore":"day");
+}
+$("memo-cancel").addEventListener("click",closeMemo);
 $("sheet-memo").addEventListener("click",e=>{ if(e.target.id==="sheet-memo")closeMemo(); });
 $("btn-memo").addEventListener("click",e=>{ e.stopPropagation(); openMemo(); });
 $("inv-close").addEventListener("click",()=>{$("sheet-inv").hidden=true;});
