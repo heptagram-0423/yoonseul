@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#141A1B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="윤슬세탁소">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
 <title>윤슬세탁소 1장</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -498,6 +505,27 @@ body{padding-inline:0}
 .mymemo .m-x{font-size:22px;line-height:30px;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
 .mymemo .m-del{font:inherit;font-size:16px;border:none;background:none;color:#C23A55;cursor:pointer;padding:2px 6px}
 .rec-new{align-self:flex-start}
+/* v14: phones held sideways — short screens get a slimmer dialogue box and smaller buttons */
+@media (orientation:landscape) and (max-height:500px){
+  .box{left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));bottom:6px;padding:12px 16px 8px;min-height:0}
+  .box .txt{font-size:15px;line-height:1.55}
+  .box .name{top:-12px;font-size:13px;padding:2px 10px 2px 18px}
+  .choices{bottom:86px;max-height:calc(100% - 96px);gap:6px}
+  .memo-btn{width:46px;height:46px;left:10px;bottom:10px}.memo-btn svg{width:28px;height:28px}
+  .nb-btn{width:50px;height:58px;right:10px;bottom:10px}
+  .menu-btn{width:38px;height:38px;top:8px;right:max(8px,env(safe-area-inset-right))}
+  .pan-btn{min-height:44px}
+  .memo-in{padding:10px 14px 10px;gap:6px}.memo-in h2{font-size:24px}
+}
+/* portrait phones: ask to turn sideways (can be skipped) */
+.rotate{display:none;position:fixed;inset:0;z-index:100;background:#141A1B;color:#E4DCC6;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:24px;font-family:var(--f-display)}
+.rotate svg{width:96px;height:96px;animation:rotphone 2.4s ease-in-out infinite}
+@keyframes rotphone{0%,25%{transform:rotate(0)}55%,100%{transform:rotate(-90deg)}}
+.rotate p{margin:0;font-size:21px;line-height:1.5}
+.rotate button{font:inherit;font-size:15px;color:#9AA3A0;background:none;border:1px solid #4A5553;border-radius:999px;padding:6px 16px;cursor:pointer}
+@media (orientation:portrait) and (pointer:coarse) and (max-width:900px){ html:not(.portrait-ok) .rotate{display:flex} }
+@media (prefers-reduced-motion:reduce){.rotate svg{animation:none;transform:rotate(-90deg)}}
+.lb-tip{position:absolute;left:max(24px,6vw);bottom:40px;font-size:12.5px;color:#9AA3A0;max-width:40ch;line-height:1.5}
 </style>
 </head>
 <body>
@@ -529,6 +557,11 @@ body{padding-inline:0}
   </main>
 </div>
 
+<div class="rotate" id="rotate" role="dialog" aria-label="화면 방향 안내">
+  <svg viewBox="0 0 96 96" aria-hidden="true"><rect x="30" y="10" width="36" height="76" rx="7" fill="none" stroke="#E4DCC6" stroke-width="3"/><circle cx="48" cy="78" r="3" fill="#E4DCC6"/></svg>
+  <p>휴대폰을 가로로 돌려 주세요</p>
+  <button type="button" id="rot-skip">세로로 할게요</button>
+</div>
 <div class="lobby" id="lobby" hidden>
   <div class="lb-left">
     <div class="lb-logo">
@@ -537,6 +570,7 @@ body{padding-inline:0}
     <nav class="lb-menu" id="lb-menu"></nav>
   </div>
   <div class="lb-art" aria-hidden="true" id="lb-art"></div>
+  <span class="lb-tip" id="lb-tip" hidden>주소창 없이 크게 하려면: 아래쪽 공유 버튼 → '홈 화면에 추가' 후 홈 화면의 윤슬세탁소 아이콘으로 여세요.</span>
   <span class="lb-ver">ver 0.10 · 2장 체험판</span>
   <span class="lb-copy">윤슬세탁소 · 프로토타입</span>
 </div>
@@ -592,7 +626,9 @@ const IMG_BG={};
 const IMG_FIG={};
 function imgBg(k){
   const d=IMG_BG[k], src=typeof d.src==="function"?d.src():d.src, W=d.ws?d.ws.reduce((a,b)=>a+b,0):1200*src.length, pw=W/src.length;
-  return `<svg viewBox="0 0 ${W} 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${src.map((f,i)=>`<image href="${f}" x="${i*pw}" y="0" width="${pw}" height="800" preserveAspectRatio="none"/>`).join("")}${d.over?d.over():""}</svg>`;
+  /* single pictures get mirrored, blurred edges so a wide (landscape) screen shows them whole instead of cropping top and bottom */
+  const edge=W<2400?`<defs><filter id="bgx" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="16"/></filter></defs><g filter="url(#bgx)"><image href="${src[0]}" x="0" y="0" width="${pw}" height="800" preserveAspectRatio="none" transform="scale(-1 1)"/><image href="${src[src.length-1]}" x="${W-pw}" y="0" width="${pw}" height="800" preserveAspectRatio="none" transform="translate(${2*W} 0) scale(-1 1)"/></g><rect x="${-pw}" width="${pw}" height="800" fill="#0E1416" opacity=".4"/><rect x="${W}" width="${pw}" height="800" fill="#0E1416" opacity=".4"/>`:"";
+  return `<svg viewBox="0 0 ${W} 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${edge}${src.map((f,i)=>`<image href="${f}" x="${i*pw}" y="0" width="${pw}" height="800" preserveAspectRatio="none"/>`).join("")}${d.over?d.over():""}</svg>`;
 }
 const BG={
 front:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -2754,19 +2790,20 @@ function bgW(k){ const P=BG_PANELS[k]; return P?P.ws.reduce((a,b)=>a+b,0):1200; 
 function panelX(k,i){ const P=BG_PANELS[k]; return P?P.ws.slice(0,i).reduce((a,b)=>a+b,0):0; }
 function panelMid(k,i){ const P=BG_PANELS[k]; return panelX(k,i)+(P?P.ws[i]:1200)/2; }
 function homeX(k){ const d=IMG_BG[k]; return d&&d.homeX!=null?d.homeX:panelMid(k,bgHome(k))-600; }
-function viewW(){ const r=$("scene").getBoundingClientRect(); return r.height?Math.min(1200,800*r.width/r.height):1200; }
+function viewW(){ const r=$("scene").getBoundingClientRect(); return r.height?800*r.width/r.height:1200; }
+function clampX(x,vw,W){ return vw>=W?(W-vw)/2:Math.max(0,Math.min(W-vw,x)); }
 function canPan(){ return panOn&&bgW(curBg)-viewW()>1; }
 function applyPan(){
   const vw=viewW(), W=bgW(curBg), svgs=[$("hot"),$("fx"),$("bg").querySelector("svg")];
-  if(!panOn){ const x0=homeX(curBg); svgs.forEach(v=>v&&v.setAttribute("viewBox",`${x0} 0 1200 800`)); updateArrows(); return false; }
-  panX=Math.max(0,Math.min(W-vw,panX==null?homeX(curBg)+600-vw/2:panX));
+  if(!panOn){ const x0=clampX(homeX(curBg)+600-vw/2,vw,W); svgs.forEach(v=>v&&v.setAttribute("viewBox",`${x0.toFixed(1)} 0 ${vw.toFixed(1)} 800`)); updateArrows(); return false; }
+  panX=clampX(panX==null?homeX(curBg)+600-vw/2:panX,vw,W);
   svgs.forEach(v=>v&&v.setAttribute("viewBox",`${panX.toFixed(1)} 0 ${vw.toFixed(1)} 800`));
   updateArrows();
   return W-vw>1;
 }
 function slideTo(x){
   if(!panOn)return; cancelAnimationFrame(panAnim);
-  const vw=viewW(), to=Math.max(0,Math.min(bgW(curBg)-vw,x)), from=panX==null?to:panX;
+  const vw=viewW(), to=clampX(x,vw,bgW(curBg)), from=panX==null?to:panX;
   if(RM||Math.abs(to-from)<2){ panX=to; applyPan(); return; }
   const t0=performance.now(), D=420;
   const step=t=>{ const k=Math.min(1,(t-t0)/D), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; panX=from+(to-from)*e; applyPan(); if(k<1)panAnim=requestAnimationFrame(step); };
@@ -2909,7 +2946,8 @@ function startShutter(dir){
   S.peek=true; panOn=false; curBg=null; setBg("front"); setCast([]);
   const SH=IMG_BG.front?{x:535,y:228,w:455,h:358,img:SCN("front-shop")}:{x:410,y:292,w:400,h:358};
   const m=$("mini"); m.className="mini shutter"; m.hidden=false;
-  m.innerHTML=`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid ${fit}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="shclip"><rect x="${SH.x}" y="${SH.y}" width="${SH.w}" height="${SH.h}"/></clipPath><clipPath id="shsrc"><rect x="${SH.x}" y="${SH.y-4}" width="${SH.w}" height="${SH.h+4}"/></clipPath></defs><g id="shg" clip-path="url(#shclip)"></g>${SH.img?"":`<rect x="410" y="262" width="400" height="32" rx="4" fill="#7E8686"/><rect x="410" y="288" width="400" height="6" fill="#5E6666"/>`}</svg><span class="mini-sr" aria-live="polite" id="mini-sr"></span>`;
+  const vb=$("bg").querySelector("svg").getAttribute("viewBox").split(" ").map(Number);
+  m.innerHTML=`<svg viewBox="${vb[0]-homeX("front")} 0 ${vb[2]} 800" preserveAspectRatio="xMidYMid ${fit}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="shclip"><rect x="${SH.x}" y="${SH.y}" width="${SH.w}" height="${SH.h}"/></clipPath><clipPath id="shsrc"><rect x="${SH.x}" y="${SH.y-4}" width="${SH.w}" height="${SH.h+4}"/></clipPath></defs><g id="shg" clip-path="url(#shclip)"></g>${SH.img?"":`<rect x="410" y="262" width="400" height="32" rx="4" fill="#7E8686"/><rect x="410" y="288" width="400" height="6" fill="#5E6666"/>`}</svg><span class="mini-sr" aria-live="polite" id="mini-sr"></span>`;
   const g=m.querySelector("#shg");
   mini={kind:"shutter",dir,r:dir==="up"?0:1,shake:0,last:performance.now(),done:false,taps:0};
   const draw=()=>{
@@ -3483,10 +3521,11 @@ function openMenuPanel(){
   h+=`<button class="mp-item" type="button" data-mp="log"${S?"":" disabled"}>기록</button>`;
   h+=`<button class="mp-item" type="button" data-mp="memo"${S?"":" disabled"}>메모 쓰기</button>`;
   h+=`<button class="mp-item" type="button" data-mp="hint"${S&&mode==="explore"?"":" disabled"}>힌트</button>`;
+  if(canFull()&&!document.fullscreenElement) h+=`<button class="mp-item" type="button" data-mp="full">전체 화면</button>`;
   h+=`<button class="mp-item" type="button" data-mp="lobby">로비</button>`;
   p.innerHTML=h; p.hidden=false; $("btn-menu").setAttribute("aria-expanded","true");
   p.querySelectorAll("[data-mp]").forEach(b=>b.addEventListener("click",e=>{ e.stopPropagation(); closeMenuPanel(); const a=b.dataset.mp;
-    if(a==="inv")openInv(); else if(a==="memo")openMemo(); else if(a==="log")openLog(); else if(a==="hint")hint(); else openLobby(); }));
+    if(a==="inv")openInv(); else if(a==="memo")openMemo(); else if(a==="log")openLog(); else if(a==="hint")hint(); else if(a==="full")goFull(); else openLobby(); }));
   const f=p.querySelector(".mp-item:not([disabled])"); if(f)f.focus({preventScroll:true});
 }
 function closeMenuPanel(){ $("menu-panel").hidden=true; $("btn-menu").setAttribute("aria-expanded","false"); }
@@ -3780,6 +3819,16 @@ function continueGame(){
   else enterExplore(LOCS[d.loc]?d.loc:"street");
 }
 
+/* ---------- phones: full screen (hides the address bar) and landscape lock where the browser allows it ---------- */
+const TOUCH=matchMedia("(pointer:coarse)").matches;
+function canFull(){ return TOUCH&&!!document.documentElement.requestFullscreen; }
+function goFull(){
+  if(!canFull()||document.fullscreenElement)return;
+  document.documentElement.requestFullscreen({navigationUI:"hide"}).then(()=>{ if(screen.orientation&&screen.orientation.lock)screen.orientation.lock("landscape").catch(()=>{}); }).catch(()=>{});
+}
+$("rot-skip").addEventListener("click",()=>{ document.documentElement.classList.add("portrait-ok"); });
+if(/iPhone|iPod/.test(navigator.userAgent)&&!navigator.standalone) $("lb-tip").hidden=false;
+
 /* ---------- lobby ---------- */
 function openLobby(){ drawLobby(); $("lobby").hidden=false; const f=$("lobby").querySelector(".lb-item:not([disabled])"); if(f)f.focus({preventScroll:true}); }
 function closeLobby(){ $("lobby").hidden=true; }
@@ -3794,7 +3843,7 @@ function drawLobby(view){
     m.innerHTML=`<button class="lb-item" type="button" data-act="new">처음부터</button>${cont}<button class="lb-item" type="button" data-act="settings">게임 설정</button>`;
   }
   m.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>{
-    const a=b.dataset.act;
+    const a=b.dataset.act; if(a!=="settings")goFull();
     if(a==="new"){ if(running||readSave())drawLobby("confirm"); else { closeLobby(); start(); } }
     else if(a==="new-yes"){ try{localStorage.removeItem(SAVE_KEY);}catch(e){} closeLobby(); start(); }
     else if(a==="continue"){ closeLobby(); continueGame(); }
