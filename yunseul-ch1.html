@@ -633,12 +633,22 @@ const BG_PANELS={};
    IMG_FIG[name] = {w,ih: image size, h: height relative to a full-height adult, bust?: crop ratio, emo:{smile,...}, carry?:{banchan,...}} */
 const IMG_BG={};
 const IMG_FIG={};
-function imgBg(k){
-  const d=IMG_BG[k], src=typeof d.src==="function"?d.src():d.src, W=d.ws?d.ws.reduce((a,b)=>a+b,0):1200*src.length, pw=W/src.length;
-  /* single pictures get mirrored, blurred edges so a wide (landscape) screen shows them whole instead of cropping top and bottom */
-  const edge=W<2400?`<defs><filter id="bgx" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="16"/></filter></defs><g filter="url(#bgx)"><image href="${src[0]}" x="0" y="0" width="${pw}" height="800" preserveAspectRatio="none" transform="scale(-1 1)"/><image href="${src[src.length-1]}" x="${W-pw}" y="0" width="${pw}" height="800" preserveAspectRatio="none" transform="translate(${2*W} 0) scale(-1 1)"/></g><rect x="${-pw}" width="${pw}" height="800" fill="#0E1416" opacity=".4"/><rect x="${W}" width="${pw}" height="800" fill="#0E1416" opacity=".4"/>`:"";
-  return `<svg viewBox="0 0 ${W} 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${edge}${src.map((f,i)=>`<image href="${f}" x="${i*pw}" y="0" width="${pw}" height="800" preserveAspectRatio="none"/>`).join("")}${d.over?d.over():""}</svg>`;
+/* mirrored, blurred edges around a picture so a wide (landscape) screen shows it whole instead of cropping top and bottom */
+function edgeSVG(fl,fr,xl,xr,pw){
+  return `<defs><filter id="bgx" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="16"/></filter></defs><g filter="url(#bgx)"><image href="${fl}" x="${-xl}" y="0" width="${pw}" height="800" preserveAspectRatio="none" transform="scale(-1 1)"/><image href="${fr}" x="${xr-pw}" y="0" width="${pw}" height="800" preserveAspectRatio="none" transform="translate(${2*xr} 0) scale(-1 1)"/></g><rect x="${xl-pw}" width="${pw}" height="800" fill="#0E1416" opacity=".4"/><rect x="${xr}" width="${pw}" height="800" fill="#0E1416" opacity=".4"/>`;
 }
+function imgBg(k){
+  const d=IMG_BG[k], src=typeof d.src==="function"?d.src():d.src;
+  if(d.split){ /* panels that were not drawn to join: show one at a time, at its place in the strip */
+    const i=splitIdx(k), x=i*1200;
+    return `<svg viewBox="0 0 ${1200*src.length} 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${edgeSVG(src[i],src[i],x,x+1200,1200)}<image href="${src[i]}" x="${x}" y="0" width="1200" height="800" preserveAspectRatio="none"/><defs><clipPath id="bgpanel"><rect x="${x}" width="1200" height="800"/></clipPath></defs><g clip-path="url(#bgpanel)">${d.over?d.over():""}</g></svg>`;
+  }
+  const W=d.ws?d.ws.reduce((a,b)=>a+b,0):1200*src.length, pw=W/src.length;
+  return `<svg viewBox="0 0 ${W} 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${W<2400?edgeSVG(src[0],src[src.length-1],0,W,pw):""}${src.map((f,i)=>`<image href="${f}" x="${i*pw}" y="0" width="${pw}" height="800" preserveAspectRatio="none"/>`).join("")}${d.over?d.over():""}</svg>`;
+}
+const splitI={};
+function splitIdx(k){ const d=IMG_BG[k]; return d&&d.split?(splitI[k]??(d.home||0)):-1; }
+
 const BG={
 front:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCD4DC"/><stop offset="1" stop-color="#EDE6D8"/></linearGradient></defs>
@@ -1027,8 +1037,8 @@ Object.assign(IMG_BG,{
       +`<text x="2285" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
   banchan:{src:()=>[SCN(S&&S.bongDown?"banchan-down":"banchan")]},
   flowershop:{src:()=>[SCN(S&&S.bucketDown?"flowershop-down":"flowershop")]},
-  counter:{src:[SCN("counter-wide")],ws:[1200,1200,1055],homeX:1200,names:["출입문","카운터","작업장 · 창고"],home:1,
-    over:()=>`<g transform="rotate(-2 3272 255)"><text x="3272" y="244" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">손대지</text><text x="3272" y="272" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">말 것</text></g><rect x="955" y="292" width="13" height="13" fill="none" stroke="#C8436A" stroke-width="2.5"/>`},
+  counter:{src:[SCN("counter-entrance"),SCN("counter"),SCN("counter-back")],split:true,names:["출입문","카운터","작업장 · 창고"],home:1,
+    over:()=>`<g transform="rotate(-2 3417 255)"><text x="3417" y="244" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">손대지</text><text x="3417" y="272" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">말 것</text></g><rect x="955" y="292" width="13" height="13" fill="none" stroke="#C8436A" stroke-width="2.5"/>`},
   workshop:{src:[SCN("workshop")],over:()=>`<text x="624" y="437" text-anchor="middle" font-family="${HAND}" font-size="19" fill="#B03A48">사용</text><text x="624" y="458" text-anchor="middle" font-family="${HAND}" font-size="19" fill="#B03A48">금지</text>`},
   alley:{src:[SCN("alley")]},
   homeroad:{src:[SCN("homeroad-harbor"),SCN("homeroad-stairs")],names:["항구 길","돌계단"],home:0},
@@ -1772,11 +1782,11 @@ const LOCS={
     {id:"cal",x:880,y:80,w:165,h:280,label:"달력",run:()=>[M("이모 달력은 8월에서 멈춰 있었다. 11월로 넘긴 건 나다."),M("빨간 네모는 내가 쳐 놓은 거다. 첫 월세 내는 날.")]},
     {id:"switch",x:358,y:294,w:46,h:56,label:"전등 스위치",run:()=>switchRun()},
     {id:"entrance",x:40,y:40,w:300,h:640,label:"출입문",run:()=>entranceRun()},
-    {id:"work",x:2370,y:90,w:280,h:550,label:"작업장",go:"workshop"},
-    {id:"door",x:3140,y:80,w:260,h:560,label:"창고 문",run:()=>storageDoorRun()},
-    {id:"book",x:1074,y:412,w:278,h:64,label:"접수 장부",run:()=>bookRun()},
-    {id:"coat",x:1716,y:380,w:243,h:110,label:()=>S.phase==="d1_wash"?"빨래 바구니":"옥색 저고리",show:coatOnCounter,art:()=>S.phase==="d1_wash"?`<g transform="translate(1266 -88)">${BASKET_ART()}</g>`:`<g transform="translate(1256 -80)">${JEOGORI}</g>`,run:()=>coatRun()},
-    {id:"glass",x:1727,y:739,w:42,h:42,label:"바닥 틈",show:()=>S.phase==="d2_invest"&&!S.glass,art:()=>`<g transform="translate(1137 19)">${GLASS}</g>`,run:()=>[
+    {id:"work",x:2515,y:90,w:280,h:550,label:"작업장",go:"workshop"},
+    {id:"door",x:3285,y:80,w:260,h:560,label:"창고 문",run:()=>storageDoorRun()},
+    {id:"book",x:1255,y:412,w:240,h:64,label:"접수 장부",run:()=>bookRun()},
+    {id:"coat",x:1810,y:380,w:210,h:110,label:()=>S.phase==="d1_wash"?"빨래 바구니":"옥색 저고리",show:coatOnCounter,art:()=>S.phase==="d1_wash"?`<g transform="translate(1360 -88)">${BASKET_ART()}</g>`:`<g transform="translate(1350 -80)">${JEOGORI}</g>`,run:()=>coatRun()},
+    {id:"glass",x:1819,y:739,w:42,h:42,label:"바닥 틈",show:()=>S.phase==="d2_invest"&&!S.glass,art:()=>`<g transform="translate(1229 19)">${GLASS}</g>`,run:()=>[
       N("카운터 아래, 바닥 틈에서 무언가 반짝인다. 푸른 유리구슬 하나."),
       M("구슬치기용 구슬이네. 이게 왜 카운터 밑에 있지?"),
       CARD("glass")]}
@@ -2785,7 +2795,7 @@ function tagBg(){
 }
 function setFit(f){ fit=f; ["bg"].forEach(id=>{const b=$(id).querySelector("svg"); if(b)b.setAttribute("preserveAspectRatio","xMidYMid "+f);}); }
 function setBg(k){
-  if(curBg!==k){ curBg=k; const b=$("bg"); b.innerHTML=BG[k](); tagBg(); b.classList.remove("bg-fade"); void b.offsetWidth; b.classList.add("bg-fade"); }
+  if(curBg!==k){ curBg=k; delete splitI[k]; const b=$("bg"); b.innerHTML=BG[k](); tagBg(); b.classList.remove("bg-fade"); void b.offsetWidth; b.classList.add("bg-fade"); }
   setFit(fit);
   $("dark").hidden=(k!=="storage"); updateDark();
   $("fx").innerHTML=k==="storage"?`<polygon points="0,96 30,104 30,800 0,800" fill="#F2CF86" opacity=".55"/><polygon points="30,104 70,140 90,800 30,800" fill="#F2CF86" opacity=".12"/>`:"";
@@ -2800,36 +2810,46 @@ function panelX(k,i){ const P=BG_PANELS[k]; return P?P.ws.slice(0,i).reduce((a,b
 function panelMid(k,i){ const P=BG_PANELS[k]; return panelX(k,i)+(P?P.ws[i]:1200)/2; }
 function homeX(k){ const d=IMG_BG[k]; return d&&d.homeX!=null?d.homeX:panelMid(k,bgHome(k))-600; }
 function viewW(){ const r=$("scene").getBoundingClientRect(); return r.height?800*r.width/r.height:1200; }
-function clampX(x,vw,W){ return vw>=W?(W-vw)/2:Math.max(0,Math.min(W-vw,x)); }
-function canPan(){ return panOn&&bgW(curBg)-viewW()>1; }
+function clampX(x,vw,W,lo=0){ return vw>=W-lo?lo+(W-lo-vw)/2:Math.max(lo,Math.min(W-vw,x)); }
+/* the stretch of the strip the view may cover: the whole strip, or just the shown panel of a split one */
+function panRange(k){ const i=splitIdx(k); return i<0?[0,bgW(k)]:[i*1200,i*1200+1200]; }
+function canPan(){ if(!panOn)return false; const [lo,hi]=panRange(curBg); return (splitIdx(curBg)>=0&&bgPanels(curBg)>1)||hi-lo-viewW()>1; }
+function showSplit(k,i){ splitI[k]=i; const b=$("bg"); b.innerHTML=BG[k](); tagBg(); b.classList.remove("bg-fade"); void b.offsetWidth; b.classList.add("bg-fade"); }
 function applyPan(){
   const vw=viewW(), W=bgW(curBg), svgs=[$("hot"),$("fx"),$("bg").querySelector("svg")];
-  if(!panOn){ const x0=clampX(homeX(curBg)+600-vw/2,vw,W); svgs.forEach(v=>v&&v.setAttribute("viewBox",`${x0.toFixed(1)} 0 ${vw.toFixed(1)} 800`)); updateArrows(); return false; }
-  panX=clampX(panX==null?homeX(curBg)+600-vw/2:panX,vw,W);
+  if(!panOn&&splitIdx(curBg)>=0&&splitIdx(curBg)!==bgHome(curBg)){ splitI[curBg]=bgHome(curBg); $("bg").innerHTML=BG[curBg](); tagBg(); svgs[2]=$("bg").querySelector("svg"); }
+  const [lo,hi]=panRange(curBg);
+  if(!panOn){ const x0=clampX(homeX(curBg)+600-vw/2,vw,hi,lo); svgs.forEach(v=>v&&v.setAttribute("viewBox",`${x0.toFixed(1)} 0 ${vw.toFixed(1)} 800`)); updateArrows(); return false; }
+  panX=clampX(panX==null?(splitIdx(curBg)>=0?lo+600:homeX(curBg)+600)-vw/2:panX,vw,hi,lo);
   svgs.forEach(v=>v&&v.setAttribute("viewBox",`${panX.toFixed(1)} 0 ${vw.toFixed(1)} 800`));
   updateArrows();
-  return W-vw>1;
+  return canPan();
 }
 function slideTo(x){
   if(!panOn)return; cancelAnimationFrame(panAnim);
-  const vw=viewW(), to=clampX(x,vw,bgW(curBg)), from=panX==null?to:panX;
+  const vw=viewW(), [lo,hi]=panRange(curBg), to=clampX(x,vw,hi,lo), from=panX==null?to:panX;
   if(RM||Math.abs(to-from)<2){ panX=to; applyPan(); return; }
   const t0=performance.now(), D=420;
   const step=t=>{ const k=Math.min(1,(t-t0)/D), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; panX=from+(to-from)*e; applyPan(); if(k<1)panAnim=requestAnimationFrame(step); };
   panAnim=requestAnimationFrame(step);
 }
-function panTo(cx){ if(!panOn)return; slideTo(cx-viewW()/2); }
-function curPanel(){ const c=(panX||0)+viewW()/2, n=bgPanels(curBg); let i=0; while(i<n-1&&panelX(curBg,i+1)<=c)i++; return i; }
+function panTo(cx){ if(!panOn)return; const j=Math.floor(cx/1200); if(splitIdx(curBg)>=0&&j!==splitIdx(curBg)&&j>=0&&j<bgPanels(curBg)){ showSplit(curBg,j); panX=null; applyPan(); drawHot(); } slideTo(cx-viewW()/2); }
+function curPanel(){ if(splitIdx(curBg)>=0)return splitIdx(curBg); const c=(panX||0)+viewW()/2, n=bgPanels(curBg); let i=0; while(i<n-1&&panelX(curBg,i+1)<=c)i++; return i; }
 function panStep(d){
-  const n=bgPanels(curBg), vw=viewW();
-  if(n>1){ const i=Math.max(0,Math.min(n-1,curPanel()+d)); slideTo(panelMid(curBg,i)-vw/2); }
+  const n=bgPanels(curBg), vw=viewW(), si=splitIdx(curBg);
+  if(si>=0){
+    const [lo,hi]=panRange(curBg), x=panX||0;
+    if(d<0?x>lo+1:x<hi-vw-1) slideTo(x+d*vw*.8);
+    else if(si+d>=0&&si+d<n){ showSplit(curBg,si+d); panX=d>0?(si+d)*1200:(si+d)*1200+1200-vw; applyPan(); drawHot(); }
+  }
+  else if(n>1){ const i=Math.max(0,Math.min(n-1,curPanel()+d)); slideTo(panelMid(curBg,i)-vw/2); }
   else slideTo((panX||0)+d*vw*.8);
   setNear(null);
 }
 function updateArrows(){
   const L=$("pan-prev"), R=$("pan-next"); if(!L)return;
-  const show=mode==="explore"&&canPan(), vw=viewW(), x=panX||0, W=bgW(curBg), P=BG_PANELS[curBg];
-  L.hidden=!(show&&x>1); R.hidden=!(show&&x<W-vw-1);
+  const show=mode==="explore"&&canPan(), vw=viewW(), x=panX||0, [lo,hi]=panRange(curBg), P=BG_PANELS[curBg], si=splitIdx(curBg);
+  L.hidden=!(show&&(x>lo+1||si>0)); R.hidden=!(show&&(x<hi-vw-1||si>=0&&si<bgPanels(curBg)-1));
   if(P){ const i=curPanel(); L.querySelector("span").textContent=P.names[Math.max(0,i-1)]||""; R.querySelector("span").textContent=P.names[Math.min(P.names.length-1,i+1)]||""; }
   else { L.querySelector("span").textContent=""; R.querySelector("span").textContent=""; }
 }
@@ -3384,7 +3404,7 @@ function showDaycard(s){
 
 /* ---------- exploration ---------- */
 let nearId=null;
-function visibleSpots(L){ return L.spots.filter(s=>!s.show||s.show()); }
+function visibleSpots(L){ const si=splitIdx(L.bg); return L.spots.filter(s=>(!s.show||s.show())&&(si<0||Math.floor((s.x+s.w/2)/1200)===si)); }
 function enterExplore(loc){
   const moved=curLoc!==loc;
   mode="explore"; curLoc=loc; lastLoc=loc; const L=LOCS[loc];
@@ -3439,7 +3459,10 @@ $("hot").addEventListener("pointerleave",()=>setNear(null));
 $("pan-prev").addEventListener("click",e=>{ e.stopPropagation(); panStep(-1); });
 $("pan-next").addEventListener("click",e=>{ e.stopPropagation(); panStep(1); });
 $("hot").addEventListener("pointerdown",e=>{ if(mode!=="explore"||!canPan())return; cancelAnimationFrame(panAnim); drag={x:e.clientX,p:panX,w:$("scene").getBoundingClientRect().width}; dragged=false; });
-addEventListener("pointermove",e=>{ if(!drag)return; const dx=e.clientX-drag.x; if(Math.abs(dx)>8)dragged=true; if(dragged){ panX=drag.p-dx*viewW()/drag.w; applyPan(); setNear(null); } });
+addEventListener("pointermove",e=>{ if(!drag)return; const dx=e.clientX-drag.x; if(Math.abs(dx)>8)dragged=true; if(!dragged)return;
+  const vw=viewW(), nx=drag.p-dx*vw/drag.w, [lo,hi]=panRange(curBg);
+  if(splitIdx(curBg)>=0&&Math.abs(nx-clampX(nx,vw,hi,lo))>60*vw/drag.w){ drag=null; panStep(dx<0?1:-1); return; }
+  panX=nx; applyPan(); setNear(null); });
 addEventListener("pointerup",()=>{ drag=null; });
 addEventListener("pointercancel",()=>{ drag=null; });
 $("hot").addEventListener("click",e=>{
