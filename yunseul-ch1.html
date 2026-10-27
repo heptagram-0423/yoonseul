@@ -3837,6 +3837,11 @@ function goFull(){
 }
 $("rot-skip").addEventListener("click",()=>{ document.documentElement.classList.add("portrait-ok"); });
 if(/iPhone|iPod/.test(navigator.userAgent)&&!navigator.standalone) $("lb-tip").hidden=false;
+/* Samsung Internet repaints pages in its own dark mode and gives sites no way to opt out, so tell the player how to turn it off */
+if(/SamsungBrowser/.test(navigator.userAgent)&&matchMedia("(prefers-color-scheme: dark)").matches){
+  $("lb-tip").textContent="색이 이상하게 보이면: 삼성 인터넷 아래쪽 ≡ 메뉴 → '다크 모드' 끄기 (또는 설정 → 실험실 → '웹사이트 다크 테마 사용' 켜기)";
+  $("lb-tip").hidden=false;
+}
 
 /* ---------- lobby ---------- */
 function openLobby(){ drawLobby(); $("lobby").hidden=false; const f=$("lobby").querySelector(".lb-item:not([disabled])"); if(f)f.focus({preventScroll:true}); }
