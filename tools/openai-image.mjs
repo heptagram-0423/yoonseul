@@ -198,6 +198,12 @@ export async function generate(opts) {
   };
 }
 
+// 업로드 파일의 MIME 타입 (없으면 API가 application/octet-stream으로 거절한다)
+function mimeOf(path) {
+  const ext = path.toLowerCase().split(".").pop();
+  return ext === "jpg" || ext === "jpeg" ? "image/jpeg" : ext === "webp" ? "image/webp" : "image/png";
+}
+
 /**
  * 기존 이미지 수정/확장 (POST /v1/images/edits)
  * images: 참조로 넣을 이미지 경로 배열. mask: 투명 영역만 다시 그리는 마스크(선택).
@@ -224,11 +230,11 @@ export async function edit(opts) {
 
   for (const p of imgs) {
     const abs = resolve(ROOT, p);
-    form.append("image[]", new Blob([await readFile(abs)]), basename(abs));
+    form.append("image[]", new Blob([await readFile(abs)], { type: mimeOf(abs) }), basename(abs));
   }
   if (opts.mask) {
     const abs = resolve(ROOT, opts.mask);
-    form.append("mask", new Blob([await readFile(abs)]), basename(abs));
+    form.append("mask", new Blob([await readFile(abs)], { type: mimeOf(abs) }), basename(abs));
   }
 
   const json = await callApi("/images/edits", form, await resolveApiKey(), true);
