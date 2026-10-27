@@ -578,16 +578,17 @@ function garments(){
   cols.forEach((c,i)=>{const x=565+i*62;s+=`<path d="M${x} 130 q0 -14 10 -14" fill="none" stroke="#6E6A62" stroke-width="3"/><path d="M${x-26} 160 L${x-18} 142 L${x+18} 142 L${x+26} 160 L${x+30} ${400+(i%3)*28} L${x-30} ${400+(i%3)*28} Z" fill="${c}" stroke="#B9B4A8" stroke-width="2" opacity=".95"/><path d="M${x-20} 180 L${x+20} 180" stroke="#fff" stroke-opacity=".5" stroke-width="3"/>`;});
   return s;
 }
-/* wide backgrounds: names of each 1200px panel, left to right; home = panel shown in story scenes */
+/* wide backgrounds: names of each panel (1200px unless ws gives widths), left to right; home = panel shown in story scenes */
 const BG_PANELS={};
 /* image art in assets/. Anything missing here falls back to the drawn SVG below.
-   IMG_BG[key] = {src:[panel files, left to right] or ()=>[...], names?:[panel names], home?:index, over?:()=>svg overlay}
+   IMG_BG[key] = {src:[panel files, left to right] or ()=>[...], names?:[panel names], home?:index, over?:()=>svg overlay,
+                  ws?:[panel widths] when src is one pre-stitched strip, homeX?:left edge of the 1200px story view}
    IMG_FIG[name] = {w,ih: image size, h: height relative to a full-height adult, bust?: crop ratio, emo:{smile,...}, carry?:{banchan,...}} */
 const IMG_BG={};
 const IMG_FIG={};
 function imgBg(k){
-  const d=IMG_BG[k], src=typeof d.src==="function"?d.src():d.src, W=1200*src.length;
-  return `<svg viewBox="0 0 ${W} 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${src.map((f,i)=>`<image href="${f}" x="${i*1200}" y="0" width="1200" height="800" preserveAspectRatio="none"/>`).join("")}${d.over?d.over():""}</svg>`;
+  const d=IMG_BG[k], src=typeof d.src==="function"?d.src():d.src, W=d.ws?d.ws.reduce((a,b)=>a+b,0):1200*src.length, pw=W/src.length;
+  return `<svg viewBox="0 0 ${W} 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${src.map((f,i)=>`<image href="${f}" x="${i*pw}" y="0" width="${pw}" height="800" preserveAspectRatio="none"/>`).join("")}${d.over?d.over():""}</svg>`;
 }
 const BG={
 front:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -971,10 +972,10 @@ ${[0,1,2,3,4,5,6].map(i=>`<rect x="${420+i*42}" y="${560+(i%2)*6}" width="34" he
 const SCN=n=>`assets/scenes/${n}.webp`;
 const HAND="Nanum Pen Script,cursive";
 Object.assign(IMG_BG,{
-  front:{src:()=>[SCN("front-banchan"),SCN(S&&(S.shutterUp||S.peek)?"front-shop-open":"front-shop"),SCN("front-flower")],names:["봉순반찬","윤슬세탁소","여름꽃집"],home:1,
-    over:()=>`<text x="375" y="96" text-anchor="middle" font-family="Gowun Batang,serif" font-size="44" font-weight="700" fill="#2F5A44" opacity=".9">봉순반찬</text><text x="1975" y="172" text-anchor="middle" font-family="Gowun Batang,serif" font-size="64" font-weight="700" fill="#2F4A52" opacity=".9">윤슬세탁소</text><text x="1975" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" letter-spacing="6" fill="#5A6E72" opacity=".85">DRY CLEANING · SINCE 1996</text>`
-      +(S&&(S.shutterUp||S.peek)?`<rect x="2084" y="352" width="60" height="32" rx="3" fill="${S.signOpen?"#C8436A":"#5E6A6E"}" stroke="#3A3F44" stroke-width="1.5"/><text x="2114" y="373" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" fill="#fff">${S.signOpen?"영업중":"준비중"}</text>`:"")
-      +`<text x="3015" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
+  front:{src:()=>[SCN(S&&(S.shutterUp||S.peek)?"front-wide-open":"front-wide")],ws:[870,940,1060],homeX:725,names:["봉순반찬","윤슬세탁소","여름꽃집"],home:1,
+    over:()=>`<text x="375" y="96" text-anchor="middle" font-family="Gowun Batang,serif" font-size="44" font-weight="700" fill="#2F5A44" opacity=".9">봉순반찬</text><text x="1500" y="172" text-anchor="middle" font-family="Gowun Batang,serif" font-size="64" font-weight="700" fill="#2F4A52" opacity=".9">윤슬세탁소</text><text x="1500" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" letter-spacing="6" fill="#5A6E72" opacity=".85">DRY CLEANING · SINCE 1996</text>`
+      +(S&&(S.shutterUp||S.peek)?`<rect x="1609" y="352" width="60" height="32" rx="3" fill="${S.signOpen?"#C8436A":"#5E6A6E"}" stroke="#3A3F44" stroke-width="1.5"/><text x="1639" y="373" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" fill="#fff">${S.signOpen?"영업중":"준비중"}</text>`:"")
+      +`<text x="2285" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
   banchan:{src:()=>[SCN(S&&S.bongDown?"banchan-down":"banchan")]},
   flowershop:{src:()=>[SCN(S&&S.bucketDown?"flowershop-down":"flowershop")]},
   counter:{src:[SCN("counter-entrance"),SCN("counter"),SCN("counter-back")],names:["출입문","카운터","작업장 · 창고"],home:1,
@@ -993,7 +994,7 @@ Object.assign(IMG_BG,{
   "sign-door":{src:[SCN("sign-door")]},
   "washer-closeup":{src:[SCN("washer-closeup")]}
 });
-Object.keys(IMG_BG).forEach(k=>{ BG[k]=()=>imgBg(k); const d=IMG_BG[k], n=d.names?d.names.length:(Array.isArray(d.src)?d.src.length:1); if(n>1)BG_PANELS[k]={names:d.names||[],home:d.home||0}; });
+Object.keys(IMG_BG).forEach(k=>{ BG[k]=()=>imgBg(k); const d=IMG_BG[k], n=d.names?d.names.length:(Array.isArray(d.src)?d.src.length:1); if(n>1)BG_PANELS[k]={names:d.names||[],home:d.home||0,ws:d.ws||Array(n).fill(1200)}; });
 const LOBBY_ART=(()=>{
 const INK="#2A221D";
 const ol=(w=1.5)=>`stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
@@ -1404,7 +1405,7 @@ const BGS=k=>({t:"bg",bg:k});
 const REDRAW=k=>[DO(()=>{curBg=null;}),BGS(k)];
 function walkerSVG(who,load,x0,x1){
   const F=IMG_FIG[who];
-  if(F){ const src=(load&&F.carry&&F.carry[load])||F.emo.smile, H=800*.98*F.h, Wd=H*F.w/F.ih, cx=bgHome(curBg)*1200+600;
+  if(F){ const src=(load&&F.carry&&F.carry[load])||F.emo.smile, H=800*.98*F.h, Wd=H*F.w/F.ih, cx=homeX(curBg)+600;
     return `<g transform="translate(${cx} 800)"><g${RM?"":` class="bob"`}><image href="${src}" x="${(-Wd/2).toFixed(1)}" y="${(-H).toFixed(1)}" width="${Wd.toFixed(1)}" height="${H.toFixed(1)}"/></g></g>`; }
   const old=who==="봉순", c=old?Object.assign({},CHARS[who],{top:"#74395A"}):CHARS[who], h=old?0.9:1;
   const hair=old?`<circle cx="0" cy="-238" r="16" fill="${c.hair}"/><path d="M-32 -198 C-34 -236 34 -236 32 -198 C24 -222 -24 -222 -32 -198Z" fill="${c.hair}"/>`
@@ -1701,16 +1702,16 @@ const coatOnHanger=()=>S.hung&&!S.gave;
 const LOCS={
   street:{title:"가게 앞",bg:"front",spots:[
     {id:"bong",x:0,y:60,w:740,h:540,label:"봉순반찬",run:()=>bongStreet()},
-    {id:"flower",x:2620,y:130,w:680,h:470,label:"여름꽃집",run:()=>flowerStreet()},
-    {id:"alleyIn",x:1395,y:360,w:140,h:260,label:"골목 입구",go:"alley"},
-    {id:"notice",x:2200,y:290,w:60,h:76,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
+    {id:"flower",x:1890,y:130,w:680,h:470,label:"여름꽃집",run:()=>flowerStreet()},
+    {id:"alleyIn",x:920,y:360,w:140,h:260,label:"골목 입구",go:"alley"},
+    {id:"notice",x:1725,y:290,w:60,h:76,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
       N("셔터 옆 벽에 시청 안내문이 붙어 있다. 테이프 자국이 새것이다."),
       DO(()=>{S.readNotice=true;}),DOC("memo_notice"),
       M("창고…… 이모 물건들, 언젠간 정리해야겠지."),
       M("근데 이건 언제 붙였지? 어제까진 없었는데.")]},
-    {id:"shop",x:1730,y:220,w:465,h:375,label:"세탁소",run:()=>shopFront()},
-    {id:"mailbox",x:2554,y:292,w:50,h:66,label:"꽃집 우편함",show:()=>S.day>=3,art:()=>MAILBOX_ART,run:()=>[M(S.got.has("env")?"월요일마다 봉투가 꽂히는 우편함. 지금은 비어 있다.":"꽃집 우편함. 입구가 좁아서 봉투 한 장 겨우 들어가겠다.")]},
-    {id:"sign",x:2080,y:340,w:76,h:56,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()}
+    {id:"shop",x:1255,y:220,w:465,h:375,label:"세탁소",run:()=>shopFront()},
+    {id:"mailbox",x:1824,y:292,w:50,h:66,label:"꽃집 우편함",show:()=>S.day>=3,art:()=>MAILBOX_ART,run:()=>[M(S.got.has("env")?"월요일마다 봉투가 꽂히는 우편함. 지금은 비어 있다.":"꽃집 우편함. 입구가 좁아서 봉투 한 장 겨우 들어가겠다.")]},
+    {id:"sign",x:1605,y:340,w:76,h:56,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()}
   ]},
   counter:{title:"카운터",bg:"counter",spots:[
     {id:"hanger",x:1920,y:190,w:450,h:300,label:"세탁물 행거",art:()=>railArt(),run:()=>hangerRun()},
@@ -2706,7 +2707,7 @@ function ch2EndTeaser(){
 }
 const PATROL_ART=`<g transform="translate(30 82)"><rect x="990" y="298" width="58" height="64" rx="4" fill="#8A9298" stroke="#4E565C" stroke-width="2"/><rect x="996" y="306" width="46" height="14" fill="#2C4A7A"/><text x="1019" y="317" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="9" fill="#fff">순찰함</text><rect x="1000" y="330" width="38" height="5" rx="2" fill="#4E565C"/><circle cx="1019" cy="350" r="3" fill="#C9B26A"/></g>`;
 const ROADSIGN_ART=`<g transform="translate(400 222)"><rect x="56" y="44" width="8" height="70" fill="#6F6A62"/><path d="M0 0 L110 0 L128 24 L110 48 L0 48Z" fill="#2F4A52"/><text x="56" y="31" text-anchor="middle" font-family="Gowun Batang,serif" font-size="18" fill="#F3EBD8">큰길 · 파출소</text></g>`;
-const MAILBOX_ART=`<g transform="translate(1672 0)"><rect x="884" y="300" width="36" height="50" rx="4" fill="#3E6E56" stroke="#2A4A3A" stroke-width="2"/><rect x="890" y="310" width="24" height="5" rx="2" fill="#1E2E26"/><text x="902" y="338" text-anchor="middle" font-family="Gowun Batang,serif" font-size="11" fill="#F3EBD8">우편</text></g>`;
+const MAILBOX_ART=`<g transform="translate(942 0)"><rect x="884" y="300" width="36" height="50" rx="4" fill="#3E6E56" stroke="#2A4A3A" stroke-width="2"/><rect x="890" y="310" width="24" height="5" rx="2" fill="#1E2E26"/><text x="902" y="338" text-anchor="middle" font-family="Gowun Batang,serif" font-size="11" fill="#F3EBD8">우편</text></g>`;
 
 /* =========================================================
    ENGINE
@@ -2741,17 +2742,20 @@ function setBg(k){
   $("fx").innerHTML=k==="storage"?`<polygon points="0,96 30,104 30,800 0,800" fill="#F2CF86" opacity=".55"/><polygon points="30,104 70,140 90,800 30,800" fill="#F2CF86" opacity=".12"/>`:"";
   applyPan();
 }
-/* ---------- pan: wide locations are strips of 1200px panels; arrows/drag slide along ---------- */
+/* ---------- pan: wide locations are strips of panels (1200px unless ws says otherwise); arrows/drag slide along ---------- */
 let panX=null,panOn=false,panTold=false,drag=null,dragged=false,panAnim=null;
 function bgPanels(k){ const P=BG_PANELS[k]; return P?P.names.length:1; }
 function bgHome(k){ const P=BG_PANELS[k]; return P?P.home:0; }
-function bgW(k){ return 1200*bgPanels(k); }
+function bgW(k){ const P=BG_PANELS[k]; return P?P.ws.reduce((a,b)=>a+b,0):1200; }
+function panelX(k,i){ const P=BG_PANELS[k]; return P?P.ws.slice(0,i).reduce((a,b)=>a+b,0):0; }
+function panelMid(k,i){ const P=BG_PANELS[k]; return panelX(k,i)+(P?P.ws[i]:1200)/2; }
+function homeX(k){ const d=IMG_BG[k]; return d&&d.homeX!=null?d.homeX:panelMid(k,bgHome(k))-600; }
 function viewW(){ const r=$("scene").getBoundingClientRect(); return r.height?Math.min(1200,800*r.width/r.height):1200; }
 function canPan(){ return panOn&&bgW(curBg)-viewW()>1; }
 function applyPan(){
   const vw=viewW(), W=bgW(curBg), svgs=[$("hot"),$("fx"),$("bg").querySelector("svg")];
-  if(!panOn){ const x0=bgHome(curBg)*1200; svgs.forEach(v=>v&&v.setAttribute("viewBox",`${x0} 0 1200 800`)); updateArrows(); return false; }
-  panX=Math.max(0,Math.min(W-vw,panX==null?bgHome(curBg)*1200+(1200-vw)/2:panX));
+  if(!panOn){ const x0=homeX(curBg); svgs.forEach(v=>v&&v.setAttribute("viewBox",`${x0} 0 1200 800`)); updateArrows(); return false; }
+  panX=Math.max(0,Math.min(W-vw,panX==null?homeX(curBg)+600-vw/2:panX));
   svgs.forEach(v=>v&&v.setAttribute("viewBox",`${panX.toFixed(1)} 0 ${vw.toFixed(1)} 800`));
   updateArrows();
   return W-vw>1;
@@ -2765,10 +2769,10 @@ function slideTo(x){
   panAnim=requestAnimationFrame(step);
 }
 function panTo(cx){ if(!panOn)return; slideTo(cx-viewW()/2); }
-function curPanel(){ return Math.max(0,Math.min(bgPanels(curBg)-1,Math.floor(((panX||0)+viewW()/2)/1200))); }
+function curPanel(){ const c=(panX||0)+viewW()/2, n=bgPanels(curBg); let i=0; while(i<n-1&&panelX(curBg,i+1)<=c)i++; return i; }
 function panStep(d){
   const n=bgPanels(curBg), vw=viewW();
-  if(n>1){ const i=Math.max(0,Math.min(n-1,curPanel()+d)); slideTo(i*1200+(1200-vw)/2); }
+  if(n>1){ const i=Math.max(0,Math.min(n-1,curPanel()+d)); slideTo(panelMid(curBg,i)-vw/2); }
   else slideTo((panX||0)+d*vw*.8);
   setNear(null);
 }
