@@ -1027,8 +1027,8 @@ Object.assign(IMG_BG,{
       +`<text x="2285" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
   banchan:{src:()=>[SCN(S&&S.bongDown?"banchan-down":"banchan")]},
   flowershop:{src:()=>[SCN(S&&S.bucketDown?"flowershop-down":"flowershop")]},
-  counter:{src:[SCN("counter-wide")],ws:[1010,1175,1093],homeX:1010,names:["출입문","카운터","작업장 · 창고"],home:1,
-    over:()=>`<g transform="rotate(-2 3095 255)"><text x="3095" y="244" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">손대지</text><text x="3095" y="272" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">말 것</text></g><rect x="955" y="292" width="13" height="13" fill="none" stroke="#C8436A" stroke-width="2.5"/>`},
+  counter:{src:[SCN("counter-wide")],ws:[1200,1200,1055],homeX:1200,names:["출입문","카운터","작업장 · 창고"],home:1,
+    over:()=>`<g transform="rotate(-2 3272 255)"><text x="3272" y="244" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">손대지</text><text x="3272" y="272" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">말 것</text></g><rect x="955" y="292" width="13" height="13" fill="none" stroke="#C8436A" stroke-width="2.5"/>`},
   workshop:{src:[SCN("workshop")],over:()=>`<text x="624" y="437" text-anchor="middle" font-family="${HAND}" font-size="19" fill="#B03A48">사용</text><text x="624" y="458" text-anchor="middle" font-family="${HAND}" font-size="19" fill="#B03A48">금지</text>`},
   alley:{src:[SCN("alley")]},
   homeroad:{src:[SCN("homeroad-harbor"),SCN("homeroad-stairs")],names:["항구 길","돌계단"],home:0},
@@ -1763,20 +1763,20 @@ const LOCS={
     {id:"sign",x:1605,y:340,w:76,h:56,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()}
   ]},
   counter:{title:"카운터",bg:"counter",spots:[
-    {id:"hanger",x:1730,y:190,w:450,h:300,label:"세탁물 행거",art:()=>railArt(),run:()=>hangerRun()},
+    {id:"hanger",x:1920,y:190,w:450,h:300,label:"세탁물 행거",art:()=>railArt(),run:()=>hangerRun()},
     {id:"board",x:440,y:105,w:420,h:295,label:"코르크 보드",run:()=>S.phase!=="d2_invest"?[M("찾아가지 않은 세탁물 태그가 빽빽하다. 이모는 뭐 하나 버리질 못했다.")]:S.sawDate?[M("06.12.24. 저 번호표만 유난히 오래됐다.")]:[
       M("찾아가지 않은 세탁물 태그가 이렇게 많다니."),
       N("보드 구석, 다른 태그 밑에 반쪽짜리 번호표가 깔려 있다. 누렇게 바래고 물에 번졌다."),
       DO(()=>{S.sawDate=true;}),DOC("memo_board"),
       M("번호는 번져서 안 보이고 날짜만 남았네. 06.12.24. 20년 가까이 된 거야.")]},
-    {id:"cal",x:880,y:80,w:130,h:280,label:"달력",run:()=>[M("이모 달력은 8월에서 멈춰 있었다. 11월로 넘긴 건 나다."),M("빨간 네모는 내가 쳐 놓은 거다. 첫 월세 내는 날.")]},
+    {id:"cal",x:880,y:80,w:165,h:280,label:"달력",run:()=>[M("이모 달력은 8월에서 멈춰 있었다. 11월로 넘긴 건 나다."),M("빨간 네모는 내가 쳐 놓은 거다. 첫 월세 내는 날.")]},
     {id:"switch",x:358,y:294,w:46,h:56,label:"전등 스위치",run:()=>switchRun()},
     {id:"entrance",x:40,y:40,w:300,h:640,label:"출입문",run:()=>entranceRun()},
-    {id:"work",x:2193,y:90,w:280,h:550,label:"작업장",go:"workshop"},
-    {id:"door",x:2963,y:80,w:260,h:560,label:"창고 문",run:()=>storageDoorRun()},
-    {id:"book",x:1065,y:412,w:240,h:64,label:"접수 장부",run:()=>bookRun()},
-    {id:"coat",x:1620,y:380,w:210,h:110,label:()=>S.phase==="d1_wash"?"빨래 바구니":"옥색 저고리",show:coatOnCounter,art:()=>S.phase==="d1_wash"?`<g transform="translate(1170 -88)">${BASKET_ART()}</g>`:`<g transform="translate(1160 -80)">${JEOGORI}</g>`,run:()=>coatRun()},
-    {id:"glass",x:1629,y:739,w:42,h:42,label:"바닥 틈",show:()=>S.phase==="d2_invest"&&!S.glass,art:()=>`<g transform="translate(1039 19)">${GLASS}</g>`,run:()=>[
+    {id:"work",x:2370,y:90,w:280,h:550,label:"작업장",go:"workshop"},
+    {id:"door",x:3140,y:80,w:260,h:560,label:"창고 문",run:()=>storageDoorRun()},
+    {id:"book",x:1074,y:412,w:278,h:64,label:"접수 장부",run:()=>bookRun()},
+    {id:"coat",x:1716,y:380,w:243,h:110,label:()=>S.phase==="d1_wash"?"빨래 바구니":"옥색 저고리",show:coatOnCounter,art:()=>S.phase==="d1_wash"?`<g transform="translate(1266 -88)">${BASKET_ART()}</g>`:`<g transform="translate(1256 -80)">${JEOGORI}</g>`,run:()=>coatRun()},
+    {id:"glass",x:1727,y:739,w:42,h:42,label:"바닥 틈",show:()=>S.phase==="d2_invest"&&!S.glass,art:()=>`<g transform="translate(1137 19)">${GLASS}</g>`,run:()=>[
       N("카운터 아래, 바닥 틈에서 무언가 반짝인다. 푸른 유리구슬 하나."),
       M("구슬치기용 구슬이네. 이게 왜 카운터 밑에 있지?"),
       CARD("glass")]}
@@ -3023,7 +3023,7 @@ function railClothes(){
   if(!S||!S.hung) return [];
   return LOAD_ALL.filter(id=>!(id==="jeogori"&&(S.gave||coatOnCounter()))&&!(id==="blazer"&&S.suaPicked)&&!(/^shirt/.test(id)&&S.choiPicked));
 }
-function railArt(){ const L=railClothes(); return L.map((id,i)=>`<g transform="translate(${1800+i*70} 205) scale(.82)">${hungArt(id,1)}${vinylArt(1)}${tagArt(1,TAGNO[id])}</g>`).join(""); }
+function railArt(){ const L=railClothes(); return L.map((id,i)=>`<g transform="translate(${1990+i*70} 205) scale(.82)">${hungArt(id,1)}${vinylArt(1)}${tagArt(1,TAGNO[id])}</g>`).join(""); }
 const BASKET_ART=()=>`<g transform="translate(560 528)"><ellipse cx="0" cy="34" rx="92" ry="8" fill="#000" opacity=".2"/>${foldedArt("blazer",-26,-6,.62)}${foldedArt("shirt1",26,-14,.6)}${foldedArt("shirt2",-10,-22,.58)}${foldedArt("jeogori",12,-30,.6)}<path d="M-86 -6 L86 -6 L74 36 L-74 36 Z" fill="#E7A33E" stroke="${OLx}" stroke-width="2"/>${[-60,-36,-12,12,36,60].map(x=>`<rect x="${x-6}" y="4" width="12" height="22" rx="3" fill="#B97A24"/>`).join("")}</g>`;
 
 /* --- sign: drag sideways (or tap) to spin the plaque until the wanted side faces out --- */
