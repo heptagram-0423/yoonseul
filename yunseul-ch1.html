@@ -1031,10 +1031,10 @@ ${[0,1,2,3,4,5,6].map(i=>`<rect x="${420+i*42}" y="${560+(i%2)*6}" width="34" he
 const SCN=n=>`assets/scenes/${n}.webp`;
 const HAND="Nanum Pen Script,cursive";
 Object.assign(IMG_BG,{
-  front:{src:()=>[SCN(S&&(S.shutterUp||S.peek)?"front-wide-open":"front-wide")],ws:[870,940,1060],homeX:725,names:["봉순반찬","윤슬세탁소","여름꽃집"],home:1,
-    over:()=>`<text x="375" y="96" text-anchor="middle" font-family="Gowun Batang,serif" font-size="44" font-weight="700" fill="#2F5A44" opacity=".9">봉순반찬</text><text x="1500" y="172" text-anchor="middle" font-family="Gowun Batang,serif" font-size="64" font-weight="700" fill="#2F4A52" opacity=".9">윤슬세탁소</text><text x="1500" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" letter-spacing="6" fill="#5A6E72" opacity=".85">DRY CLEANING · SINCE 1996</text>`
-      +(S&&(S.shutterUp||S.peek)?`<rect x="1609" y="352" width="60" height="32" rx="3" fill="${S.signOpen?"#C8436A":"#5E6A6E"}" stroke="#3A3F44" stroke-width="1.5"/><text x="1639" y="373" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" fill="#fff">${S.signOpen?"영업중":"준비중"}</text>`:"")
-      +`<text x="2285" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
+  front:{src:()=>[SCN(S&&(S.shutterUp||S.peek)?"front-wide-open":"front-wide")],ws:[750,870,940,1060],homeX:1475,names:["파출소 가는 길","봉순반찬","윤슬세탁소","여름꽃집"],home:2,
+    over:()=>`<text x="1125" y="96" text-anchor="middle" font-family="Gowun Batang,serif" font-size="44" font-weight="700" fill="#2F5A44" opacity=".9">봉순반찬</text><text x="2250" y="172" text-anchor="middle" font-family="Gowun Batang,serif" font-size="64" font-weight="700" fill="#2F4A52" opacity=".9">윤슬세탁소</text><text x="2250" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" letter-spacing="6" fill="#5A6E72" opacity=".85">DRY CLEANING · SINCE 1996</text>`
+      +(S&&(S.shutterUp||S.peek)?`<rect x="2359" y="352" width="60" height="32" rx="3" fill="${S.signOpen?"#C8436A":"#5E6A6E"}" stroke="#3A3F44" stroke-width="1.5"/><text x="2389" y="373" text-anchor="middle" font-family="Gowun Batang,serif" font-size="14" fill="#fff">${S.signOpen?"영업중":"준비중"}</text>`:"")
+      +`<text x="3035" y="108" text-anchor="middle" font-family="Gowun Batang,serif" font-size="50" font-weight="700" fill="#FBF3E0" stroke="#4A2E1A" stroke-width="3" paint-order="stroke">여름꽃집</text>`},
   banchan:{src:()=>[SCN(S&&S.bongDown?"banchan-down":"banchan")]},
   flowershop:{src:()=>[SCN(S&&S.bucketDown?"flowershop-down":"flowershop")]},
   counter:{src:[SCN("counter-entrance"),SCN("counter"),SCN("counter-back")],split:true,names:["출입문","카운터","작업장 · 창고"],home:1,
@@ -1762,19 +1762,19 @@ const coatOnHanger=()=>S.hung&&!S.gave;
    ========================================================= */
 const LOCS={
   street:{title:"가게 앞",bg:"front",spots:[
-    {id:"bong",x:0,y:60,w:740,h:540,label:"봉순반찬",run:()=>bongStreet()},
-    {id:"flower",x:1890,y:130,w:680,h:470,label:"여름꽃집",run:()=>flowerStreet()},
-    {id:"alleyIn",x:920,y:360,w:140,h:260,label:"골목 입구",go:"alley"},
-    {id:"road",x:0,y:590,w:230,h:210,label:"큰길 · 파출소",art:()=>ROADSIGN_ART,go:"bigroad"},
-    {id:"notice",x:1725,y:290,w:60,h:76,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
+    {id:"road",x:150,y:390,w:330,h:280,label:"파출소 가는 길",go:"bigroad"},
+    {id:"bong",x:750,y:60,w:740,h:540,label:"봉순반찬",run:()=>bongStreet()},
+    {id:"flower",x:2640,y:130,w:680,h:470,label:"여름꽃집",run:()=>flowerStreet()},
+    {id:"alleyIn",x:1670,y:360,w:140,h:260,label:"골목 입구",go:"alley"},
+    {id:"notice",x:2475,y:290,w:60,h:76,label:"안내문",run:()=>S.readNotice?[DOC("memo_notice")]:[
       N("셔터 옆 벽에 시청 안내문이 붙어 있다. 테이프 자국이 새것이다."),
       DO(()=>{S.readNotice=true;}),DOC("memo_notice"),
       M("창고…… 이모 물건들, 언젠간 정리해야겠지."),
       M("근데 이건 언제 붙였지? 어제까진 없었는데.")]},
-    {id:"shop",x:1255,y:220,w:465,h:375,label:"세탁소",run:()=>shopFront()},
-    {id:"mailbox",x:1824,y:292,w:50,h:66,label:"꽃집 우편함",show:()=>S.day>=3,art:()=>MAILBOX_ART,run:()=>[M(S.got.has("env")?"월요일마다 봉투가 꽂히는 우편함. 지금은 비어 있다.":"꽃집 우편함. 입구가 좁아서 봉투 한 장 겨우 들어가겠다.")]},
-    {id:"sign",x:1605,y:340,w:76,h:56,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()},
-    {id:"home",x:2660,y:370,w:210,h:300,label:"집으로",show:()=>/_home$/.test(S.phase)&&!S.inHouse,run:()=>walkHomeSteps()}
+    {id:"shop",x:2005,y:220,w:465,h:375,label:"세탁소",run:()=>shopFront()},
+    {id:"mailbox",x:2574,y:292,w:50,h:66,label:"꽃집 우편함",show:()=>S.day>=3,art:()=>MAILBOX_ART,run:()=>[M(S.got.has("env")?"월요일마다 봉투가 꽂히는 우편함. 지금은 비어 있다.":"꽃집 우편함. 입구가 좁아서 봉투 한 장 겨우 들어가겠다.")]},
+    {id:"sign",x:2355,y:340,w:76,h:56,label:"유리문 팻말",show:()=>S.shutterUp,run:()=>signRun()},
+    {id:"home",x:3410,y:370,w:210,h:300,label:"집으로",show:()=>/_home$/.test(S.phase)&&!S.inHouse,run:()=>walkHomeSteps()}
   ]},
   counter:{title:"카운터",bg:"counter",spots:[
     {id:"hanger",x:1920,y:190,w:450,h:300,label:"세탁물 행거",art:()=>railArt(),run:()=>hangerRun()},
@@ -2483,7 +2483,7 @@ function day4OpenSteps(){
     CAST(),
     ...(S.mayor==="soon"?truckSteps():[]),
     DO(()=>{S.phase="d4_invest";}),
-    M("파출소 근무표부터 보자. 가게 앞길을 따라 왼쪽으로 가면 큰길이다.")];
+    M("파출소 근무표부터 보자. 반찬가게 옆 길로 내려가면 큰길이다.")];
 }
 function truckSteps(){
   return [
@@ -2778,8 +2778,7 @@ function ch2EndTeaser(){
     {t:"stop"}];
 }
 const PATROL_ART=`<g transform="translate(30 82)"><rect x="990" y="298" width="58" height="64" rx="4" fill="#8A9298" stroke="#4E565C" stroke-width="2"/><rect x="996" y="306" width="46" height="14" fill="#2C4A7A"/><text x="1019" y="317" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="9" fill="#fff">순찰함</text><rect x="1000" y="330" width="38" height="5" rx="2" fill="#4E565C"/><circle cx="1019" cy="350" r="3" fill="#C9B26A"/></g>`;
-const ROADSIGN_ART=`<g transform="translate(36 600)"><rect x="66" y="40" width="8" height="120" fill="#5E5A54"/><path d="M18 0 L140 0 L140 48 L18 48 L0 24Z" fill="#2F4A52" stroke="#1E3036" stroke-width="2"/><text x="78" y="31" text-anchor="middle" font-family="Gowun Batang,serif" font-size="18" fill="#F3EBD8">큰길 · 파출소</text></g>`;
-const MAILBOX_ART=`<g transform="translate(942 0)"><rect x="884" y="300" width="36" height="50" rx="4" fill="#3E6E56" stroke="#2A4A3A" stroke-width="2"/><rect x="890" y="310" width="24" height="5" rx="2" fill="#1E2E26"/><text x="902" y="338" text-anchor="middle" font-family="Gowun Batang,serif" font-size="11" fill="#F3EBD8">우편</text></g>`;
+const MAILBOX_ART=`<g transform="translate(1692 0)"><rect x="884" y="300" width="36" height="50" rx="4" fill="#3E6E56" stroke="#2A4A3A" stroke-width="2"/><rect x="890" y="310" width="24" height="5" rx="2" fill="#1E2E26"/><text x="902" y="338" text-anchor="middle" font-family="Gowun Batang,serif" font-size="11" fill="#F3EBD8">우편</text></g>`;
 
 /* =========================================================
    ENGINE
@@ -3504,7 +3503,7 @@ function objective(){
     return curLoc==="street"?{t:"유리문 팻말을 '영업중'으로 돌리자.",loc:"street",spot:"sign"}:{t:"밖으로 나가서 유리문 팻말을 '영업중'으로 돌리자.",loc:"counter",spot:"entrance"};
   }
   if(/_home$/.test(p)){
-    if(!S.inHouse) return curLoc==="homeroad"?{t:"집으로 가자.",loc:"homeroad",spot:"home"}:curLoc==="housefront"?{t:"현관 도어록 비밀번호를 누르자. (가게를 연 해)",loc:"housefront",spot:"door"}:{t:curLoc==="street"?"집으로 가자. 꽃집 옆 길로 가면 된다.":"가게 앞으로 돌아가서 집으로 가자.",loc:"street",spot:"home"};
+    if(!S.inHouse) return curLoc==="homeroad"?{t:"집으로 가자.",loc:"homeroad",spot:"home"}:curLoc==="housefront"?{t:"현관 도어록 비밀번호를 누르자. (가게를 연 해)",loc:"housefront",spot:"door"}:{t:curLoc==="street"?"집으로 가자. 꽃집 옆 항구 길로 가면 된다.":"가게 앞으로 돌아가서 집으로 가자.",loc:"street",spot:"home"};
     if(S.day>=2&&!S.boxSeen){
       if(curLoc!=="auntroom") return {t:"이모 방에 들어가 보자.",loc:"living",spot:"auntDoor"};
       return S.wardrobe?{t:"옷장 속 상자를 살펴보자.",loc:"auntroom",spot:"box"}:{t:"이모 방을 둘러보자. 옷장이 마음에 걸린다.",loc:"auntroom",spot:"wardrobe"};
@@ -3525,7 +3524,7 @@ function objective(){
     if(!S.got.has("time")) return {t:"새벽 일찍 가게를 여는 봉순 할머니께 월요일 아침 일을 물어보자.",loc:"street",spot:"bong"};
   }
   if(p==="d4_invest"){
-    if(!S.got.has("duty")) return curLoc==="bigroad"?{t:"파출소 앞 게시판을 살펴보자.",loc:"bigroad",spot:"board"}:{t:"큰길 건너 파출소에 가 보자. 가게 앞길 왼쪽 끝으로 가면 된다.",loc:"street",spot:"road"};
+    if(!S.got.has("duty")) return curLoc==="bigroad"?{t:"파출소 앞 게시판을 살펴보자.",loc:"bigroad",spot:"board"}:{t:"큰길 건너 파출소에 가 보자. 반찬가게 옆 길로 내려가면 된다.",loc:"street",spot:"road"};
     if(!S.got.has("patrol")) return {t:"새벽에 골목을 지나는 순경들. 골목 전봇대를 살펴보자.",loc:"alley",spot:"patrol"};
     return {t:"단서가 모였다. 오른쪽 아래 수첩을 펼쳐 정리해 보자."};
   }
