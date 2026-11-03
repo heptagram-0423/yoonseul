@@ -1762,7 +1762,7 @@ const coatOnHanger=()=>S.hung&&!S.gave;
    ========================================================= */
 const LOCS={
   street:{title:"가게 앞",bg:"front",spots:[
-    {id:"road",x:150,y:390,w:330,h:280,label:"파출소 가는 길",go:"bigroad"},
+    {id:"road",x:420,y:290,w:140,h:120,label:"파출소",go:"bigroad"},
     {id:"bong",x:750,y:60,w:740,h:540,label:"봉순반찬",run:()=>bongStreet()},
     {id:"flower",x:2640,y:130,w:680,h:470,label:"여름꽃집",run:()=>flowerStreet()},
     {id:"alleyIn",x:1670,y:360,w:140,h:260,label:"골목 입구",go:"alley"},
@@ -2483,7 +2483,7 @@ function day4OpenSteps(){
     CAST(),
     ...(S.mayor==="soon"?truckSteps():[]),
     DO(()=>{S.phase="d4_invest";}),
-    M("파출소 근무표부터 보자. 반찬가게 옆 길로 내려가면 큰길이다.")];
+    M("파출소 근무표부터 보자. 반찬가게 옆 길 끝에 파출소가 보인다.")];
 }
 function truckSteps(){
   return [
@@ -3524,7 +3524,7 @@ function objective(){
     if(!S.got.has("time")) return {t:"새벽 일찍 가게를 여는 봉순 할머니께 월요일 아침 일을 물어보자.",loc:"street",spot:"bong"};
   }
   if(p==="d4_invest"){
-    if(!S.got.has("duty")) return curLoc==="bigroad"?{t:"파출소 앞 게시판을 살펴보자.",loc:"bigroad",spot:"board"}:{t:"큰길 건너 파출소에 가 보자. 반찬가게 옆 길로 내려가면 된다.",loc:"street",spot:"road"};
+    if(!S.got.has("duty")) return curLoc==="bigroad"?{t:"파출소 앞 게시판을 살펴보자.",loc:"bigroad",spot:"board"}:{t:"큰길 건너 파출소에 가 보자. 반찬가게 옆 길 끝에 보이는 파출소로 가면 된다.",loc:"street",spot:"road"};
     if(!S.got.has("patrol")) return {t:"새벽에 골목을 지나는 순경들. 골목 전봇대를 살펴보자.",loc:"alley",spot:"patrol"};
     return {t:"단서가 모였다. 오른쪽 아래 수첩을 펼쳐 정리해 보자."};
   }
