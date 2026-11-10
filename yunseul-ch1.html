@@ -1880,7 +1880,13 @@ const LOCS={
   ]},
   homeroad:{title:"집으로 가는 길",bg:"homeroad",spots:[
     {id:"back",x:0,y:0,w:110,h:800,label:"가게 쪽으로",go:"street"},
-    {id:"stairs",x:2720,y:240,w:370,h:480,label:"돌계단",run:()=>[N("언덕 위로 이어지는 낡은 돌계단. 이모는 이 계단 아래에서 발견됐다."),M("비 오는 밤에 미끄러졌다고 했다. 30년을 오르내린 계단에서."),S.inv.includes("memo_police")?M("……비 오는 날엔 절대 이 계단으로 안 다니던 사람이."):null]},
+    {id:"stairs",x:2720,y:240,w:370,h:480,label:()=>isWake()?"돌계단 (집 쪽)":"돌계단 (집으로)",run:()=>isWake()?[M("집은 계단 위다. 가게는 반대쪽, 항구 길로 가야 한다."),{t:"goto",loc:"housefront"}]:S.stairsDay===S.day?[N("돌계단을 오른다."),{t:"goto",loc:"housefront"}]:[
+      DO(()=>{S.stairsDay=S.day;}),
+      N("언덕 위로 이어지는 낡은 돌계단. 이모는 이 계단 아래에서 발견됐다."),
+      M("비 오는 밤에 미끄러졌다고 했다. 30년을 오르내린 계단에서."),
+      S.inv.includes("memo_police")?M("……비 오는 날엔 절대 이 계단으로 안 다니던 사람이."):null,
+      N("한 칸씩 계단을 밟고 오른다."),
+      {t:"goto",loc:"housefront"}]},
     {id:"lamp",x:3100,y:30,w:130,h:660,label:"가로등",run:()=>[M("계단 옆 가로등. 그날 밤엔 고장 나서 꺼져 있었다고 했다."),M("다음 날 아침 구청에서 바로 고쳤다나. ……지금은 이렇게 멀쩡하다.")]},
     {id:"light",x:925,y:260,w:60,h:100,label:"등대",run:()=>[M("윤슬항 등대. 이모는 저 불빛을 보면서 퇴근했다고 했다.")]},
         {id:"siteGap",x:1350,y:410,w:250,h:210,label:"펜스 틈",run:()=>[
@@ -1895,7 +1901,7 @@ const LOCS={
       S.got.has("since")?M("2010년부터 매주 한 다발이면…… 팔백 다발이 넘는다."):null]},
     {id:"siteBoard",x:1960,y:440,w:200,h:96,label:"출입금지 안내판",run:()=>[N("'관계자 외 출입금지'. 모서리에 해솔개발 로고가 찍혀 있다."),M("추모비 하나 없다. 꽃다발만 놓여 있을 뿐.")]},
     {id:"siteLight",x:2175,y:195,w:50,h:135,label:"등대",run:()=>[M("등대가 코앞이다. 등대빌딩이라는 이름은 저 등대에서 따왔겠지."),isEve()?M("불이 들어왔다. 이모 집 창문에서 보이던 그 불빛이다."):null]},
-    {id:"home",x:3280,y:420,w:300,h:320,label:"집으로",go:"housefront"}
+    {id:"carroad",x:3280,y:420,w:300,h:320,label:"찻길",run:()=>[M("언덕을 빙 돌아 올라가는 찻길. 계단보다 십 분은 더 걸린다."),S.inv.includes("memo_police")?M("이모는 비 오는 날이면 꼭 이 길로 돌아서 다녔다. ……그런 사람이 비 오는 밤에 계단에서?"):M("이모는 비 오는 날엔 이 길로 다녔다고 했지. 오늘은 계단으로 가자.")]}
   ]},
   housefront:{title:"이모 집 앞",bg:"housefront",spots:[
     {id:"door",x:655,y:300,w:155,h:270,label:"현관 도어록",run:()=>isWake()?[M("두고 온 건 없다. 늦기 전에 가자.")]:doorRun()},
@@ -3581,7 +3587,7 @@ function objective(){
     return {t:"항구 길을 따라 가게로 가자.",loc:"homeroad",spot:"back"};
   }
   if(/_home$/.test(p)){
-    if(!S.inHouse) return curLoc==="homeroad"?{t:"집으로 가자.",loc:"homeroad",spot:"home"}:curLoc==="housefront"?{t:"현관 도어록 비밀번호를 누르자. (가게를 연 해)",loc:"housefront",spot:"door"}:{t:curLoc==="street"?"집으로 가자. 꽃집 옆 항구 길로 가면 된다.":"가게 앞으로 돌아가서 집으로 가자.",loc:"street",spot:"home"};
+    if(!S.inHouse) return curLoc==="homeroad"?{t:"돌계단을 올라 집으로 가자.",loc:"homeroad",spot:"stairs"}:curLoc==="housefront"?{t:"현관 도어록 비밀번호를 누르자. (가게를 연 해)",loc:"housefront",spot:"door"}:{t:curLoc==="street"?"집으로 가자. 꽃집 옆 항구 길로 가면 된다.":"가게 앞으로 돌아가서 집으로 가자.",loc:"street",spot:"home"};
     if(S.day>=2&&!S.boxSeen){
       if(curLoc!=="auntroom") return {t:"이모 방에 들어가 보자.",loc:"living",spot:"auntDoor"};
       return S.wardrobe?{t:"옷장 속 상자를 살펴보자.",loc:"auntroom",spot:"box"}:{t:"이모 방을 둘러보자. 옷장이 마음에 걸린다.",loc:"auntroom",spot:"wardrobe"};
