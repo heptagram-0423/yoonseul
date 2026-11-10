@@ -800,7 +800,6 @@ ${[60,150,250,330,560,640,720,980,1080,1150].map((x,i)=>tuft(x,394,.8+(i%3)*.25)
 <rect x="0" y="640" width="1200" height="160" fill="#C7C1B6"/><rect x="0" y="636" width="1200" height="6" fill="#9A948A"/>
 <g stroke="#ADA79C" stroke-width="2">${[0,1,2,3,4,5,6,7,8].map(i=>`<line x1="${i*150}" y1="642" x2="${i*150-60}" y2="800"/>`).join("")}<line x1="0" y1="720" x2="1200" y2="720"/></g>
 ${mums(575,640,1,true)}${mums(607,644,1.05,true)}${mums(641,640,1,false)}
-<g transform="translate(18 698)"><rect x="40" y="0" width="8" height="90" fill="#6F6A62"/><path d="M0 8 L96 8 L96 46 L0 46 L-18 27Z" fill="#2F4A52"/><text x="46" y="35" text-anchor="middle" font-family="Gowun Batang,serif" font-size="20" fill="#F3EBD8">항구 길</text></g>
 </svg>`;},
 counter:()=>`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 <defs>
@@ -1057,6 +1056,12 @@ const SCN=n=>`assets/scenes/${n}.webp`;
 /* morning versions of the house and home-road scenes (file name + "-am"); list a name here once its image is in assets/scenes */
 const AM_READY=new Set([]);
 const AM=n=>SCN(S&&/_wake$/.test(S.phase)&&AM_READY.has(n)?n+"-am":n);
+/* 등대빌딩 터 panel: drawn SVG until assets/scenes/site.webp exists (then set SITE_IMG=true) */
+const SITE_IMG=false;
+const siteURI={};
+const SITE_DUSK=`<defs><linearGradient id="duskS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E3566" stop-opacity=".75"/><stop offset=".38" stop-color="#E8804A" stop-opacity=".55"/><stop offset=".5" stop-color="#3A3050" stop-opacity=".35"/><stop offset="1" stop-color="#1E1A2A" stop-opacity=".5"/></linearGradient></defs><rect width="1200" height="800" fill="url(#duskS)"/>`;
+const SITE_SRC=()=>{ if(SITE_IMG) return AM("site"); const k=S&&/_wake$/.test(S.phase)?"am":"pm";
+  return siteURI[k]=siteURI[k]||"data:image/svg+xml;charset=utf-8,"+encodeURIComponent(k==="am"?BG.site():BG.site().replace(/<\/svg>\s*$/,SITE_DUSK+"</svg>")); };
 const HAND="Nanum Pen Script,cursive";
 Object.assign(IMG_BG,{
   front:{src:()=>[SCN(S&&(S.shutterUp||S.peek)?"front-wide-open":"front-wide")],ws:[750,870,940,1060],homeX:1475,names:["파출소 가는 길","봉순반찬","윤슬세탁소","여름꽃집"],home:2,
@@ -1069,7 +1074,7 @@ Object.assign(IMG_BG,{
     over:()=>`<g transform="rotate(-2 3417 255)"><text x="3417" y="244" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">손대지</text><text x="3417" y="272" text-anchor="middle" font-family="${HAND}" font-size="26" fill="#B03A48">말 것</text></g><rect x="955" y="292" width="13" height="13" fill="none" stroke="#C8436A" stroke-width="2.5"/>`},
   workshop:{src:[SCN("workshop")],over:()=>`<text x="624" y="437" text-anchor="middle" font-family="${HAND}" font-size="19" fill="#B03A48">사용</text><text x="624" y="458" text-anchor="middle" font-family="${HAND}" font-size="19" fill="#B03A48">금지</text>`},
   alley:{src:[SCN("alley")]},
-  homeroad:{src:()=>[AM("homeroad-harbor"),AM("homeroad-stairs")],split:true,names:["항구 길","돌계단"],home:0},
+  homeroad:{src:()=>[AM("homeroad-harbor"),SITE_SRC(),AM("homeroad-stairs")],names:["항구 길","등대빌딩 터","돌계단"],home:0},
   housefront:{src:()=>[AM("housefront")]},
   living:{src:()=>[AM("living-a"),AM("living-b")],split:true,names:["현관 · 주방","방문들"],home:0},
   kitchen:{src:()=>[AM("kitchen")]},
@@ -1875,11 +1880,22 @@ const LOCS={
   ]},
   homeroad:{title:"집으로 가는 길",bg:"homeroad",spots:[
     {id:"back",x:0,y:0,w:110,h:800,label:"가게 쪽으로",go:"street"},
-    {id:"stairs",x:1520,y:240,w:370,h:480,label:"돌계단",run:()=>[N("언덕 위로 이어지는 낡은 돌계단. 이모는 이 계단 아래에서 발견됐다."),M("비 오는 밤에 미끄러졌다고 했다. 30년을 오르내린 계단에서."),S.inv.includes("memo_police")?M("……비 오는 날엔 절대 이 계단으로 안 다니던 사람이."):null]},
-    {id:"lamp",x:1900,y:30,w:130,h:660,label:"가로등",run:()=>[M("계단 옆 가로등. 그날 밤엔 고장 나서 꺼져 있었다고 했다."),M("다음 날 아침 구청에서 바로 고쳤다나. ……지금은 이렇게 멀쩡하다.")]},
+    {id:"stairs",x:2720,y:240,w:370,h:480,label:"돌계단",run:()=>[N("언덕 위로 이어지는 낡은 돌계단. 이모는 이 계단 아래에서 발견됐다."),M("비 오는 밤에 미끄러졌다고 했다. 30년을 오르내린 계단에서."),S.inv.includes("memo_police")?M("……비 오는 날엔 절대 이 계단으로 안 다니던 사람이."):null]},
+    {id:"lamp",x:3100,y:30,w:130,h:660,label:"가로등",run:()=>[M("계단 옆 가로등. 그날 밤엔 고장 나서 꺼져 있었다고 했다."),M("다음 날 아침 구청에서 바로 고쳤다나. ……지금은 이렇게 멀쩡하다.")]},
     {id:"light",x:925,y:260,w:60,h:100,label:"등대",run:()=>[M("윤슬항 등대. 이모는 저 불빛을 보면서 퇴근했다고 했다.")]},
-    {id:"site",x:1062,y:325,w:110,h:115,label:"등대빌딩 터 쪽",go:"site"},
-    {id:"home",x:2080,y:420,w:300,h:320,label:"집으로",go:"housefront"}
+        {id:"siteGap",x:1350,y:410,w:250,h:210,label:"펜스 틈",run:()=>[
+      N("펜스 이음새가 벌어진 틈으로 안이 들여다보인다. 무릎까지 자란 잡초, 그 사이로 시커멓게 그을린 콘크리트 바닥."),
+      M("20년 전 여기 건물이 있었다고 했지. 등대빌딩."),
+      (S.read.bong3||[]).includes("deung")?M("스물한 명. 봉순 할머니는 그 얘기를 하다 말았다."):null]},
+    {id:"siteRuin",x:1605,y:300,w:125,h:95,label:"그을린 콘크리트",run:()=>[M("펜스 위로 철근이 삐죽 나온 콘크리트 덩어리. 불에 그을린 자국이 아직 검다."),M("20년이 지났는데 아무도 치우지 않았다.")]},
+    {id:"siteMums",x:1740,y:560,w:140,h:100,label:"국화 다발",run:()=>[
+      N("펜스 아래 흰 국화 다발 세 개가 나란히 놓여 있다. 두 개는 갈색으로 말라 버렸고, 하나는 아직 하얗다."),
+      M("지난 월요일 것까지 세 주 치. 아무도 안 치우는구나."),
+      S.quotes.includes("yeoreum_dabang")?M("등대다방 자리. 꽃집 사장님은 여기를 그렇게 불렀다."):M("20년 전 이 자리에 건물이 있었다고 했지."),
+      S.got.has("since")?M("2010년부터 매주 한 다발이면…… 팔백 다발이 넘는다."):null]},
+    {id:"siteBoard",x:1960,y:440,w:200,h:96,label:"출입금지 안내판",run:()=>[N("'관계자 외 출입금지'. 모서리에 해솔개발 로고가 찍혀 있다."),M("추모비 하나 없다. 꽃다발만 놓여 있을 뿐.")]},
+    {id:"siteLight",x:2175,y:195,w:50,h:135,label:"등대",run:()=>[M("등대가 코앞이다. 등대빌딩이라는 이름은 저 등대에서 따왔겠지."),isEve()?M("불이 들어왔다. 이모 집 창문에서 보이던 그 불빛이다."):null]},
+    {id:"home",x:3280,y:420,w:300,h:320,label:"집으로",go:"housefront"}
   ]},
   housefront:{title:"이모 집 앞",bg:"housefront",spots:[
     {id:"door",x:655,y:300,w:155,h:270,label:"현관 도어록",run:()=>isWake()?[M("두고 온 건 없다. 늦기 전에 가자.")]:doorRun()},
@@ -1941,21 +1957,6 @@ const LOCS={
     {id:"window",x:64,y:298,w:210,h:160,label:"파출소 창문",run:()=>[M("창문 너머로 책상 세 개. 무전기 소리가 작게 새어 나온다.")]},
     {id:"sign",x:676,y:410,w:228,h:112,label:"공사 안내판",run:()=>[N("'해솔개발 · 윤슬항 2차 재개발 사업'."),M("2차 재개발. 시청 안내문이 말하던 그 재개발이 여기서부터구나."),M("펜스는 항구 쪽까지 길게 이어진다. 등대빌딩 터도 이 펜스 안이겠지.")]},
     {id:"booth",x:1036,y:430,w:148,h:220,label:"경비실",run:()=>[N("공사장 경비실. 창문에 커튼이 쳐져 있고, 문에 '야간 경비 22:00~06:00' 쪽지."),M("밤에만 지키는 곳이구나. 지금은 아무도 없다."),S.metKim?M("새벽에 본 그 노인이 여기서 일하는 걸까."):null]}
-  ]},
-  site:{title:"등대빌딩 터",bg:"site",spots:[
-    {id:"back",x:0,y:0,w:150,h:800,label:"항구 길로",go:"homeroad"},
-    {id:"gap",x:150,y:410,w:250,h:210,label:"펜스 틈",run:()=>[
-      N("펜스 이음새가 벌어진 틈으로 안이 들여다보인다. 무릎까지 자란 잡초, 그 사이로 시커멓게 그을린 콘크리트 바닥."),
-      M("20년 전 여기 건물이 있었다고 했지. 등대빌딩."),
-      (S.read.bong3||[]).includes("deung")?M("스물한 명. 봉순 할머니는 그 얘기를 하다 말았다."):null]},
-    {id:"ruin",x:405,y:300,w:125,h:95,label:"그을린 콘크리트",run:()=>[M("펜스 위로 철근이 삐죽 나온 콘크리트 덩어리. 불에 그을린 자국이 아직 검다."),M("20년이 지났는데 아무도 치우지 않았다.")]},
-    {id:"mums",x:540,y:560,w:140,h:100,label:"국화 다발",run:()=>[
-      N("펜스 아래 흰 국화 다발 세 개가 나란히 놓여 있다. 두 개는 갈색으로 말라 버렸고, 하나는 아직 하얗다."),
-      M("지난 월요일 것까지 세 주 치. 아무도 안 치우는구나."),
-      S.quotes.includes("yeoreum_dabang")?M("등대다방 자리. 꽃집 사장님은 여기를 그렇게 불렀다."):M("20년 전 이 자리에 건물이 있었다고 했지."),
-      S.got.has("since")?M("2010년부터 매주 한 다발이면…… 팔백 다발이 넘는다."):null]},
-    {id:"board",x:760,y:440,w:200,h:96,label:"출입금지 안내판",run:()=>[N("'관계자 외 출입금지'. 모서리에 해솔개발 로고가 찍혀 있다."),M("추모비 하나 없다. 꽃다발만 놓여 있을 뿐.")]},
-    {id:"light",x:975,y:195,w:50,h:135,label:"등대",run:()=>[M("등대가 코앞이다. 등대빌딩이라는 이름은 저 등대에서 따왔겠지."),isEve()?M("불이 들어왔다. 이모 집 창문에서 보이던 그 불빛이다."):null]}
   ]},
   storage:{title:"창고",bg:"storage",spots:[
     {id:"shelfL",x:130,y:0,w:180,h:700,label:"왼쪽 선반",run:()=>[M("비닐에 싸인 옷 상자들. 태그는 전부 몇 년씩 된 것들이고, 전부 '폐기' 도장이 찍혀 있다.")]},
@@ -2214,6 +2215,7 @@ function filterRun(){
   return [M("세탁기 필터. 떨어진 단추는 전부 여기 걸린다고 이모가 그랬다.")];
 }
 function enterHook(loc){
+  if(loc==="homeroad"&&BG_PANELS.homeroad) BG_PANELS.homeroad.home=curLoc==="housefront"?2:0;
   if(loc==="street"&&isWake()) return arriveSteps(S.day,true);
   if(loc==="counter"&&S.phase==="d1_street") return [DO(()=>{S.phase="d1_open";}),N("셔터를 올린 가게 안은 아직 컴컴하다. 바깥 빛이 유리문으로 조금 들어올 뿐."),M("스위치가 출입문 옆에 있었지.")];
   if(loc==="counter"&&/_street$/.test(S.phase)) return [DO(()=>{S.phase="d"+S.day+"_open";}),M("불부터 켜자.")];
@@ -2341,7 +2343,7 @@ function endDaySteps(){
 function walkHomeSteps(){
   const d=S.day;
   if(S.walked===d) return [{t:"goto",loc:"homeroad"}];
-  return [DO(()=>{S.walked=d;}),
+  return [DO(()=>{S.walked=d; if(BG_PANELS.homeroad)BG_PANELS.homeroad.home=0;}),
     SC("집으로 가는 길","homeroad"),
     N(d===1?"가게에서 이모 집까지는 걸어서 십 분. 윤슬항 쪽으로 난 언덕길을 오른다.":"오늘도 언덕길을 오른다. 다리가 어제보다 덜 무겁다."),
     d===1?M("이모 집에서 지낸 지 일주일. 아직도 '우리 집'이라는 말이 입에 붙지 않는다."):null,
@@ -2941,7 +2943,6 @@ function tintFor(loc){
   if(!S)return "";
   if(loc==="street"||loc==="alley") return isClose()?"night":"";
   if(loc==="counter"||loc==="workshop") return S.lightsOff?"off":"";
-  if(loc==="site") return isEve()?"dusk":"";
   return "";
 }
 function updateDark(){ const d=$("dark"); d.style.setProperty("--r",S&&S.light?"340px":"130px"); d.style.setProperty("--a",S&&S.light?".5":".95"); }
@@ -3561,7 +3562,7 @@ $("scene").addEventListener("pointermove",e=>{ if($("dark").hidden)return; const
 $("scene").addEventListener("pointerdown",e=>{ if($("dark").hidden)return; const sr=$("scene").getBoundingClientRect(); moveLight(e.clientX-sr.left,e.clientY-sr.top); });
 
 /* ---------- objectives & hints ---------- */
-const LOCNAME={street:"가게 앞",counter:"카운터",workshop:"작업장",alley:"골목",storage:"창고",homeroad:"집으로 가는 길",housefront:"이모 집 앞",living:"거실",kitchen:"주방",bath:"화장실",myroom:"내 방",auntroom:"이모 방",bigroad:"큰길",site:"등대빌딩 터"};
+const LOCNAME={street:"가게 앞",counter:"카운터",workshop:"작업장",alley:"골목",storage:"창고",homeroad:"집으로 가는 길",housefront:"이모 집 앞",living:"거실",kitchen:"주방",bath:"화장실",myroom:"내 방",auntroom:"이모 방",bigroad:"큰길"};
 function objective(){
   const p=S.phase;
   if(curLoc==="storage"&&p==="d2_close"){
@@ -3577,11 +3578,9 @@ function objective(){
     if(curLoc==="myroom") return {t:"가게로 나가자. 먼저 거실로.",loc:"myroom",spot:"door"};
     if(S.inHouse) return {t:"현관으로 나가자. 집 안을 둘러봐도 된다.",loc:"living",spot:"entry"};
     if(curLoc==="housefront") return {t:"언덕길을 내려가자.",loc:"housefront",spot:"road"};
-    if(curLoc==="site") return {t:"항구 길로 돌아가서 가게로 가자.",loc:"site",spot:"back"};
     return {t:"항구 길을 따라 가게로 가자.",loc:"homeroad",spot:"back"};
   }
   if(/_home$/.test(p)){
-    if(!S.inHouse&&curLoc==="site") return {t:"항구 길로 돌아가서 집으로 가자.",loc:"site",spot:"back"};
     if(!S.inHouse) return curLoc==="homeroad"?{t:"집으로 가자.",loc:"homeroad",spot:"home"}:curLoc==="housefront"?{t:"현관 도어록 비밀번호를 누르자. (가게를 연 해)",loc:"housefront",spot:"door"}:{t:curLoc==="street"?"집으로 가자. 꽃집 옆 항구 길로 가면 된다.":"가게 앞으로 돌아가서 집으로 가자.",loc:"street",spot:"home"};
     if(S.day>=2&&!S.boxSeen){
       if(curLoc!=="auntroom") return {t:"이모 방에 들어가 보자.",loc:"living",spot:"auntDoor"};
